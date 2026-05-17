@@ -1,18 +1,42 @@
 from pathlib import Path
 import re
-root = Path(r'c:\Users\Issa\OneDrive\Documents\Zahra Vs')
+
+root = Path(__file__).resolve().parent
 asset_dir = root / 'assets' / 'products'
-files = [p.name for p in asset_dir.glob('*')]
-print('Total images:', len(files))
-content = (root / 'index.html').read_text(encoding='utf-8')
-names = re.findall(r'name: \"([^\"]+)\"', content)
-print('Found product names:', len(names))
-for name in names:
-    key = re.sub(r'[^A-Za-z0-9 ]+', '', name).lower().split()
-    print('\nProduct:', name)
-    matches = [f for f in files if all(k in f.lower() for k in key if len(k) > 3)]
-    if matches:
-        print('  matches:', matches[:10])
-    else:
-        loose = [f for f in files if any(k in f.lower() for k in key if len(k) > 4)]
-        print('  loose matches:', loose[:10])
+source_files = [root / 'index.html']
+
+asset_files = sorted([p.name for p in asset_dir.glob('*') if p.is_file()])
+asset_set = set(asset_files)
+
+ref_pattern = re.compile(r'assets/products/[^"\'\s<>)]+')
+reference_paths = set()
+
+for source in source_files:
+    text = source.read_text(encoding='utf-8', errors='ignore')
+    reference_paths.update(ref_pattern.findall(text))
+
+ref_names = set(Path(path).name for path in reference_paths)
+missing = sorted(ref_names - asset_set)
+unused = sorted(asset_set - ref_names)
+
+source_names = ', '.join(str(p.name) for p in source_files)
+print(f'Total image files in assets/products: {len(asset_files)}')
+print(f'Total unique asset references in {source_names}: {len(ref_names)}')
+print()
+
+if missing:
+    print('Missing referenced images:')
+    for path in missing:
+        print(' -', path)
+    print()
+else:
+    print('All referenced assets are present.')
+    print()
+
+if unused:
+    print('Unused image files in assets/products:')
+    for path in unused:
+        print(' -', path)
+    print()
+else:
+    print('No unused asset files found.')

@@ -487,7 +487,7 @@
                 </div>
             </a>
             <a class="collection-card" href="collections.html?collection=Luxury%20Black">
-                <div class="card-bg" data-bg="fix: update LadiesSummerFootwear image path to match sanitized filename"></div>
+                <div class="card-bg" data-bg="assets/products/ladiessummerfootwearsuperhighheelwith-bowrhinestonecrystalsstilitodiamondblackshoes-1-black.jpg"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
                     <h3>Luxury Black</h3>
@@ -2654,6 +2654,15 @@
             if (categoryBanner) categoryBanner.style.display = showHome ? 'none' : 'block';
         }
 
+        function hydrateDataBg() {
+            document.querySelectorAll('[data-bg]').forEach(el => {
+                const bg = el.dataset.bg;
+                if (bg && bg.startsWith('assets/products/')) {
+                    el.style.backgroundImage = `url("${bg}")`;
+                }
+            });
+        }
+
         // Initialize
         function initializeSite() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -2740,6 +2749,7 @@
         loadProductImageMap().finally(() => {
             ensureVariantImages();
             initializeSite();
+            hydrateDataBg();
         });
     
         </script>

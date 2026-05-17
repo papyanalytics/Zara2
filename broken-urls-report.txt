@@ -1,43 +1,7 @@
-Checking 23 unique asset URLs...
-assets/products/baggyjeans-1-Blue.jpg.jpg	200	https://papyanalytics.github.io/Zara2/assets/products/baggyjeans-1-Blue.jpg.jpg
-assets/products/Black	ERR	https://papyanalytics.github.io/Zara2/assets/products/Black
-BROKEN: assets/products/Black   ERR   https://papyanalytics.github.io/Zara2/assets/products/Black
-assets/products/BlackPULeatherEmbellishedWomenBags-1-Black.jpg.jpg	200	https://papyanalytics.github.io/Zara2/assets/products/BlackPULeatherEmbellishedWomenBags-1-Black.jpg.jpg
-assets/products/buckelchunkyheels.1.Black.jpg.jpg	200	https://papyanalytics.github.io/Zara2/assets/products/buckelchunkyheels.1.Black.jpg.jpg
-assets/products/cargopant-1-brown.jpg.jpg	200	https://papyanalytics.github.io/Zara2/assets/products/cargopant-1-brown.jpg.jpg
-assets/products/chromeheartsbracelet-1-Silver.jpg.jpg	200	https://papyanalytics.github.io/Zara2/assets/products/chromeheartsbracelet-1-Silver.jpg.jpg
-assets/products/croptop-1-white.jpg.jpg	200	https://papyanalytics.github.io/Zara2/assets/products/croptop-1-white.jpg.jpg
-assets/products/dress-1-Red.jpg.jpg	200	https://papyanalytics.github.io/Zara2/assets/products/dress-1-Red.jpg.jpg
-assets/products/dress-2-lightgreen.jpg.jpg	200	https://papyanalytics.github.io/Zara2/assets/products/dress-2-lightgreen.jpg.jpg
-assets/products/Golden	ERR	https://papyanalytics.github.io/Zara2/assets/products/Golden
-BROKEN: assets/products/Golden   ERR   https://papyanalytics.github.io/Zara2/assets/products/Golden
-assets/products/gown-1-Black.jpg.jpg	200	https://papyanalytics.github.io/Zara2/assets/products/gown-1-Black.jpg.jpg
-assets/products/LadiesSummerFootwearSuperHighHeelWith	ERR	https://papyanalytics.github.io/Zara2/assets/products/LadiesSummerFootwearSuperHighHeelWith
-BROKEN: assets/products/LadiesSummerFootwearSuperHighHeelWith   ERR   https://papyanalytics.github.io/Zara2/assets/products/LadiesSummerFootwearSuperHighHeelWith
-assets/products/louisvuittonpursebag-1-Black.jpg.jpg	200	https://papyanalytics.github.io/Zara2/assets/products/louisvuittonpursebag-1-Black.jpg.jpg
-assets/products/MelieBiancoTulipTopHandleCrossbodyTote-1-White.jpg.jpg	200	https://papyanalytics.github.io/Zara2/assets/products/MelieBiancoTulipTopHandleCrossbodyTote-1-White.jpg.jpg
-assets/products/MeshMaxiDress-1-	ERR	https://papyanalytics.github.io/Zara2/assets/products/MeshMaxiDress-1-
-BROKEN: assets/products/MeshMaxiDress-1-   ERR   https://papyanalytics.github.io/Zara2/assets/products/MeshMaxiDress-1-
-assets/products/Outfit	ERR	https://papyanalytics.github.io/Zara2/assets/products/Outfit
-BROKEN: assets/products/Outfit   ERR   https://papyanalytics.github.io/Zara2/assets/products/Outfit
-assets/products/Pablo	ERR	https://papyanalytics.github.io/Zara2/assets/products/Pablo
-BROKEN: assets/products/Pablo   ERR   https://papyanalytics.github.io/Zara2/assets/products/Pablo
-assets/products/Pointed	ERR	https://papyanalytics.github.io/Zara2/assets/products/Pointed
-BROKEN: assets/products/Pointed   ERR   https://papyanalytics.github.io/Zara2/assets/products/Pointed
-assets/products/rings-1-Gold.jpg.jpg	200	https://papyanalytics.github.io/Zara2/assets/products/rings-1-Gold.jpg.jpg
-assets/products/sheinbag-1-Brown.jpg.jpg	200	https://papyanalytics.github.io/Zara2/assets/products/sheinbag-1-Brown.jpg.jpg
-assets/products/sneakers-1-grey.jpg.jpg	ERR	https://papyanalytics.github.io/Zara2/assets/products/sneakers-1-grey.jpg.jpg
-BROKEN: assets/products/sneakers-1-grey.jpg.jpg   ERR   https://papyanalytics.github.io/Zara2/assets/products/sneakers-1-grey.jpg.jpg
-assets/products/streetwear-1-green.jpg.jpg	200	https://papyanalytics.github.io/Zara2/assets/products/streetwear-1-green.jpg.jpg
-assets/products/White	ERR	https://papyanalytics.github.io/Zara2/assets/products/White
-BROKEN: assets/products/White   ERR   https://papyanalytics.github.io/Zara2/assets/products/White
----BROKEN SUMMARY---
-BROKEN: assets/products/Black   ERR   https://papyanalytics.github.io/Zara2/assets/products/Black
-BROKEN: assets/products/Golden   ERR   https://papyanalytics.github.io/Zara2/assets/products/Golden
-BROKEN: assets/products/LadiesSummerFootwearSuperHighHeelWith   ERR   https://papyanalytics.github.io/Zara2/assets/products/LadiesSummerFootwearSuperHighHeelWith
-BROKEN: assets/products/MeshMaxiDress-1-   ERR   https://papyanalytics.github.io/Zara2/assets/products/MeshMaxiDress-1-
-BROKEN: assets/products/Outfit   ERR   https://papyanalytics.github.io/Zara2/assets/products/Outfit
-BROKEN: assets/products/Pablo   ERR   https://papyanalytics.github.io/Zara2/assets/products/Pablo
-BROKEN: assets/products/Pointed   ERR   https://papyanalytics.github.io/Zara2/assets/products/Pointed
-BROKEN: assets/products/sneakers-1-grey.jpg.jpg   ERR   https://papyanalytics.github.io/Zara2/assets/products/sneakers-1-grey.jpg.jpg
-BROKEN: assets/products/White   ERR   https://papyanalytics.github.io/Zara2/assets/products/White
+This report is stale.
+
+Use the validation utilities under `scripts/` to regenerate an up-to-date asset audit:
+- `scripts\check_asset_paths.ps1` for broken asset references in HTML, JS, and CSS
+- `map_images.py` for a summary of referenced and unused product image files
+
+Remove or overwrite this file after validation if it is no longer needed.
