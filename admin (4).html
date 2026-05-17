@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZAHRA Studio | Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --beige: #F5F0E8;
+            --cream: #FAF7F2;
+            --black: #1A1A1A;
+            --soft-brown: #8B7355;
+            --gold: #C9A96E;
+            --gold-light: #D4B87A;
+            --text-dark: #2D2D2D;
+            --text-light: #6B6B6B;
+            --border: #E8E0D5;
+            --white: #FFFFFF;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--cream); }
+        ::-webkit-scrollbar-thumb { background: var(--soft-brown); border-radius: 4px; }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-primary { background: var(--black); color: var(--white); }
+        .btn-primary:hover { background: var(--gold); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+        .btn-outline { background: transparent; color: var(--black); border: 2px solid var(--black); }
+        .btn-outline:hover { background: var(--black); color: var(--white); transform: translateY(-2px); }
+        .btn-gold { background: var(--gold); color: var(--white); }
+        .btn-gold:hover { background: var(--soft-brown); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+        .btn-whatsapp { background: #25D366; color: var(--white); }
+        .btn-whatsapp:hover { background: #128C7E; transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+        .btn-danger { background: #C0392B; color: var(--white); }
+        .btn-danger:hover { background: #A93226; transform: translateY(-2px); }
+
+        /* Login Page */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--beige) 100%);
+        }
+        .login-card {
+            background: var(--white);
+            padding: 48px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-hover);
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+        }
+        .login-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--gold), var(--soft-brown));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+        }
+        .login-icon i { font-size: 24px; color: white; }
+        .login-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--black);
+            margin-bottom: 8px;
+        }
+        .login-card p { color: var(--text-light); margin-bottom: 32px; font-size: 14px; }
+        .login-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: var(--transition);
+            margin-bottom: 16px;
+        }
+        .login-input:focus { border-color: var(--gold); }
+        .login-error {
+            color: #C0392B;
+            font-size: 13px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            padding: 32px 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid var(--border);
+        }
+        .dash-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            color: var(--black);
+        }
+        .dash-header p { color: var(--text-light); font-size: 14px; }
+        .dash-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .stat-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Filters */
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-bar .btn { padding: 8px 18px; font-size: 11px; }
+
+        /* Table */
+        .table-container {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .table-scroll { overflow-x: auto; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            padding: 16px;
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-light);
+            font-weight: 600;
+            background: var(--cream);
+        }
+        td {
+            padding: 14px 16px;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border);
+        }
+        tr { transition: var(--transition); }
+        tr:hover { background: var(--cream); }
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .action-btns {
+            display: flex;
+            gap: 6px;
+        }
+        .action-btns .btn {
+            padding: 6px 12px;
+            font-size: 11px;
+            border-radius: 6px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: var(--white);
+            border-radius: 20px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.9) translateY(20px);
+            transition: var(--transition);
+        }
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--cream);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            color: var(--black);
+            z-index: 10;
+            transition: var(--transition);
+        }
+        .modal-close:hover { background: var(--gold); color: var(--white); }
+
+        /* Order Detail */
+        .order-detail {
+            padding: 40px;
+        }
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .detail-meta {
+            background: var(--cream);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .detail-meta h4 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        .meta-item p:first-child {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-bottom: 2px;
+        }
+        .meta-item p:last-child {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--black);
+        }
+        .items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--cream);
+            border-radius: 8px;
+        }
+        .item-info p:first-child {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--black);
+        }
+        .item-info p:last-child {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+        .item-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--black);
+        }
+        .detail-total {
+            border-top: 1px solid var(--border);
+            padding-top: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .status-update {
+            background: var(--cream);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        .status-update h4 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+        .status-btns {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        .status-btns .btn { padding: 8px 14px; font-size: 11px; }
+        .note-input {
+            display: flex;
+            gap: 8px;
+        }
+        .note-input input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+        }
+        .note-input input:focus { border-color: var(--gold); }
+        .timeline-section h4 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 16px;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -28px;
+            top: 2px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .timeline-dot i { font-size: 8px; color: white; }
+        .timeline-line {
+            position: absolute;
+            left: -20px;
+            top: 18px;
+            width: 2px;
+            height: calc(100% + 16px);
+        }
+        .timeline-content p:first-child {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .timeline-content p:last-child {
+            font-size: 12px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--black);
+            color: var(--white);
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 3000;
+            opacity: 0;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow-hover);
+        }
+        .toast.show { opacity: 1; }
+        .toast i { color: var(--gold); }
+
+        @media (max-width: 768px) {
+            .login-card { padding: 32px 24px; }
+            .dash-header { flex-direction: column; align-items: flex-start; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .filter-bar { overflow-x: auto; padding-bottom: 8px; flex-wrap: nowrap; }
+            .order-detail { padding: 24px; }
+            .meta-grid { grid-template-columns: 1fr; }
+            .status-btns { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 8px; }
+        }
+    </style>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-page" id="loginPage">
+        <div class="login-card">
+            <div class="login-icon"><i class="fas fa-lock"></i></div>
+            <h2>ZAHRA Studio</h2>
+            <p>Supplier Management Dashboard</p>
+            <input type="password" class="login-input" id="adminPassword" placeholder="Enter admin password">
+            <button class="btn btn-primary" onclick="adminLogin()" style="width: 100%; justify-content: center;">
+                <i class="fas fa-sign-in-alt"></i> Access Dashboard
+            </button>
+            <p class="login-error" id="loginError">Incorrect password. Try again.</p>
+            <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border);">
+                <a href="index.html" class="btn btn-outline" style="width: 100%; justify-content: center; font-size: 12px;">
+                    <i class="fas fa-arrow-left"></i> Back to Store
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="dash-header">
+            <div>
+                <h1>Order Management</h1>
+                <p>Monitor and update all customer orders</p>
+            </div>
+            <div class="dash-actions">
+                <button class="btn btn-outline" onclick="exportOrders()" style="padding: 10px 20px; font-size: 12px;">
+                    <i class="fas fa-download"></i> Export
+                </button>
+                <button class="btn btn-outline" onclick="importOrders()" style="padding: 10px 20px; font-size: 12px;">
+                    <i class="fas fa-upload"></i> Import
+                </button>
+                <button class="btn btn-outline" onclick="syncOrders()" style="padding: 10px 20px; font-size: 12px;">
+                    <i class="fas fa-sync-alt"></i> Sync
+                </button>
+                <a href="index.html" class="btn btn-outline" style="padding: 10px 20px; font-size: 12px;">
+                    <i class="fas fa-store"></i> View Store
+                </a>
+                <button class="btn btn-danger" onclick="adminLogout()" style="padding: 10px 20px; font-size: 12px;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" style="color: var(--gold);" id="statTotal">0</div>
+                <div class="stat-label">Total Orders</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #F39C12;" id="statPlaced">0</div>
+                <div class="stat-label">Order Placed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #2980B9;" id="statProcessing">0</div>
+                <div class="stat-label">Processing</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #8E44AD;" id="statShipped">0</div>
+                <div class="stat-label">Shipped</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #8E44AD;" id="statTransit">0</div>
+                <div class="stat-label">In Transit</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #27AE60;" id="statDelivered">0</div>
+                <div class="stat-label">Delivered</div>
+            </div>
+        </div>
+
+        <div class="filter-bar">
+            <button class="btn btn-primary" onclick="filterOrders('all')" id="f-all">All</button>
+            <button class="btn btn-outline" onclick="filterOrders('Order Placed')" id="f-placed">Order Placed</button>
+            <button class="btn btn-outline" onclick="filterOrders('Processing')" id="f-processing">Processing</button>
+            <button class="btn btn-outline" onclick="filterOrders('Shipped')" id="f-shipped">Shipped</button>
+            <button class="btn btn-outline" onclick="filterOrders('In Transit')" id="f-transit">In Transit</button>
+            <button class="btn btn-outline" onclick="filterOrders('Out for Delivery')" id="f-out">Out for Delivery</button>
+            <button class="btn btn-outline" onclick="filterOrders('Delivered')" id="f-delivered">Delivered</button>
+        </div>
+
+        <div class="table-container">
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersBody">
+                        <!-- Orders loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Detail Modal -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div class="order-detail">
+                <div class="detail-header">
+                    <div>
+                        <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); font-weight: 600; margin-bottom: 4px;">Order Details</p>
+                        <h2 id="d-orderNum" style="font-family: 'Playfair Display', serif; font-size: 28px; color: var(--black);">ZHR-240512-001</h2>
+                        <p id="d-date" style="font-size: 13px; color: var(--text-light);">Placed on May 12, 2026</p>
+                    </div>
+                    <span id="d-status" style="padding: 8px 20px; background: var(--gold); color: white; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 20px;">In Transit</span>
+                </div>
+
+                <div class="detail-meta">
+                    <h4>Customer Information</h4>
+                    <div class="meta-grid">
+                        <div class="meta-item">
+                            <p>Name</p>
+                            <p id="d-name">WhatsApp Customer</p>
+                        </div>
+                        <div class="meta-item">
+                            <p>Phone</p>
+                            <p id="d-phone">+234 813 671 6703</p>
+                        </div>
+                        <div class="meta-item">
+                            <p>Location</p>
+                            <p id="d-location">Lagos, Nigeria</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 style="font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-light); margin-bottom: 12px;">Order Items</h4>
+                    <div class="items-list" id="d-items">
+                        <!-- Items -->
+                    </div>
+                </div>
+
+                <div class="detail-total">
+                    <span style="font-size: 14px; color: var(--text-dark);">Total Amount</span>
+                    <span id="d-total" style="font-size: 20px; font-weight: 700; color: var(--black);">₦0</span>
+                </div>
+
+                <div class="status-update">
+                    <h4>Update Status</h4>
+                    <div class="status-btns">
+                        <button class="btn btn-outline" onclick="updateStatus('Processing')">Processing</button>
+                        <button class="btn btn-outline" onclick="updateStatus('Shipped')">Shipped</button>
+                        <button class="btn btn-outline" onclick="updateStatus('In Transit')">In Transit</button>
+                        <button class="btn btn-outline" onclick="updateStatus('Out for Delivery')">Out for Delivery</button>
+                        <button class="btn btn-gold" onclick="updateStatus('Delivered')">Delivered</button>
+                    </div>
+                    <div class="note-input">
+                        <input type="text" id="noteInput" placeholder="Add note (e.g., Left Lagos warehouse)">
+                        <button class="btn btn-primary" onclick="addNote()" style="padding: 10px 18px; font-size: 12px;"><i class="fas fa-plus"></i> Add</button>
+                    </div>
+                </div>
+
+                <div class="timeline-section">
+                    <h4>Tracking History</h4>
+                    <div class="timeline" id="d-timeline">
+                        <!-- Timeline -->
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                    <a id="d-whatsapp" href="#" class="btn btn-whatsapp" target="_blank" style="flex: 1; justify-content: center;">
+                        <i class="fab fa-whatsapp"></i> Message Customer
+                    </a>
+                    <button class="btn btn-outline" onclick="closeModal()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg">Updated!</span></div>
+
+    <script>
+        // ==================== FIREBASE CONFIGURATION ====================
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "zahra-studio-orders.firebaseapp.com",
+            databaseURL: "https://zahra-studio-orders-default-rtdb.firebaseio.com",
+            projectId: "zahra-studio-orders",
+            storageBucket: "zahra-studio-orders.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef123456"
+        };
+
+        let db = null;
+        let firebaseEnabled = false;
+
+        try {
+            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.database();
+                firebaseEnabled = true;
+                console.log("Firebase admin connected");
+            }
+        } catch(e) {
+            console.log("Firebase not available:", e);
+        }
+
+        // Real-time order listener
+        function listenToAllOrders() {
+            if (!db) return;
+            db.ref('orders').on('value', snapshot => {
+                const orders = snapshot.val() || {};
+                // Merge with defaults
+                window.currentOrders = { ...defaultOrders, ...orders };
+                renderOrders();
+                updateStats();
+            });
+        }
+
+        // Save to Firebase
+        function saveToFirebase(orderNum, data) {
+            if (!db) return Promise.resolve();
+            return db.ref('orders/' + orderNum).set(data);
+        }
+
+        // Delete from Firebase
+        function deleteFromFirebase(orderNum) {
+            if (!db) return Promise.resolve();
+            return db.ref('orders/' + orderNum).remove();
+        }
+
+
+        const ADMIN_PASSWORD = 'zahra2026';
+        let currentOrder = null;
+        let currentFilter = 'all';
+
+        // Demo orders (shared with customer site via localStorage)
+        const defaultOrders = {
+            'ZHR-240512-001': {
+                date: 'May 12, 2026',
+                status: 'In Transit',
+                estDelivery: 'May 15, 2026',
+                carrier: 'ZAHRA Express',
+                items: '2 items',
+                total: '₦57,000',
+                customer: 'Tolu O.',
+                phone: '+234 813 671 6703',
+                location: 'Lagos, Nigeria',
+                cartItems: [
+                    { name: 'Lagos Babe Maxi Dress', size: 'M', color: 'Black', qty: 1, price: 28500 },
+                    { name: 'Luxe Leather Crossbody Bag', size: 'One Size', color: 'Brown', qty: 1, price: 18500 }
+                ],
+                timeline: [
+                    { step: 'Order Placed', time: 'May 12, 10:30 AM', done: true, active: false, desc: 'Order received via WhatsApp' },
+                    { step: 'Processing', time: 'May 12, 2:15 PM', done: true, active: false, desc: 'Payment confirmed, items packed' },
+                    { step: 'Shipped', time: 'May 13, 9:00 AM', done: true, active: true, desc: 'Package left Lagos warehouse' },
+                    { step: 'In Transit', time: 'Expected May 14', done: false, active: false, desc: 'On the way to customer' },
+                    { step: 'Out for Delivery', time: 'Expected May 15', done: false, active: false, desc: 'With delivery partner' },
+                    { step: 'Delivered', time: 'Expected May 15', done: false, active: false, desc: 'Package delivered' }
+                ]
+            },
+            'ZHR-240510-003': {
+                date: 'May 10, 2026',
+                status: 'Delivered',
+                estDelivery: 'May 13, 2026',
+                carrier: 'DHL Nigeria',
+                items: '1 item',
+                total: '₦35,000',
+                customer: 'Chioma A.',
+                phone: '+234 813 671 6703',
+                location: 'Abuja, Nigeria',
+                cartItems: [
+                    { name: 'Party Stiletto Heels', size: '38', color: 'Gold', qty: 1, price: 35000 }
+                ],
+                timeline: [
+                    { step: 'Order Placed', time: 'May 10, 4:20 PM', done: true, active: false, desc: 'Order received via WhatsApp' },
+                    { step: 'Processing', time: 'May 11, 9:00 AM', done: true, active: false, desc: 'Payment confirmed' },
+                    { step: 'Shipped', time: 'May 11, 3:30 PM', done: true, active: false, desc: 'Handed to DHL' },
+                    { step: 'In Transit', time: 'May 12, 11:00 AM', done: true, active: false, desc: 'Arrived Abuja sorting hub' },
+                    { step: 'Out for Delivery', time: 'May 13, 8:30 AM', done: true, active: false, desc: 'With local agent' },
+                    { step: 'Delivered', time: 'May 13, 2:45 PM', done: true, active: true, desc: 'Delivered to Mrs. Adeleke' }
+                ]
+            },
+            'ZHR-240513-002': {
+                date: 'May 13, 2026',
+                status: 'Order Placed',
+                estDelivery: 'May 16, 2026',
+                carrier: 'ZAHRA Express',
+                items: '3 items',
+                total: '₦89,500',
+                customer: 'Blessing E.',
+                phone: '+234 813 671 6703',
+                location: 'Port Harcourt, Nigeria',
+                cartItems: [
+                    { name: 'Soft Girl Pleated Skirt Set', size: 'M', color: 'Pink', qty: 1, price: 32000 },
+                    { name: 'Soft Girl Bucket Bag', size: 'One Size', color: 'Pink', qty: 1, price: 22000 },
+                    { name: 'Pearl Drop Earrings', size: 'One Size', color: 'Gold', qty: 1, price: 8500 }
+                ],
+                timeline: [
+                    { step: 'Order Placed', time: 'May 13, 8:15 AM', done: true, active: true, desc: 'Order received via WhatsApp' },
+                    { step: 'Processing', time: 'Pending', done: false, active: false, desc: 'Waiting for payment' },
+                    { step: 'Shipped', time: 'Pending', done: false, active: false, desc: 'Will ship after processing' },
+                    { step: 'In Transit', time: 'Pending', done: false, active: false, desc: 'On the way to customer' },
+                    { step: 'Out for Delivery', time: 'Pending', done: false, active: false, desc: 'With delivery partner' },
+                    { step: 'Delivered', time: 'Pending', done: false, active: false, desc: 'Package delivered' }
+                ]
+            }
+        };
+
+        // Get all orders (global + localStorage + defaults)
+        function getAllOrders() {
+            const merged = { ...defaultOrders };
+            // Try to get from parent window globalOrders (if admin opened from customer site)
+            try {
+                if (window.opener && window.opener.globalOrders) {
+                    Object.assign(merged, window.opener.globalOrders);
+                }
+            } catch(e) {}
+            // Get from localStorage
+            try {
+                const saved = JSON.parse(localStorage.getItem('zahraOrders') || '{}');
+                Object.assign(merged, saved);
+            } catch(e) {}
+            return merged;
+        }
+
+        // Save order to both global and localStorage
+        function saveOrder(orderNum, data) {
+            // Try to save to parent window globalOrders
+            try {
+                if (window.opener && window.opener.globalOrders) {
+                    window.opener.globalOrders[orderNum] = data;
+                }
+            } catch(e) {}
+            // Save to localStorage
+            try {
+                const saved = JSON.parse(localStorage.getItem('zahraOrders') || '{}');
+                saved[orderNum] = data;
+                localStorage.setItem('zahraOrders', JSON.stringify(saved));
+            } catch(e) {}
+        }
+
+        // Login
+        function adminLogin() {
+            const pw = document.getElementById('adminPassword').value;
+            if (pw === ADMIN_PASSWORD) {
+                document.getElementById('loginError').style.display = 'none';
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                // Start real-time Firebase listener
+                if (firebaseEnabled) {
+                    listenToAllOrders();
+                }
+                renderOrders();
+                updateStats();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+                document.getElementById('adminPassword').value = '';
+            }
+        }
+
+        // Logout
+        function adminLogout() {
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        // Render orders table
+        function renderOrders() {
+            const orders = getAllOrders();
+            const tbody = document.getElementById('ordersBody');
+            let filtered = Object.entries(orders);
+
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(([num, d]) => d.status === currentFilter);
+            }
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="padding: 40px; text-align: center; color: var(--text-light);"><i class="fas fa-inbox" style="font-size: 32px; margin-bottom: 12px; display: block;"></i>No orders found</td></tr>';
+                return;
+            }
+
+            const colors = {
+                'Order Placed': '#C9A96E',
+                'Processing': '#F39C12',
+                'Shipped': '#2980B9',
+                'In Transit': '#2980B9',
+                'Out for Delivery': '#8E44AD',
+                'Delivered': '#27AE60'
+            };
+
+            tbody.innerHTML = filtered.map(([num, d]) => `
+                <tr>
+                    <td style="font-weight: 600; color: var(--black);">${num}</td>
+                    <td style="color: var(--text-light);">${d.date}</td>
+                    <td style="color: var(--text-dark);">${d.customer || 'WhatsApp Customer'}</td>
+                    <td style="color: var(--text-light);">${d.items}</td>
+                    <td style="font-weight: 600; color: var(--black);">${d.total || '₦0'}</td>
+                    <td><span class="status-badge" style="background: ${colors[d.status]}15; color: ${colors[d.status]}; border: 1px solid ${colors[d.status]}30;">${d.status}</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn btn-primary" onclick="openOrder('${num}')" style="padding: 6px 12px; font-size: 11px;"><i class="fas fa-eye"></i> View</button>
+                            <button class="btn btn-danger" onclick="deleteOrder('${num}')" style="padding: 6px 12px; font-size: 11px;"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Update stats
+        function updateStats() {
+            const orders = Object.values(getAllOrders());
+            const counts = {
+                total: orders.length,
+                placed: orders.filter(o => o.status === 'Order Placed').length,
+                processing: orders.filter(o => o.status === 'Processing').length,
+                shipped: orders.filter(o => o.status === 'Shipped').length,
+                transit: orders.filter(o => o.status === 'In Transit').length,
+                delivered: orders.filter(o => o.status === 'Delivered').length
+            };
+            document.getElementById('statTotal').textContent = counts.total;
+            document.getElementById('statPlaced').textContent = counts.placed;
+            document.getElementById('statProcessing').textContent = counts.processing;
+            document.getElementById('statShipped').textContent = counts.shipped;
+            document.getElementById('statTransit').textContent = counts.transit;
+            document.getElementById('statDelivered').textContent = counts.delivered;
+        }
+
+        // Filter orders
+        function filterOrders(status) {
+            currentFilter = status;
+            ['all', 'placed', 'processing', 'shipped', 'transit', 'out', 'delivered'].forEach(type => {
+                const btn = document.getElementById('f-' + type);
+                if (btn) {
+                    if ((status === 'all' && type === 'all') ||
+                        (status === 'Order Placed' && type === 'placed') ||
+                        (status === 'Processing' && type === 'processing') ||
+                        (status === 'Shipped' && type === 'shipped') ||
+                        (status === 'In Transit' && type === 'transit') ||
+                        (status === 'Out for Delivery' && type === 'out') ||
+                        (status === 'Delivered' && type === 'delivered')) {
+                        btn.className = 'btn btn-primary';
+                    } else {
+                        btn.className = 'btn btn-outline';
+                    }
+                }
+            });
+            renderOrders();
+        }
+
+        // Open order detail
+        function openOrder(orderNum) {
+            currentOrder = orderNum;
+            const orders = getAllOrders();
+            const d = orders[orderNum];
+            if (!d) return;
+
+            document.getElementById('d-orderNum').textContent = orderNum;
+            document.getElementById('d-date').textContent = 'Placed on ' + d.date;
+            document.getElementById('d-status').textContent = d.status;
+
+            const colors = {
+                'Order Placed': '#C9A96E', 'Processing': '#F39C12', 'Shipped': '#2980B9',
+                'In Transit': '#2980B9', 'Out for Delivery': '#8E44AD', 'Delivered': '#27AE60'
+            };
+            document.getElementById('d-status').style.background = colors[d.status] || '#6B6B6B';
+
+            document.getElementById('d-name').textContent = d.customer || 'WhatsApp Customer';
+            document.getElementById('d-phone').textContent = d.phone || '+234 813 671 6703';
+            document.getElementById('d-location').textContent = d.location || 'Lagos, Nigeria';
+            document.getElementById('d-total').textContent = d.total || '₦0';
+
+            // Items
+            const itemsDiv = document.getElementById('d-items');
+            if (d.cartItems && d.cartItems.length > 0) {
+                itemsDiv.innerHTML = d.cartItems.map(item => `
+                    <div class="item-row">
+                        <div class="item-info">
+                            <p>${item.name}</p>
+                            <p>${item.size}, ${item.color} x${item.qty}</p>
+                        </div>
+                        <div class="item-price">₦${(item.price * item.qty).toLocaleString('en-NG')}</div>
+                    </div>
+                `).join('');
+            } else {
+                itemsDiv.innerHTML = '<p style="color: var(--text-light); font-size: 13px;">No item details</p>';
+            }
+
+            // Timeline
+            renderTimeline(d);
+
+            // WhatsApp
+            const msg = `Hi! This is ZAHRA Studio regarding your order ${orderNum}.`;
+            document.getElementById('d-whatsapp').href = `https://wa.me/2348136716703?text=${encodeURIComponent(msg)}`;
+
+            document.getElementById('orderModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Render timeline
+        function renderTimeline(d) {
+            const container = document.getElementById('d-timeline');
+            if (!d.timeline || d.timeline.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-light);">No updates yet</p>';
+                return;
+            }
+            container.innerHTML = d.timeline.map((step, index) => `
+                <div class="timeline-item">
+                    <div class="timeline-dot" style="background: ${step.done ? (step.active ? 'var(--gold)' : '#27AE60') : 'var(--border)'}; border: 2px solid ${step.done ? (step.active ? 'var(--gold)' : '#27AE60') : 'var(--border)'};">
+                        ${step.done ? '<i class="fas fa-check"></i>' : ''}
+                    </div>
+                    ${index < d.timeline.length - 1 ? `<div class="timeline-line" style="background: ${step.done ? '#27AE60' : 'var(--border)'};"></div>` : ''}
+                    <div class="timeline-content">
+                        <p style="color: ${step.done ? 'var(--black)' : 'var(--text-light)'};">${step.step}</p>
+                        <p style="color: ${step.done ? 'var(--text-dark)' : 'var(--text-light)'};">${step.time} — ${step.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update status
+        function updateStatus(newStatus) {
+            if (!currentOrder) return;
+            const orders = getAllOrders();
+            const order = orders[currentOrder];
+            if (!order) return;
+
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+            order.status = newStatus;
+
+            const steps = ['Order Placed', 'Processing', 'Shipped', 'In Transit', 'Out for Delivery', 'Delivered'];
+            const newIndex = steps.indexOf(newStatus);
+
+            if (newIndex !== -1) {
+                order.timeline = steps.map((step, idx) => ({
+                    step: step,
+                    time: idx <= newIndex ? (idx === newIndex ? `${dateStr}, ${timeStr}` : 'Completed') : 'Pending',
+                    done: idx <= newIndex,
+                    active: idx === newIndex,
+                    desc: getDesc(step, idx <= newIndex)
+                }));
+            }
+
+            saveOrder(currentOrder, order);
+            renderTimeline(order);
+            document.getElementById('d-status').textContent = newStatus;
+            const colors = {
+                'Order Placed': '#C9A96E', 'Processing': '#F39C12', 'Shipped': '#2980B9',
+                'In Transit': '#2980B9', 'Out for Delivery': '#8E44AD', 'Delivered': '#27AE60'
+            };
+            document.getElementById('d-status').style.background = colors[newStatus] || '#6B6B6B';
+            renderOrders();
+            updateStats();
+            showToast(`Order ${currentOrder} → ${newStatus}`);
+        }
+
+        function getDesc(step, done) {
+            const descs = {
+                'Order Placed': done ? 'Order received via WhatsApp' : 'Waiting',
+                'Processing': done ? 'Payment confirmed, packing' : 'Waiting for payment',
+                'Shipped': done ? 'Left warehouse' : 'Will ship soon',
+                'In Transit': done ? 'On the way' : 'Waiting',
+                'Out for Delivery': done ? 'With delivery partner' : 'Waiting',
+                'Delivered': done ? 'Delivered successfully' : 'Waiting'
+            };
+            return descs[step] || step;
+        }
+
+        // Add note
+        function addNote() {
+            const note = document.getElementById('noteInput').value.trim();
+            if (!note || !currentOrder) return;
+
+            const orders = getAllOrders();
+            const order = orders[currentOrder];
+            if (!order.timeline) order.timeline = [];
+
+            const now = new Date();
+            order.timeline.push({
+                step: 'Note',
+                time: `${now.toLocaleDateString('en-US', {month:'short', day:'numeric'})}, ${now.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'})}`,
+                done: true,
+                active: false,
+                desc: note
+            });
+
+            saveOrder(currentOrder, order);
+            document.getElementById('noteInput').value = '';
+            renderTimeline(order);
+            showToast('Note added');
+        }
+
+        // Delete order
+        function deleteOrder(orderNum) {
+            if (!confirm(`Delete order ${orderNum}?`)) return;
+            // Delete from Firebase
+            deleteFromFirebase(orderNum);
+            // Delete locally
+            try {
+                const saved = JSON.parse(localStorage.getItem('zahraOrders') || '{}');
+                delete saved[orderNum];
+                localStorage.setItem('zahraOrders', JSON.stringify(saved));
+            } catch(e) {}
+            renderOrders();
+            updateStats();
+            showToast(`Order ${orderNum} deleted`);
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('orderModal').classList.remove('active');
+            document.body.style.overflow = '';
+            currentOrder = null;
+        }
+
+        // Toast
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Enter key on password
+        document.getElementById('adminPassword').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') adminLogin();
+        });
+
+        // Enter key on note
+        document.getElementById('noteInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addNote();
+        });
+
+        // Close modal on overlay click
+        document.getElementById('orderModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('orderModal')) closeModal();
+        });
+    
+        // Export orders as JSON file
+        function exportOrders() {
+            const orders = getAllOrders();
+            const dataStr = JSON.stringify(orders, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `zahra-orders-${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Orders exported!');
+        }
+
+        // Import orders from JSON file
+        function importOrders() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const imported = JSON.parse(event.target.result);
+                        // Merge imported orders
+                        Object.keys(imported).forEach(key => {
+                            if (key.startsWith('ZHR-')) {
+                                persistOrder(key, imported[key]);
+                            }
+                        });
+                        renderOrders();
+                        updateStats();
+                        showToast('Orders imported successfully!');
+                    } catch(err) {
+                        showToast('Invalid file format');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        // Manual sync - refresh from all sources
+        function syncOrders() {
+            renderOrders();
+            updateStats();
+            showToast('Orders synced!');
+        }
+
+        // Helper to persist to both global and localStorage
+        function persistOrder(orderNum, data) {
+            try {
+                if (window.opener && window.opener.globalOrders) {
+                    window.opener.globalOrders[orderNum] = data;
+                }
+            } catch(e) {}
+            try {
+                const saved = JSON.parse(localStorage.getItem('zahraOrders') || '{}');
+                saved[orderNum] = data;
+                localStorage.setItem('zahraOrders', JSON.stringify(saved));
+            } catch(e) {}
+        }
+
+</script>
+</body>
+</html>

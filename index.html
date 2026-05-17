@@ -1,0 +1,2745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZAHRA Studio | Nigerian Fashion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --beige: #F5F0E8;
+            --cream: #FAF7F2;
+            --black: #1A1A1A;
+            --soft-brown: #8B7355;
+            --gold: #C9A96E;
+            --gold-light: #D4B87A;
+            --text-dark: #2D2D2D;
+            --text-light: #6B6B6B;
+            --border: #E8E0D5;
+            --white: #FFFFFF;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--cream); }
+        ::-webkit-scrollbar-thumb { background: var(--soft-brown); border-radius: 4px; }
+
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(250, 247, 242, 0.95); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); transition: var(--transition);
+        }
+        .navbar.scrolled { box-shadow: var(--shadow); }
+        .nav-container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+        .nav-top {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 0; gap: 20px;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700;
+            color: var(--black); text-decoration: none; letter-spacing: 2px;
+        }
+        .logo span { color: var(--gold); }
+        .hidden { display: none !important; }
+        .search-bar { flex: 1; max-width: 500px; position: relative; }
+        .search-bar input {
+            width: 100%; padding: 12px 20px 12px 48px; border: 1px solid var(--border);
+            border-radius: 30px; background: var(--white); font-size: 14px;
+            font-family: 'Inter', sans-serif; transition: var(--transition); outline: none;
+        }
+        .search-bar input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.1); }
+        .search-bar i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-light); font-size: 16px; }
+        .nav-actions { display: flex; align-items: center; gap: 20px; }
+        .nav-icon { position: relative; cursor: pointer; font-size: 20px; color: var(--black); transition: var(--transition); background: none; border: none; }
+        .nav-icon:hover { color: var(--gold); }
+        .cart-count { position: absolute; top: -8px; right: -8px; background: var(--gold); color: var(--white); font-size: 10px; font-weight: 600; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .nav-links { display: flex; align-items: center; gap: 32px; padding: 12px 0; overflow-x: auto; scrollbar-width: none; }
+        .nav-links::-webkit-scrollbar { display: none; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; transition: var(--transition); position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--gold); transition: var(--transition); }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+        .sale-link { color: #C0392B !important; }
+        .menu-toggle { display: none; font-size: 24px; cursor: pointer; background: none; border: none; }
+
+        .hero { margin-top: 120px; position: relative; height: 90vh; min-height: 600px; max-height: 800px; overflow: hidden; }
+        .hero-image { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; }
+        .hero-image::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.4); }
+        .hero-image::before { content: ''; position: absolute; inset: 0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="%23C9A96E" opacity="0.3"/><circle cx="80" cy="40" r="1.5" fill="%23C9A96E" opacity="0.2"/><circle cx="40" cy="80" r="1" fill="%23C9A96E" opacity="0.25"/><circle cx="70" cy="70" r="0.8" fill="%23C9A96E" opacity="0.3"/></svg>'); background-size: 200px; }
+        .hero-content { position: relative; z-index: 2; text-align: center; padding: 40px; max-width: 700px; }
+        .hero-badge { display: inline-block; padding: 8px 24px; background: rgba(201, 169, 110, 0.25); border: 1px solid var(--gold); color: var(--gold); backdrop-filter: blur(10px); font-size: 12px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 24px; border-radius: 30px; }
+        .hero h1 { font-size: clamp(36px, 6vw, 72px); font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 16px; letter-spacing: -1px; text-shadow: 0 2px 20px rgba(0,0,0,0.4); }
+        .hero h1 span { color: var(--gold); }
+        .hero-tagline { font-size: clamp(16px, 2vw, 20px); color: rgba(255,255,255,0.9); margin-bottom: 40px; font-weight: 300; line-height: 1.6; text-shadow: 0 1px 10px rgba(0,0,0,0.3); }
+        .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+        .btn { padding: 16px 40px; border-radius: 30px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; transition: var(--transition); text-decoration: none; display: inline-flex; align-items: center; gap: 10px; border: none; font-family: 'Inter', sans-serif; }
+        .btn-primary { background: var(--black); color: var(--white); }
+        .btn-primary:hover { background: var(--gold); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+        .btn-outline { background: transparent; color: var(--black); border: 2px solid var(--black); }
+        .btn-outline:hover { background: var(--black); color: var(--white); transform: translateY(-2px); }
+        .btn-gold { background: var(--gold); color: var(--white); }
+        .btn-gold:hover { background: var(--soft-brown); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+        .btn-whatsapp { background: #25D366; color: var(--white); }
+        .btn-whatsapp:hover { background: #128C7E; transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+
+        .collections { padding: 80px 24px; max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 48px; }
+        .section-header h2 { font-size: clamp(28px, 4vw, 40px); color: var(--black); margin-bottom: 12px; }
+        .section-header p { color: var(--text-light); font-size: 16px; }
+        .collections-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+        .collection-card { position: relative; height: 380px; border-radius: 16px; overflow: hidden; cursor: pointer; transition: var(--transition); }
+        .collection-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
+        .collection-card .card-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #E8DDD0, #D4C4B0); transition: var(--transition); background-size: cover; background-position: center; }
+        .collection-card:hover .card-bg { transform: scale(1.05); }
+        .collection-card .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 50%, transparent 100%); }
+        .collection-card .card-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 30px; color: var(--white); }
+        .collection-card h3 { font-size: 24px; margin-bottom: 8px; }
+        .collection-card p { font-size: 14px; opacity: 0.9; margin-bottom: 16px; }
+        .collection-card .shop-now { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); transition: var(--transition); }
+        .collection-card:hover .shop-now { gap: 12px; }
+
+        .products-section { padding: 80px 24px; max-width: 1400px; margin: 0 auto; }
+        .products-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; margin-bottom: 40px; }
+        .filter-sort-bar { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+        .filter-group { position: relative; }
+        .filter-group select { padding: 10px 36px 10px 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); font-size: 13px; font-family: 'Inter', sans-serif; cursor: pointer; appearance: none; min-width: 140px; outline: none; transition: var(--transition); }
+        .filter-group select:focus { border-color: var(--gold); }
+        .filter-group::after { content: '\f107'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 12px; color: var(--text-light); pointer-events: none; }
+
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px; }
+        .product-card { background: var(--white); border-radius: 16px; overflow: hidden; transition: var(--transition); position: relative; }
+        .product-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
+        .product-image { position: relative; height: 360px; overflow: hidden; }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
+        .product-card:hover .product-image img { transform: scale(1.05); }
+        .product-badge { position: absolute; top: 16px; left: 16px; padding: 6px 14px; background: var(--gold); color: var(--white); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 20px; z-index: 2; }
+        .product-badge.sale { background: #C0392B; }
+        .product-badge.new { background: var(--black); }
+        .product-actions { position: absolute; top: 16px; right: 16px; display: flex; flex-direction: column; gap: 10px; opacity: 0; transform: translateX(10px); transition: var(--transition); z-index: 2; }
+        .product-card:hover .product-actions { opacity: 1; transform: translateX(0); }
+        .action-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--white); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; color: var(--black); transition: var(--transition); box-shadow: var(--shadow); }
+        .action-btn:hover { background: var(--gold); color: var(--white); }
+        .action-btn.wishlisted { background: #E74C3C; color: var(--white); }
+        .quick-view-btn { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%) translateY(20px); opacity: 0; transition: var(--transition); padding: 12px 28px; background: var(--white); color: var(--black); border: none; border-radius: 30px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; box-shadow: var(--shadow); font-family: 'Inter', sans-serif; z-index: 2; }
+        .product-card:hover .quick-view-btn { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .quick-view-btn:hover { background: var(--gold); color: var(--white); }
+        .product-info { padding: 20px; }
+        .product-category { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); font-weight: 600; margin-bottom: 8px; }
+        .product-name { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--black); margin-bottom: 8px; line-height: 1.3; }
+        .product-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .product-price { font-size: 20px; font-weight: 700; color: var(--black); }
+        .product-price .original { font-size: 14px; color: var(--text-light); text-decoration: line-through; margin-left: 8px; font-weight: 400; }
+        .product-colors { display: flex; gap: 6px; }
+        .color-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--white); box-shadow: 0 0 0 1px var(--border); cursor: pointer; transition: var(--transition); }
+        .color-dot:hover { transform: scale(1.2); box-shadow: 0 0 0 2px var(--gold); }
+        .color-dot.active-color { box-shadow: 0 0 0 3px var(--gold); transform: scale(1.2); }
+        .product-sizes { display: flex; gap: 8px; margin-bottom: 16px; }
+        .size-tag { padding: 4px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; color: var(--text-light); background: var(--cream); }
+        .add-to-cart { width: 100%; padding: 14px; background: var(--black); color: var(--white); border: none; border-radius: 10px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: var(--transition); font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .add-to-cart:hover { background: var(--gold); }
+
+        .no-results { text-align: center; padding: 60px 20px; grid-column: 1 / -1; }
+        .no-results i { font-size: 48px; color: var(--border); margin-bottom: 16px; }
+        .no-results h3 { font-size: 24px; color: var(--black); margin-bottom: 8px; }
+        .no-results p { color: var(--text-light); }
+
+        .social-proof { padding: 80px 24px; background: var(--beige); }
+        .social-proof-container { max-width: 1400px; margin: 0 auto; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 40px; }
+        @media (max-width: 768px) {
+            .social-grid { grid-template-columns: repeat(2, 1fr) !important; max-width: 100% !important; }
+        }
+        .social-item { aspect-ratio: 1; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: var(--soft-brown); transition: var(--transition); cursor: pointer; position: relative; overflow: hidden; }
+        .social-item:hover { transform: scale(1.02); }
+        .social-item::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.3); opacity: 0; transition: var(--transition); }
+        .social-item:hover::after { opacity: 1; }
+        .social-item i { position: relative; z-index: 1; }
+        .social-handle { text-align: center; margin-top: 32px; }
+        .social-handle a { display: inline-flex; align-items: center; gap: 12px; padding: 14px 32px; background: var(--black); color: var(--white); text-decoration: none; border-radius: 30px; font-size: 14px; font-weight: 600; transition: var(--transition); }
+        .social-handle a:hover { background: var(--gold); transform: translateY(-2px); }
+
+        .testimonials { padding: 80px 24px; max-width: 1200px; margin: 0 auto; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; margin-top: 40px; }
+        .testimonial-card { background: var(--white); padding: 32px; border-radius: 16px; box-shadow: var(--shadow); transition: var(--transition); }
+        .testimonial-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+        .testimonial-stars { color: var(--gold); margin-bottom: 16px; font-size: 14px; }
+        .testimonial-text { font-size: 15px; line-height: 1.7; color: var(--text-dark); margin-bottom: 20px; font-style: italic; }
+        .testimonial-author { display: flex; align-items: center; gap: 14px; }
+        .author-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--soft-brown)); display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 600; font-size: 18px; }
+        .author-info h4 { font-size: 15px; color: var(--black); margin-bottom: 4px; }
+        .author-info p { font-size: 13px; color: var(--text-light); }
+
+        .footer { background: var(--black); color: var(--white); padding: 80px 24px 32px; }
+        .footer-container { max-width: 1400px; margin: 0 auto; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 48px; margin-bottom: 48px; }
+        .footer-brand .logo { color: var(--white); margin-bottom: 16px; display: inline-block; }
+        .footer-brand p { color: rgba(255,255,255,0.7); font-size: 14px; line-height: 1.7; margin-bottom: 24px; }
+        .footer-social { display: flex; gap: 16px; }
+        .footer-social a { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: var(--white); text-decoration: none; transition: var(--transition); font-size: 16px; }
+        .footer-social a:hover { background: var(--gold); transform: translateY(-3px); }
+        .footer-column h4 { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px; color: var(--gold); }
+        .footer-column ul { list-style: none; }
+        .footer-column ul li { margin-bottom: 12px; }
+        .footer-column ul li a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; transition: var(--transition); cursor: pointer; }
+        .footer-column ul li a:hover { color: var(--gold); padding-left: 4px; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        .footer-bottom p { color: rgba(255,255,255,0.5); font-size: 13px; }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; visibility: hidden; transition: var(--transition); }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content { background: var(--white); border-radius: 20px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; transform: scale(0.9) translateY(20px); transition: var(--transition); }
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+        .modal-close { position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-radius: 50%; background: var(--cream); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; color: var(--black); z-index: 10; transition: var(--transition); }
+        .modal-close:hover { background: var(--gold); color: var(--white); }
+        .modal-body { display: grid; grid-template-columns: 1fr 1fr; min-height: 500px; }
+        .modal-image { background: linear-gradient(135deg, #F0E8DD, #E5DCD0); display: flex; align-items: center; justify-content: center; min-height: 400px; overflow: hidden; }
+        .modal-image img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-details { padding: 40px; display: flex; flex-direction: column; }
+        .modal-category { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); font-weight: 600; margin-bottom: 12px; }
+        .modal-title { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--black); margin-bottom: 16px; line-height: 1.2; }
+        .modal-price { font-size: 24px; font-weight: 700; color: var(--black); margin-bottom: 24px; }
+        .modal-price .original { font-size: 16px; color: var(--text-light); text-decoration: line-through; margin-left: 12px; font-weight: 400; }
+        .modal-section { margin-bottom: 24px; }
+        .modal-section label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); margin-bottom: 10px; }
+        .size-options { display: flex; gap: 10px; flex-wrap: wrap; }
+        .size-option { padding: 10px 20px; border: 2px solid var(--border); border-radius: 8px; background: var(--white); font-size: 14px; font-weight: 500; cursor: pointer; transition: var(--transition); font-family: 'Inter', sans-serif; }
+        .size-option:hover, .size-option.active { border-color: var(--gold); background: rgba(201, 169, 110, 0.1); color: var(--gold); }
+        .color-options { display: flex; gap: 12px; }
+        .color-option { width: 32px; height: 32px; border-radius: 50%; border: 3px solid var(--white); box-shadow: 0 0 0 2px var(--border); cursor: pointer; transition: var(--transition); position: relative; }
+        .color-option:hover, .color-option.active { box-shadow: 0 0 0 3px var(--gold); transform: scale(1.1); }
+        .color-option.active::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--white); font-size: 12px; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+        .quantity-selector { display: flex; align-items: center; gap: 0; border: 2px solid var(--border); border-radius: 8px; overflow: hidden; width: fit-content; }
+        .quantity-selector button { width: 40px; height: 44px; background: var(--white); border: none; font-size: 18px; cursor: pointer; color: var(--black); transition: var(--transition); }
+        .quantity-selector button:hover { background: var(--cream); }
+        .quantity-selector input { width: 50px; height: 44px; border: none; text-align: center; font-size: 16px; font-weight: 600; font-family: 'Inter', sans-serif; outline: none; }
+        .delivery-info { background: var(--cream); padding: 16px; border-radius: 10px; margin-bottom: 24px; }
+        .delivery-info p { font-size: 13px; color: var(--text-light); display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .delivery-info p:last-child { margin-bottom: 0; }
+        .delivery-info i { color: var(--gold); font-size: 14px; }
+        .modal-actions { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
+        .modal-actions .btn { width: 100%; justify-content: center; }
+
+        .cart-sidebar { position: fixed; top: 0; right: -420px; width: 420px; max-width: 100%; height: 100vh; background: var(--white); z-index: 2001; box-shadow: -10px 0 40px rgba(0,0,0,0.15); transition: var(--transition); display: flex; flex-direction: column; }
+        .cart-sidebar.open { right: 0; }
+        .cart-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .cart-header h3 { font-size: 20px; }
+        .cart-close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--black); transition: var(--transition); }
+        .cart-close:hover { color: var(--gold); }
+        .cart-items { flex: 1; overflow-y: auto; padding: 20px; }
+        .cart-item { display: flex; gap: 16px; padding: 16px; background: var(--cream); border-radius: 12px; margin-bottom: 12px; }
+        .cart-item-image { width: 80px; height: 100px; background: linear-gradient(135deg, #F0E8DD, #E5DCD0); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--soft-brown); opacity: 0.4; flex-shrink: 0; overflow: hidden; }
+        .cart-item-image img { width: 100%; height: 100%; object-fit: cover; }
+        .cart-item-details { flex: 1; }
+        .cart-item-name { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+        .cart-item-meta { font-size: 12px; color: var(--text-light); margin-bottom: 8px; }
+        .cart-item-price { font-weight: 700; color: var(--black); }
+        .cart-item-remove { background: none; border: none; color: #C0392B; cursor: pointer; font-size: 14px; align-self: flex-start; transition: var(--transition); }
+        .cart-item-remove:hover { transform: scale(1.1); }
+        .cart-empty { text-align: center; padding: 60px 20px; }
+        .cart-empty i { font-size: 48px; color: var(--border); margin-bottom: 16px; }
+        .cart-empty p { color: var(--text-light); }
+        .cart-footer { padding: 24px; border-top: 1px solid var(--border); background: var(--cream); }
+        .cart-total { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 18px; font-weight: 700; }
+        .cart-footer .btn { width: 100%; justify-content: center; }
+        .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 2000; opacity: 0; visibility: hidden; transition: var(--transition); }
+        .cart-overlay.active { opacity: 1; visibility: visible; }
+
+        .whatsapp-float { position: fixed; bottom: 30px; right: 30px; z-index: 999; }
+        .whatsapp-float a { display: flex; align-items: center; gap: 10px; padding: 14px 24px; background: #25D366; color: var(--white); text-decoration: none; border-radius: 50px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); transition: var(--transition); }
+        .whatsapp-float a:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5); }
+        .whatsapp-float i { font-size: 20px; }
+
+        .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--black); color: var(--white); padding: 16px 32px; border-radius: 12px; font-size: 14px; font-weight: 500; z-index: 3000; opacity: 0; transition: var(--transition); display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-hover); }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast i { color: var(--gold); }
+
+        /* Back to top */
+        #backToTop { position: fixed; bottom: 90px; right: 30px; width: 48px; height: 48px; border-radius: 50%; background: var(--black); color: var(--white); display: none; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow); z-index: 4000; transition: var(--transition); }
+        #backToTop.show { display: flex; }
+
+        @media (max-width: 1024px) {
+            .modal-body { grid-template-columns: 1fr; }
+            .modal-image { min-height: 300px; }
+        }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .search-bar { display: none; }
+            .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--cream); flex-direction: column; padding: 20px; gap: 16px; border-bottom: 1px solid var(--border); box-shadow: var(--shadow); }
+            .nav-links.active { display: flex; }
+            .hero { margin-top: 70px; height: auto; min-height: 500px; }
+            .hero-content { padding: 30px 20px; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .btn { width: 100%; max-width: 300px; justify-content: center; }
+            .products-header { flex-direction: column; align-items: flex-start; }
+            .filter-sort-bar { width: 100%; overflow-x: auto; padding-bottom: 8px; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+            .product-image { height: 240px; }
+            .collections-grid { grid-template-columns: 1fr; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .cart-sidebar { width: 100%; right: -100%; }
+            .whatsapp-float { bottom: 20px; right: 20px; }
+            .whatsapp-float a span { display: none; }
+            .whatsapp-float a { width: 56px; height: 56px; padding: 0; justify-content: center; border-radius: 50%; }
+        }
+        @media (max-width: 480px) {
+            .products-grid { grid-template-columns: 1fr; }
+            .modal-details { padding: 24px; }
+            .modal-title { font-size: 22px; }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in { animation: fadeInUp 0.6s ease forwards; }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+    </style>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-top">
+                <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+                <a href="index.html" class="logo">ZAHRA <span>Studio</span></a>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search dresses, bags, shoes, colors...">
+                </div>
+                <div class="nav-actions">
+                    <button class="nav-icon" id="searchIcon"><i class="fas fa-search"></i></button>
+                    <button class="nav-icon" id="cartBtn"><i class="fas fa-shopping-bag"></i><span class="cart-count" id="cartCount">0</span></button>
+                </div>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="collections.html">Collections</a>
+                <a href="index.html">Home</a>
+                <a href="women.html">Women</a>
+                <a href="men.html">Men</a>
+                <a href="shoes.html">Shoes</a>
+                <a href="bags.html">Bags</a>
+                <a href="accessories.html">Accessories</a>
+                <a href="index.html?category=Sale" class="sale-link">Sale</a>
+                <a href="#footer">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-image" data-bg="assets/products/gown-1-Black.jpg.jpg">
+            <div class="hero-content">
+                <div class="hero-badge">New Collection 2026</div>
+                <h1>Elevate Your <span>Style</span></h1>
+                <p class="hero-tagline">Premium Nigerian fashion curated for modern wardrobes. From Lagos streets to global runways.</p>
+                <div class="hero-buttons">
+                    <a href="women.html" class="btn btn-primary"><i class="fas fa-shopping-bag"></i> Shop Women</a>
+                    <a href="collections.html" class="btn btn-outline">View Collections</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="category-banner hidden" id="categoryBanner">
+        <div class="section-header">
+            <h2 id="categoryBannerTitle">Category Edit</h2>
+            <p id="categoryBannerText">Browse a curated selection of styles for this collection.</p>
+        </div>
+        <div class="hero-buttons" style="justify-content:center; gap:16px; margin-top:16px;">
+            <a href="index.html" class="btn btn-outline">Back to Home</a>
+            <a href="collections.html" class="btn btn-primary">Explore Collections</a>
+        </div>
+    </section>
+
+    <!-- Main Categories (reduce homepage scrolling) -->
+    <section class="collections" id="mainCategories" style="padding-top: 40px; padding-bottom: 40px;">
+        <div class="section-header">
+            <h2>Shop By Category</h2>
+            <p>Tap a category to view curated pieces</p>
+        </div>
+        <div class="collections-grid">
+            <a class="collection-card" href="women.html">
+                <div class="card-bg" data-bg="assets/products/gown-1-Black.jpg.jpg"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h3>Women</h3>
+                    <p>Dresses, Two Piece, Heels & more</p>
+                </div>
+            </a>
+            <a class="collection-card" href="men.html">
+                <div class="card-bg" data-bg="assets/products/Outfit hombre invierno - Copy - Copy.jpg" style="background-position: center;"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h3>Men</h3>
+                    <p>Oversized Tees, Jackets, Sneakers</p>
+                </div>
+            </a>
+            <a class="collection-card" href="shoes.html">
+                <div class="card-bg" data-bg="assets/products/Pointed Toe Low Kitten Heels Pumps - Copy.jpg"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h3>Shoes</h3>
+                    <p>Heels, Sneakers, Statement Soles</p>
+                </div>
+            </a>
+            <a class="collection-card" href="bags.html">
+                <div class="card-bg" data-bg="assets/products/BlackPULeatherEmbellishedWomenBags-1-Black.jpg.jpg"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h3>Bags</h3>
+                    <p>Crossbody, Tote, Clutch</p>
+                </div>
+            </a>
+            <a class="collection-card" href="accessories.html">
+                <div class="card-bg" data-bg="assets/products/rings-1-Gold.jpg.jpg"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h3>Accessories</h3>
+                    <p>Jewelry, Belts, Scarves</p>
+                </div>
+            </a>
+            <a class="collection-card" href="collections.html">
+                <div class="card-bg" data-bg="assets/products/MelieBiancoTulipTopHandleCrossbodyTote-1-White.jpg.jpg"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h3>Collections</h3>
+                    <p>Curated sets & capsules</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <section class="collections" id="collections">
+        <div class="section-header">
+            <h2>Curated Collections</h2>
+            <p>Handpicked styles for every moment</p>
+        </div>
+        <div class="collections-grid">
+            <a class="collection-card" href="collections.html?collection=Vacation%20Drip">
+                <div class="card-bg" data-bg="assets/products/dress-2-lightgreen.jpg.jpg"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h3>Vacation Drip</h3>
+                    <p>Resort-ready styles</p>
+                    <div class="shop-now">Shop Now <i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+            <a class="collection-card" href="collections.html?collection=Date%20Night">
+                <div class="card-bg" data-bg="assets/products/White unique and stunning dress - Copy.jpg"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h3>Date Night</h3>
+                    <p>Romance-ready looks</p>
+                    <div class="shop-now">Shop Now <i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+            <a class="collection-card" href="collections.html?collection=Soft%20Girl">
+                <div class="card-bg" data-bg="assets/products/croptop-1-white.jpg.jpg"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h3>Soft Girl</h3>
+                    <p>Pastels & pretty pieces</p>
+                    <div class="shop-now">Shop Now <i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+            <a class="collection-card" href="collections.html?collection=Lagos%20Essentials">
+                <div class="card-bg" data-bg="assets/products/BlackPULeatherEmbellishedWomenBags-1-Black.jpg.jpg"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h3>Lagos Essentials</h3>
+                    <p>City-ready staples</p>
+                    <div class="shop-now">Shop Now <i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+            <a class="collection-card" href="collections.html?collection=Urban%20Streetwear">
+                <div class="card-bg" data-bg="assets/products/baggyjeans-1-Blue.jpg.jpg"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h3>Urban Streetwear</h3>
+                    <p>Everyday relaxed sets</p>
+                    <div class="shop-now">Shop Now <i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+            <a class="collection-card" href="collections.html?collection=Summer%20Vibes">
+                <div class="card-bg" data-bg="assets/products/streetwear-1-green.jpg.jpg"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h3>Summer Vibes</h3>
+                    <p>Breezy warm-weather looks</p>
+                    <div class="shop-now">Shop Now <i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+            <a class="collection-card" href="collections.html?collection=Luxury%20Black">
+                <div class="card-bg" data-bg="assets/products/LadiesSummerFootwearSuperHighHeelWith BowRhinestoneCrystalsStilitoDiamondBlackShoes-1-Black.jpg.jpg"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h3>Luxury Black</h3>
+                    <p>Bold evening statements</p>
+                    <div class="shop-now">Shop Now <i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+            <a class="collection-card" href="collections.html?collection=Weekend%20Casuals">
+                <div class="card-bg" data-bg="assets/products/Black and grey - Copy.jpg"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h3>Weekend Casuals</h3>
+                    <p>Comfort with polish</p>
+                    <div class="shop-now">Shop Now <i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <section class="collections" id="featuredSection">
+        <div class="section-header">
+            <h2>Featured Picks</h2>
+            <p>Luxury pieces selected for a refined wardrobe.</p>
+        </div>
+        <div class="products-grid" id="featuredGrid"></div>
+    </section>
+
+    <section class="collections" id="bestSellersSection">
+        <div class="section-header">
+            <h2>Best Sellers</h2>
+            <p>Our most loved styles, selected by ZAHRA shoppers.</p>
+        </div>
+        <div class="products-grid" id="bestSellersGrid"></div>
+    </section>
+
+    <section class="products-section" id="products">
+        <div class="products-header">
+            <div class="section-header" style="text-align: left; margin-bottom: 0;">
+                <h2 id="productsSectionTitle">Shop The Latest</h2>
+            </div>
+            <div class="filter-sort-bar">
+                <button class="btn btn-outline" id="clearFilters" style="padding: 10px 20px; font-size: 12px;"><i class="fas fa-times"></i> Clear</button>
+                <div class="filter-group">
+                    <select id="filterSize">
+                        <option value="">All Sizes</option>
+                        <option value="XS">XS</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="One Size">One Size</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <select id="filterPrice">
+                        <option value="">All Prices</option>
+                        <option value="0-15000">Under ₦15,000</option>
+                        <option value="15000-35000">₦15,000 - ₦35,000</option>
+                        <option value="35000-60000">₦35,000 - ₦60,000</option>
+                        <option value="60000+">Above ₦60,000</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <select id="filterCategory">
+                        <option value="">All Categories</option>
+                        <option value="Dresses">Dresses</option>
+                        <option value="Two Piece">Two Piece</option>
+                        <option value="Crop Tops">Crop Tops</option>
+                        <option value="Heels">Heels</option>
+                        <option value="Bags">Bags</option>
+                        <option value="Vacation Wear">Vacation Wear</option>
+                        <option value="Streetwear">Streetwear</option>
+                        <option value="Oversized Tees">Oversized Tees</option>
+                        <option value="Jackets">Jackets</option>
+                        <option value="Cargo Pants">Cargo Pants</option>
+                        <option value="Sneakers">Sneakers</option>
+                        <option value="Watches">Watches</option>
+                        <option value="Casual Fits">Casual Fits</option>
+                        <option value="Accessories">Accessories</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <select id="filterAvailability">
+                        <option value="">Availability</option>
+                        <option value="In Stock">In Stock</option>
+                        <option value="Low Stock">Low Stock</option>
+                        <option value="Pre-Order">Pre-Order</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <select id="sortBy">
+                        <option value="newest">Newest</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="trending">Trending</option>
+                        <option value="loved">Most Loved</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="products-grid" id="productsGrid"></div>
+    </section>
+
+    <section class="social-proof">
+        <div class="social-proof-container">
+            <div class="section-header">
+                <h2>As Seen On Social</h2>
+                <p>Tag @zahrastudio.ng to be featured</p>
+            </div>
+            <div class="social-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 600px; margin: 40px auto 0;">
+                <div class="social-item" data-bg="assets/products/MelieBiancoTulipTopHandleCrossbodyTote-1-White.jpg.jpg" style="background-size: cover; background-position: center;"><i class="fab fa-instagram" style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); padding: 8px; border-radius: 50%;"></i></div>
+                <div class="social-item" data-bg="assets/products/BlackPULeatherEmbellishedWomenBags-1-Black.jpg.jpg" style="background-size: cover; background-position: center;"><i class="fab fa-tiktok" style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); padding: 8px; border-radius: 50%;"></i></div>
+            </div>
+            <div class="social-handle">
+                <a href="https://instagram.com/zahrastudio.ng" target="_blank"><i class="fab fa-instagram"></i> Follow @zahrastudio.ng</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="section-header">
+            <h2>What Our Customers Say</h2>
+            <p>Real reviews from real ZAHRA women</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text">"The quality is absolutely insane! I ordered the Lagos Girl Essentials set and it arrived the next day in perfect condition. ZAHRA Studio is now my go-to for every event."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">TO</div>
+                    <div class="author-info">
+                        <h4>Tolu O.</h4>
+                        <p>Lagos, Nigeria</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text">"I love how easy it is to order via WhatsApp. The team is so responsive and helped me pick the perfect size. My birthday dress was a hit! Everyone asked where I got it."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">CA</div>
+                    <div class="author-info">
+                        <h4>Chioma A.</h4>
+                        <p>Abuja, Nigeria</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                </div>
+                <p class="testimonial-text">"Fast delivery to Port Harcourt and the packaging was so premium. The Soft Girl Collection colors are even more beautiful in person. Already placed my third order!"</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">BE</div>
+                    <div class="author-info">
+                        <h4>Blessing E.</h4>
+                        <p>Port Harcourt, Nigeria</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    
+    <!-- Order Confirmation Modal -->
+    <div class="modal-overlay" id="orderConfirmModal">
+        <div class="modal-content" style="max-width: 500px; text-align: center;">
+            <button class="modal-close" id="orderConfirmClose"><i class="fas fa-times"></i></button>
+            <div style="padding: 48px 32px;">
+                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #27AE60, #2ECC71); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; box-shadow: 0 4px 20px rgba(39, 174, 96, 0.3);">
+                    <i class="fas fa-check" style="font-size: 36px; color: white;"></i>
+                </div>
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 28px; color: var(--black); margin-bottom: 8px;">Order Received!</h2>
+                <p style="color: var(--text-light); margin-bottom: 24px;">Your order has been sent to ZAHRA Studio via WhatsApp</p>
+
+                <div style="background: var(--cream); border: 2px dashed var(--gold); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                    <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-light); margin-bottom: 8px;">Your Order Number</p>
+                    <h3 id="generatedOrderNum" style="font-size: 24px; font-weight: 700; color: var(--black); letter-spacing: 2px;">ZHR-240513-001</h3>
+                </div>
+
+                <div style="text-align: left; background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 24px;">
+                    <p style="font-size: 13px; color: var(--text-dark); margin-bottom: 12px;"><i class="fas fa-clock" style="color: var(--gold); margin-right: 8px;"></i> <strong>Next Steps:</strong></p>
+                    <ol style="font-size: 13px; color: var(--text-light); padding-left: 20px; line-height: 1.8;">
+                        <li>Complete payment via WhatsApp chat</li>
+                        <li>We will confirm availability within 2 hours</li>
+                        <li>Use your order number to track delivery below</li>
+                    </ol>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <button class="btn btn-primary" onclick="trackNewOrder()"><i class="fas fa-map-marker-alt"></i> Track My Order</button>
+                    <button class="btn btn-outline" onclick="closeOrderConfirm()" style="border-color: var(--border); color: var(--text-light);"><i class="fas fa-shopping-bag"></i> Continue Shopping</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- Info Pages -->
+    <section class="info-page" id="shippingInfo" style="display: none; padding: 80px 24px; max-width: 800px; margin: 0 auto;">
+        <div class="section-header">
+            <h2>Shipping Information</h2>
+        </div>
+        <div style="background: var(--white); padding: 40px; border-radius: 16px; box-shadow: var(--shadow); line-height: 1.8; color: var(--text-dark);">
+            <h3 style="color: var(--gold); margin-bottom: 16px;">Delivery Options</h3>
+            <p><strong>Lagos Delivery:</strong> Free delivery within Lagos. Orders placed before 2pm are delivered same-day. Orders after 2pm deliver next day.</p>
+            <p><strong>Nationwide Delivery:</strong> We deliver to all 36 states in Nigeria. Delivery takes 3-5 business days. Flat rate of ₦2,000.</p>
+            <p><strong>Express Delivery:</strong> Available for Lagos only. Additional ₦1,500. Delivered within 4 hours.</p>
+            <h3 style="color: var(--gold); margin: 24px 0 16px;">Order Processing</h3>
+            <p>All orders are processed within 24 hours. You will receive a tracking number via WhatsApp once your order is dispatched.</p>
+            <h3 style="color: var(--gold); margin: 24px 0 16px;">International Shipping</h3>
+            <p>We currently ship to UK, US, and Canada. Delivery takes 7-14 business days. Rates calculated at checkout.</p>
+            <button class="btn btn-primary" onclick="hideInfoPages()" style="margin-top: 24px;"><i class="fas fa-arrow-left"></i> Back to Shop</button>
+        </div>
+    </section>
+
+    <section class="info-page" id="returnPolicy" style="display: none; padding: 80px 24px; max-width: 800px; margin: 0 auto;">
+        <div class="section-header">
+            <h2>Return Policy</h2>
+        </div>
+        <div style="background: var(--white); padding: 40px; border-radius: 16px; box-shadow: var(--shadow); line-height: 1.8; color: var(--text-dark);">
+            <h3 style="color: var(--gold); margin-bottom: 16px;">Easy 7-Day Returns</h3>
+            <p>We want you to love your ZAHRA purchase! If you are not completely satisfied, you can return any item within 7 days of delivery.</p>
+            <h3 style="color: var(--gold); margin: 24px 0 16px;">Return Conditions</h3>
+            <ul style="margin-left: 20px; margin-bottom: 16px;">
+                <li>Items must be unworn, unwashed, and with all tags attached</li>
+                <li>Original packaging must be included</li>
+                <li>Sale items are final sale and cannot be returned</li>
+                <li>Accessories (jewelry, bags) can only be returned if unused</li>
+            </ul>
+            <h3 style="color: var(--gold); margin: 24px 0 16px;">How to Return</h3>
+            <p>1. WhatsApp us at <a href="https://wa.me/2348136716703" style="color: var(--gold);">0813 671 6703</a> with your order number<br>
+            2. We will arrange a pickup from your location (Lagos) or provide a return address<br>
+            3. Once received and inspected, refund is processed within 3-5 business days</p>
+            <button class="btn btn-primary" onclick="hideInfoPages()" style="margin-top: 24px;"><i class="fas fa-arrow-left"></i> Back to Shop</button>
+        </div>
+    </section>
+
+    <section class="info-page" id="sizeGuide" style="display: none; padding: 80px 24px; max-width: 800px; margin: 0 auto;">
+        <div class="section-header">
+            <h2>Size Guide</h2>
+        </div>
+        <div style="background: var(--white); padding: 40px; border-radius: 16px; box-shadow: var(--shadow); line-height: 1.8; color: var(--text-dark);">
+            <h3 style="color: var(--gold); margin-bottom: 16px;">Women's Clothing</h3>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+                <tr style="background: var(--cream);"><th style="padding: 12px; text-align: left; border: 1px solid var(--border);">Size</th><th style="padding: 12px; text-align: left; border: 1px solid var(--border);">UK</th><th style="padding: 12px; text-align: left; border: 1px solid var(--border);">Bust (cm)</th><th style="padding: 12px; text-align: left; border: 1px solid var(--border);">Waist (cm)</th><th style="padding: 12px; text-align: left; border: 1px solid var(--border);">Hips (cm)</th></tr>
+                <tr><td style="padding: 12px; border: 1px solid var(--border);">XS</td><td style="padding: 12px; border: 1px solid var(--border);">6</td><td style="padding: 12px; border: 1px solid var(--border);">82-86</td><td style="padding: 12px; border: 1px solid var(--border);">64-68</td><td style="padding: 12px; border: 1px solid var(--border);">88-92</td></tr>
+                <tr style="background: var(--cream);"><td style="padding: 12px; border: 1px solid var(--border);">S</td><td style="padding: 12px; border: 1px solid var(--border);">8</td><td style="padding: 12px; border: 1px solid var(--border);">86-90</td><td style="padding: 12px; border: 1px solid var(--border);">68-72</td><td style="padding: 12px; border: 1px solid var(--border);">92-96</td></tr>
+                <tr><td style="padding: 12px; border: 1px solid var(--border);">M</td><td style="padding: 12px; border: 1px solid var(--border);">10</td><td style="padding: 12px; border: 1px solid var(--border);">90-94</td><td style="padding: 12px; border: 1px solid var(--border);">72-76</td><td style="padding: 12px; border: 1px solid var(--border);">96-100</td></tr>
+                <tr style="background: var(--cream);"><td style="padding: 12px; border: 1px solid var(--border);">L</td><td style="padding: 12px; border: 1px solid var(--border);">12</td><td style="padding: 12px; border: 1px solid var(--border);">94-98</td><td style="padding: 12px; border: 1px solid var(--border);">76-80</td><td style="padding: 12px; border: 1px solid var(--border);">100-104</td></tr>
+                <tr><td style="padding: 12px; border: 1px solid var(--border);">XL</td><td style="padding: 12px; border: 1px solid var(--border);">14</td><td style="padding: 12px; border: 1px solid var(--border);">98-102</td><td style="padding: 12px; border: 1px solid var(--border);">80-84</td><td style="padding: 12px; border: 1px solid var(--border);">104-108</td></tr>
+            </table>
+            <h3 style="color: var(--gold); margin: 24px 0 16px;">Shoes</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr style="background: var(--cream);"><th style="padding: 12px; text-align: left; border: 1px solid var(--border);">EU Size</th><th style="padding: 12px; text-align: left; border: 1px solid var(--border);">UK Size</th><th style="padding: 12px; text-align: left; border: 1px solid var(--border);">Foot Length (cm)</th></tr>
+                <tr><td style="padding: 12px; border: 1px solid var(--border);">37</td><td style="padding: 12px; border: 1px solid var(--border);">4</td><td style="padding: 12px; border: 1px solid var(--border);">23.5</td></tr>
+                <tr style="background: var(--cream);"><td style="padding: 12px; border: 1px solid var(--border);">38</td><td style="padding: 12px; border: 1px solid var(--border);">5</td><td style="padding: 12px; border: 1px solid var(--border);">24</td></tr>
+                <tr><td style="padding: 12px; border: 1px solid var(--border);">39</td><td style="padding: 12px; border: 1px solid var(--border);">6</td><td style="padding: 12px; border: 1px solid var(--border);">24.5</td></tr>
+                <tr style="background: var(--cream);"><td style="padding: 12px; border: 1px solid var(--border);">40</td><td style="padding: 12px; border: 1px solid var(--border);">7</td><td style="padding: 12px; border: 1px solid var(--border);">25</td></tr>
+                <tr><td style="padding: 12px; border: 1px solid var(--border);">41</td><td style="padding: 12px; border: 1px solid var(--border);">8</td><td style="padding: 12px; border: 1px solid var(--border);">25.5</td></tr>
+            </table>
+            <p style="margin-top: 16px;"><em>Not sure about your size? WhatsApp us a photo of yourself and we will recommend the perfect fit!</em></p>
+            <button class="btn btn-primary" onclick="hideInfoPages()" style="margin-top: 24px;"><i class="fas fa-arrow-left"></i> Back to Shop</button>
+        </div>
+    </section>
+
+    <section class="info-page" id="faqs" style="display: none; padding: 80px 24px; max-width: 800px; margin: 0 auto;">
+        <div class="section-header">
+            <h2>Frequently Asked Questions</h2>
+        </div>
+        <div style="background: var(--white); padding: 40px; border-radius: 16px; box-shadow: var(--shadow); line-height: 1.8; color: var(--text-dark);">
+            <h3 style="color: var(--gold); margin-bottom: 12px;">How do I place an order?</h3>
+            <p style="margin-bottom: 20px;">You can shop directly on our website and add items to cart, or WhatsApp us at <a href="https://wa.me/2348136716703" style="color: var(--gold);">0813 671 6703</a> to place an order. We accept bank transfer, card payments, and pay on delivery.</p>
+
+            <h3 style="color: var(--gold); margin-bottom: 12px;">How long does delivery take?</h3>
+            <p style="margin-bottom: 20px;">Lagos: Same day or next day (free). Nationwide: 3-5 business days (₦2,000 flat rate). Express Lagos: 4 hours (₦1,500 extra).</p>
+
+            <h3 style="color: var(--gold); margin-bottom: 12px;">Can I see the item before paying?</h3>
+            <p style="margin-bottom: 20px;">Yes! We offer "Pay on Delivery" for Lagos orders. For nationwide orders, we send detailed photos and videos via WhatsApp before shipping.</p>
+
+            <h3 style="color: var(--gold); margin-bottom: 12px;">What if the item does not fit?</h3>
+            <p style="margin-bottom: 20px;">We offer easy 7-day returns. Items must be unworn with tags attached. WhatsApp us to initiate a return and we will arrange pickup.</p>
+
+            <h3 style="color: var(--gold); margin-bottom: 12px;">Do you restock sold out items?</h3>
+            <p style="margin-bottom: 20px;">Popular items are restocked weekly. Join our WhatsApp broadcast list to get restock alerts first!</p>
+
+            <h3 style="color: var(--gold); margin-bottom: 12px;">How do I track my order?</h3>
+            <p>Once your order is dispatched, we send you a tracking number and delivery partner details via WhatsApp. You can also WhatsApp us anytime for updates.</p>
+            <button class="btn btn-primary" onclick="hideInfoPages()" style="margin-top: 24px;"><i class="fas fa-arrow-left"></i> Back to Shop</button>
+        </div>
+    </section>
+
+    
+
+    <section class="info-page" id="ourStory" style="display: none; padding: 80px 24px; max-width: 800px; margin: 0 auto;">
+        <div class="section-header">
+            <h2>Our Story</h2>
+        </div>
+        <div style="background: var(--white); padding: 40px; border-radius: 16px; box-shadow: var(--shadow); line-height: 1.8; color: var(--text-dark);">
+            <h3 style="color: var(--gold); margin-bottom: 16px;">Born in Lagos, Made for the World</h3>
+            <p>ZAHRA Studio was founded in 2024 with a simple mission: to create premium Nigerian fashion that celebrates the modern African woman. We noticed a gap in the market - Nigerian women wanted trendy, high-quality fashion that understood their bodies, their style, and their hustle.</p>
+            <p>What started as a small Instagram shop has grown into a beloved brand serving thousands of women across Nigeria and beyond. From Lagos streets to London runways, ZAHRA women are turning heads everywhere.</p>
+            <h3 style="color: var(--gold); margin: 24px 0 16px;">Our Philosophy</h3>
+            <p>We believe every woman deserves to feel confident, elegant, and unapologetically herself. Our collections are designed to make you feel like the best version of you - whether you are at a board meeting, a birthday party, or a casual brunch.</p>
+            <h3 style="color: var(--gold); margin: 24px 0 16px;">Made with Love</h3>
+            <p>Every piece is carefully curated and quality-checked by our team in Lagos. We work with skilled local artisans and international suppliers to bring you the best of both worlds - African creativity meets global standards.</p>
+            <button class="btn btn-primary" onclick="hideInfoPages()" style="margin-top: 24px;"><i class="fas fa-arrow-left"></i> Back to Shop</button>
+        </div>
+    </section>
+
+    <section class="info-page" id="sustainability" style="display: none; padding: 80px 24px; max-width: 800px; margin: 0 auto;">
+        <div class="section-header">
+            <h2>Sustainability</h2>
+        </div>
+        <div style="background: var(--white); padding: 40px; border-radius: 16px; box-shadow: var(--shadow); line-height: 1.8; color: var(--text-dark);">
+            <h3 style="color: var(--gold); margin-bottom: 16px;">Fashion with a Conscience</h3>
+            <p>At ZAHRA Studio, we believe looking good should not cost the earth. We are committed to reducing our environmental impact while delivering the premium fashion you love.</p>
+            <h3 style="color: var(--gold); margin: 24px 0 16px;">Our Initiatives</h3>
+            <ul style="margin-left: 20px; margin-bottom: 16px;">
+                <li><strong>Recyclable Packaging</strong> - All our packaging is 100% recyclable and plastic-free</li>
+                <li><strong>Local Sourcing</strong> - We prioritize Nigerian suppliers to reduce carbon footprint</li>
+                <li><strong>Quality Over Quantity</strong> - Our pieces are made to last, reducing fast fashion waste</li>
+                <li><strong>Zero Waste Goal</strong> - We donate unsold items to local charities instead of discarding</li>
+            </ul>
+            <h3 style="color: var(--gold); margin: 24px 0 16px;">Ethical Production</h3>
+            <p>We partner with factories that provide fair wages and safe working conditions. Every person in our supply chain is treated with dignity and respect.</p>
+            <button class="btn btn-primary" onclick="hideInfoPages()" style="margin-top: 24px;"><i class="fas fa-arrow-left"></i> Back to Shop</button>
+        </div>
+    </section>
+
+    <section class="info-page" id="careers" style="display: none; padding: 80px 24px; max-width: 800px; margin: 0 auto;">
+        <div class="section-header">
+            <h2>Careers at ZAHRA</h2>
+        </div>
+        <div style="background: var(--white); padding: 40px; border-radius: 16px; box-shadow: var(--shadow); line-height: 1.8; color: var(--text-dark);">
+            <h3 style="color: var(--gold); margin-bottom: 16px;">Join the ZAHRA Team</h3>
+            <p>We are always looking for passionate, creative individuals who love fashion as much as we do. Based in Lagos, we offer a dynamic work environment where your ideas matter.</p>
+            <h3 style="color: var(--gold); margin: 24px 0 16px;">Open Positions</h3>
+            <ul style="margin-left: 20px; margin-bottom: 16px;">
+                <li><strong>Social Media Manager</strong> - Content creation, community management</li>
+                <li><strong>Customer Experience Associate</strong> - WhatsApp support, order management</li>
+                <li><strong>Fashion Buyer / Curator</strong> - Trend research, supplier relations</li>
+                <li><strong>Delivery Coordinator</strong> - Logistics, dispatch management</li>
+            </ul>
+            <h3 style="color: var(--gold); margin: 24px 0 16px;">How to Apply</h3>
+            <p>Send your CV and a brief introduction to <strong>careers@zahrastudio.ng</strong> or WhatsApp us at <a href="https://wa.me/2348136716703" style="color: var(--gold);">0813 671 6703</a>. Tell us why you want to join ZAHRA and what makes you unique!</p>
+            <button class="btn btn-primary" onclick="hideInfoPages()" style="margin-top: 24px;"><i class="fas fa-arrow-left"></i> Back to Shop</button>
+        </div>
+    </section>
+
+    <section class="info-page" id="press" style="display: none; padding: 80px 24px; max-width: 800px; margin: 0 auto;">
+        <div class="section-header">
+            <h2>Press & Media</h2>
+        </div>
+        <div style="background: var(--white); padding: 40px; border-radius: 16px; box-shadow: var(--shadow); line-height: 1.8; color: var(--text-dark);">
+            <h3 style="color: var(--gold); margin-bottom: 16px;">Press Inquiries</h3>
+            <p>For press features, interviews, collaborations, and media partnerships, please contact our PR team.</p>
+            <h3 style="color: var(--gold); margin: 24px 0 16px;">Contact</h3>
+            <p><strong>Email:</strong> press@zahrastudio.ng<br>
+            <strong>WhatsApp:</strong> <a href="https://wa.me/2348136716703" style="color: var(--gold);">0813 671 6703</a><br>
+            <strong>Instagram:</strong> @zahrastudio.ng</p>
+            <h3 style="color: var(--gold); margin: 24px 0 16px;">Brand Assets</h3>
+            <p>High-resolution images, logos, and brand guidelines are available upon request. We love collaborating with bloggers, influencers, and media outlets that align with our brand values.</p>
+            <button class="btn btn-primary" onclick="hideInfoPages()" style="margin-top: 24px;"><i class="fas fa-arrow-left"></i> Back to Shop</button>
+        </div>
+    </section>
+
+    <section class="info-page" id="affiliates" style="display: none; padding: 80px 24px; max-width: 800px; margin: 0 auto;">
+        <div class="section-header">
+            <h2>Affiliate Program</h2>
+        </div>
+        <div style="background: var(--white); padding: 40px; border-radius: 16px; box-shadow: var(--shadow); line-height: 1.8; color: var(--text-dark);">
+            <h3 style="color: var(--gold); margin-bottom: 16px;">Earn with ZAHRA</h3>
+            <p>Love ZAHRA Studio? Earn money while sharing your favorite pieces! Our affiliate program pays you 10% commission on every sale made through your unique link.</p>
+            <h3 style="color: var(--gold); margin: 24px 0 16px;">How It Works</h3>
+            <ul style="margin-left: 20px; margin-bottom: 16px;">
+                <li><strong>Sign Up</strong> - WhatsApp us to join (free to join)</li>
+                <li><strong>Share</strong> - Post your unique link on Instagram, TikTok, WhatsApp status</li>
+                <li><strong>Earn</strong> - Get 10% commission on every purchase</li>
+                <li><strong>Get Paid</strong> - Weekly payouts directly to your bank account</li>
+            </ul>
+            <h3 style="color: var(--gold); margin: 24px 0 16px;">Perks</h3>
+            <p>Affiliates get early access to new collections, exclusive discount codes for followers, and featured spotlights on our social media.</p>
+            <p><strong>To join:</strong> WhatsApp <a href="https://wa.me/2348136716703" style="color: var(--gold);">0813 671 6703</a> with "AFFILIATE" and we will get you started!</p>
+            <button class="btn btn-primary" onclick="hideInfoPages()" style="margin-top: 24px;"><i class="fas fa-arrow-left"></i> Back to Shop</button>
+        </div>
+    </section>
+
+    
+    <section class="info-page" id="trackOrderPage" style="display: none; padding: 80px 24px; max-width: 800px; margin: 0 auto;">
+        <div class="section-header">
+            <h2>Track Your Order</h2>
+            <p>Enter your order number to see real-time delivery updates</p>
+        </div>
+        <div style="background: var(--white); padding: 40px; border-radius: 16px; box-shadow: var(--shadow); line-height: 1.8; color: var(--text-dark);">
+
+            <div style="margin-bottom: 32px;">
+                <label style="display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); margin-bottom: 10px;">Order Number</label>
+                <div style="display: flex; gap: 12px;">
+                    <input type="text" id="trackOrderInput" placeholder="e.g. ZHR-240512-001" style="flex: 1; padding: 14px 18px; border: 2px solid var(--border); border-radius: 10px; font-size: 16px; font-family: 'Inter', sans-serif; outline: none; transition: var(--transition);" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+                    <button class="btn btn-primary" onclick="trackOrder()" style="padding: 14px 32px;"><i class="fas fa-search"></i> Track</button>
+                </div>
+                <p style="font-size: 12px; color: var(--text-light); margin-top: 8px;">Your order number was sent via WhatsApp when you placed your order.</p>
+            </div>
+
+            <div id="trackingResult" style="display: none;">
+                <div style="background: #E8F5E9; border: 1px solid #27AE60; border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-info-circle" style="color: #27AE60; font-size: 18px;"></i>
+                    <p style="font-size: 12px; color: #1B5E20; margin: 0;">Your order is being tracked. Status updates are shown below.</p>
+                </div>
+                <div style="border: 2px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+                        <div>
+                            <h3 style="font-size: 18px; color: var(--black); margin-bottom: 4px;" id="trackOrderNum">Order #ZHR-240512-001</h3>
+                            <p style="font-size: 13px; color: var(--text-light);" id="trackOrderDate">Placed on May 12, 2026</p>
+                        </div>
+                        <span id="trackStatusBadge" style="padding: 6px 16px; background: var(--gold); color: var(--white); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 20px;">In Transit</span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin-top: 20px;">
+                        <div style="background: var(--cream); padding: 16px; border-radius: 10px;">
+                            <p style="font-size: 11px; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Estimated Delivery</p>
+                            <p style="font-size: 16px; font-weight: 600; color: var(--black);" id="trackEstDelivery">May 15, 2026</p>
+                        </div>
+                        <div style="background: var(--cream); padding: 16px; border-radius: 10px;">
+                            <p style="font-size: 11px; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Carrier</p>
+                            <p style="font-size: 16px; font-weight: 600; color: var(--black);" id="trackCarrier">ZAHRA Express</p>
+                        </div>
+                        <div style="background: var(--cream); padding: 16px; border-radius: 10px;">
+                            <p style="font-size: 11px; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Items</p>
+                            <p style="font-size: 16px; font-weight: 600; color: var(--black);" id="trackItems">3 items</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--gold); margin-bottom: 20px; font-size: 16px; text-transform: uppercase; letter-spacing: 1.5px;">Delivery Progress</h3>
+
+                <div id="trackingTimeline" style="position: relative; padding-left: 32px;">
+                    <!-- Timeline items will be injected here -->
+                </div>
+            </div>
+
+            <div id="trackingNotFound" style="display: none; text-align: center; padding: 40px 20px;">
+                <i class="fas fa-box-open" style="font-size: 48px; color: var(--border); margin-bottom: 16px;"></i>
+                <h3 style="font-size: 20px; color: var(--black); margin-bottom: 8px;">Order Not Found</h3>
+                <p style="color: var(--text-light); margin-bottom: 12px;">We couldn't find an order with that number in this browser.</p>
+                <div style="background: var(--cream); border-radius: 10px; padding: 16px; margin-bottom: 20px; text-align: left;">
+                    <p style="font-size: 12px; color: var(--text-light); margin-bottom: 8px;"><strong>Demo Order Numbers (try these):</strong></p>
+                    <p style="font-size: 13px; color: var(--text-dark); font-family: monospace; background: var(--white); padding: 8px; border-radius: 6px; margin-bottom: 6px;">ZHR-240512-001 <span style="color: var(--text-light);">— In Transit</span></p>
+                    <p style="font-size: 13px; color: var(--text-dark); font-family: monospace; background: var(--white); padding: 8px; border-radius: 6px; margin-bottom: 6px;">ZHR-240510-003 <span style="color: var(--text-light);">— Delivered</span></p>
+                    <p style="font-size: 13px; color: var(--text-dark); font-family: monospace; background: var(--white); padding: 8px; border-radius: 6px;">ZHR-240513-002 <span style="color: var(--text-light);">— Order Placed</span></p>
+                </div>
+                <p style="color: var(--text-light); font-size: 12px; margin-bottom: 16px;"><em>Note: Orders are saved to this browser only. For cross-device tracking, the supplier can export orders from the admin dashboard.</em></p>
+                <a href="https://wa.me/2348136716703" class="btn btn-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+            </div>
+
+            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border);">
+                <h4 style="font-size: 14px; color: var(--black); margin-bottom: 12px;">Need Help?</h4>
+                <p style="font-size: 13px; color: var(--text-light); margin-bottom: 16px;">Can't find your order? Our team is ready to assist you.</p>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <a href="https://wa.me/2348136716703" class="btn btn-whatsapp" target="_blank" style="padding: 10px 20px; font-size: 12px;"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+                    <button class="btn btn-outline" onclick="hideInfoPages()" style="padding: 10px 20px; font-size: 12px;"><i class="fas fa-arrow-left"></i> Back to Shop</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<footer class="footer" id="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">ZAHRA <span>Studio</span></a>
+                    <p>Premium Nigerian fashion for the modern woman. Curated styles that celebrate elegance, confidence, and African beauty.</p>
+                    <div class="footer-social">
+                        <a href="https://instagram.com/zahrastudio.ng" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://tiktok.com/@zahrastudio.ng" target="_blank"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://wa.me/2348136716703" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Shop</h4>
+                    <ul>
+                                <li><a href="index.html">New Arrivals</a></li>
+                        <li><a href="women.html">Dresses</a></li>
+                        <li><a href="women.html">Two-Piece Sets</a></li>
+                        <li><a href="bags.html">Bags</a></li>
+                        <li><a href="shoes.html">Shoes</a></li>
+                        <li><a href="index.html?category=Sale">Sale</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Customer Care</h4>
+                    <ul>
+                        <li><a href="https://wa.me/2348136716703" target="_blank">Contact Us</a></li>
+                        <li><a onclick="showShippingInfo()">Shipping Info</a></li>
+                        <li><a onclick="showReturnPolicy()">Return Policy</a></li>
+                        <li><a onclick="showSizeGuide()">Size Guide</a></li>
+                        <li><a onclick="showFAQs()">FAQs</a></li>
+                        <li><a onclick="showTrackOrder()">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>About</h4>
+                    <ul>
+                        <li><a onclick="showOurStory()">Our Story</a></li>
+                        <li><a onclick="showSustainability()">Sustainability</a></li>
+                        <li><a onclick="showCareers()">Careers</a></li>
+                        <li><a onclick="showPress()">Press</a></li>
+                        <li><a onclick="showAffiliates()">Affiliates</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 ZAHRA Studio. All rights reserved.</p>
+                <p>Made with <i class="fas fa-heart" style="color: var(--gold);"></i> in Lagos, Nigeria</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="quickViewModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+            <div class="modal-body">
+                <div class="modal-image" id="modalImageContainer">
+                    <img id="modalImage" src="" alt="Product" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="modal-details">
+                    <div class="modal-category" id="modalCategory">Dresses</div>
+                    <h2 class="modal-title" id="modalTitle">Product Name</h2>
+                    <div class="modal-price" id="modalPrice">₦0</div>
+                    <div class="modal-section">
+                        <label>Select Size</label>
+                        <div class="size-options" id="modalSizes"></div>
+                    </div>
+                    <div class="modal-section">
+                        <label>Select Color</label>
+                        <div class="color-options" id="modalColors"></div>
+                    </div>
+                    <div class="modal-section">
+                        <label>Quantity</label>
+                        <div class="quantity-selector">
+                            <button id="qtyMinus">-</button>
+                            <input type="number" id="qtyInput" value="1" min="1" max="10">
+                            <button id="qtyPlus">+</button>
+                        </div>
+                    </div>
+                    <div class="modal-section">
+                        <label>Description</label>
+                        <p class="modal-description" id="modalDescription">A signature piece for your next occasion.</p>
+                    </div>
+                    <div class="delivery-info">
+                        <p><i class="fas fa-truck"></i> Free delivery within Lagos (2-3 days)</p>
+                        <p><i class="fas fa-box"></i> Nationwide delivery available (3-5 days)</p>
+                        <p><i class="fas fa-undo"></i> Easy 7-day returns</p>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" id="modalAddToCart"><i class="fas fa-shopping-bag"></i> Add to Cart</button>
+                        <a href="https://wa.me/2348136716703" class="btn btn-whatsapp" id="modalWhatsApp" target="_blank"><i class="fab fa-whatsapp"></i> Chat to Order on WhatsApp</a>
+                        <a href="https://wa.me/2348136716703" class="btn btn-outline" id="modalAskItem" target="_blank" style="border-color: var(--gold); color: var(--gold);"><i class="fas fa-question-circle"></i> Ask About This Item</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Your Cart (<span id="cartItemCount">0</span>)</h3>
+            <button class="cart-close" id="cartClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty">
+                <i class="fas fa-shopping-bag"></i>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total</span>
+                <span id="cartTotal">₦0</span>
+            </div>
+            <button class="btn btn-primary" id="checkoutBtn"><i class="fas fa-lock"></i> Proceed to Checkout</button>
+            <button class="btn btn-whatsapp" id="cartWhatsAppBtn" style="margin-top: 10px; width: 100%;"><i class="fab fa-whatsapp"></i> Order via WhatsApp</button>
+        </div>
+    </div>
+
+    <div class="whatsapp-float">
+        <a href="https://wa.me/2348136716703" target="_blank"><i class="fab fa-whatsapp"></i> <span>Need Help?</span></a>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Item added to cart!</span>
+    </div>
+
+    <button id="backToTop" aria-label="Back to top"><i class="fas fa-chevron-up"></i></button>
+
+    <script>
+        // ==================== FIREBASE CONFIGURATION ====================
+        // Replace with your own Firebase project config from console.firebase.google.com
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "zahra-studio-orders.firebaseapp.com",
+            databaseURL: "https://zahra-studio-orders-default-rtdb.firebaseio.com",
+            projectId: "zahra-studio-orders",
+            storageBucket: "zahra-studio-orders.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef123456"
+        };
+
+        // Initialize Firebase (only if config is valid)
+        let db = null;
+        let firebaseEnabled = false;
+
+        try {
+            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.database();
+                firebaseEnabled = true;
+                console.log("Firebase connected successfully");
+            } else {
+                console.log("Firebase not configured - using localStorage fallback");
+            }
+        } catch(e) {
+            console.log("Firebase error:", e);
+        }
+
+        // Firebase order functions
+        function saveOrderToFirebase(orderNum, data) {
+            if (!db) return Promise.resolve();
+            return db.ref('orders/' + orderNum).set(data)
+                .then(() => console.log("Order saved to Firebase:", orderNum))
+                .catch(err => console.error("Firebase save error:", err));
+        }
+
+        function getOrderFromFirebase(orderNum) {
+            if (!db) return Promise.resolve(null);
+            return db.ref('orders/' + orderNum).once('value')
+                .then(snapshot => snapshot.val())
+                .catch(err => { console.error("Firebase read error:", err); return null; });
+        }
+
+        function listenToOrder(orderNum, callback) {
+            if (!db) return;
+            db.ref('orders/' + orderNum).on('value', snapshot => {
+                const data = snapshot.val();
+                if (data) callback(data);
+            });
+        }
+
+        function getAllOrdersFromFirebase() {
+            if (!db) return Promise.resolve({});
+            return db.ref('orders').once('value')
+                .then(snapshot => snapshot.val() || {})
+                .catch(err => { console.error("Firebase read error:", err); return {}; });
+        }
+
+        // Enhanced persist function (Firebase + localStorage + global)
+        async function persistOrder(orderNum, data) {
+            // Always save to global and localStorage
+            window.globalOrders[orderNum] = data;
+            try {
+                const saved = JSON.parse(localStorage.getItem('zahraOrders') || '{}');
+                saved[orderNum] = data;
+                localStorage.setItem('zahraOrders', JSON.stringify(saved));
+            } catch(e) {}
+
+            // Also save to Firebase if available
+            if (firebaseEnabled) {
+                await saveOrderToFirebase(orderNum, data);
+            }
+        }
+
+        // Enhanced get all orders (Firebase + localStorage + global + demo)
+        async function getAllOrdersMerged() {
+            let merged = { ...demoOrders };
+
+            // Get from Firebase first (most current)
+            if (firebaseEnabled) {
+                try {
+                    const fbOrders = await getAllOrdersFromFirebase();
+                    Object.assign(merged, fbOrders);
+                } catch(e) {}
+            }
+
+            // Merge localStorage
+            try {
+                const saved = JSON.parse(localStorage.getItem('zahraOrders') || '{}');
+                Object.assign(merged, saved);
+            } catch(e) {}
+
+            // Merge global (most recent in this session)
+            Object.assign(merged, window.globalOrders);
+
+            return merged;
+        }
+
+
+        
+
+
+        // Sample Products Data with real images
+        const products = [
+            {
+                id: 1,
+                name: "Lagos Babe Maxi Dress",
+                category: "Dresses",
+                collection: "Lagos Essentials",
+                price: 28500,
+                originalPrice: 35000,
+                description: "Structured evening maxi with sculpted waist and luxe finish.",
+                colors: ["Black"],
+                sizes: ["XS", "S", "M", "L", "XL"],
+                availability: "In Stock",
+                badge: "Sale",
+                trending: true,
+                loved: 245,
+                date: "2026-05-01",
+                image: "assets/products/gown-1-Black.jpg.jpg"
+            },
+            {
+                id: 2,
+                name: "Soft Girl Pleated Skirt Set",
+                category: "Two Piece",
+                collection: "Soft Girl",
+                price: 32000,
+                originalPrice: null,
+                description: "Soft pleated skirt set styled with a ribbon belt and feminine details.",
+                colors: ["White"],
+                sizes: ["S", "M", "L"],
+                availability: "In Stock",
+                badge: "New",
+                trending: true,
+                loved: 189,
+                date: "2026-05-05",
+                image: "assets/products/croptop-1-white.jpg.jpg"
+            },
+            {
+                id: 3,
+                name: "Birthday Queen Sequin Dress",
+                category: "Dresses",
+                collection: "Weekend Casuals",
+                price: 55000,
+                originalPrice: 68000,
+                description: "Sequin statement dress with a flattering fit for birthday evenings.",
+                colors: ["Red"],
+                sizes: ["XS", "S", "M", "L"],
+                availability: "Low Stock",
+                badge: "Sale",
+                trending: true,
+                loved: 412,
+                date: "2026-04-20",
+                image: "assets/products/dress-1-Red.jpg.jpg"
+            },
+            {
+                id: 4,
+                name: "Date Night Satin Slip Dress",
+                category: "Dresses",
+                collection: "Date Night",
+                price: 24000,
+                originalPrice: null,
+                description: "Satin slip dress with a refined drape made for romantic evenings.",
+                colors: ["Beige"],
+                sizes: ["XS", "S", "M", "L", "XL"],
+                availability: "In Stock",
+                badge: "New",
+                trending: false,
+                loved: 156,
+                date: "2026-05-08",
+                image: "assets/products/MeshMaxiDress-1- Beige.jpg.jpg"
+            },
+            {
+                id: 5,
+                name: "Vacation Vibes Linen Set",
+                category: "Vacation Wear",
+                collection: "Vacation Drip",
+                price: 38000,
+                originalPrice: 45000,
+                description: "Light linen set for resort weekends and warm-weather travel.",
+                colors: ["Green"],
+                sizes: ["S", "M", "L"],
+                availability: "In Stock",
+                badge: "Sale",
+                trending: true,
+                loved: 278,
+                date: "2026-04-15",
+                image: "assets/products/dress-2-lightgreen.jpg.jpg"
+            },
+            {
+                id: 6,
+                name: "Party Girl Mini Dress",
+                category: "Dresses",
+                collection: "Luxury Black",
+                price: 42000,
+                originalPrice: null,
+                description: "Party bodycon dress with bold detailing for elevated nights out.",
+                colors: ["White"],
+                sizes: ["XS", "S", "M", "L"],
+                availability: "Pre-Order",
+                badge: "New",
+                trending: true,
+                loved: 334,
+                date: "2026-05-10",
+                image: "assets/products/White unique and stunning dress - Copy.jpg"
+            },
+            {
+                id: 7,
+                name: "Luxe Leather Crossbody Bag",
+                category: "Bags",
+                collection: "Lagos Essentials",
+                price: 18500,
+                originalPrice: null,
+                description: "Leather crossbody bag finished with polished hardware for everyday luxury.",
+                colors: ["Black"],
+                sizes: ["One Size"],
+                availability: "In Stock",
+                badge: null,
+                trending: false,
+                loved: 98,
+                date: "2026-04-25",
+                image: "assets/products/BlackPULeatherEmbellishedWomenBags-1-Black.jpg.jpg"
+            },
+            {
+                id: 8,
+                name: "Soft Girl Bucket Bag",
+                category: "Bags",
+                collection: "Soft Girl",
+                price: 22000,
+                originalPrice: 28000,
+                description: "Soft bucket bag with gentle curves and elevated everyday appeal.",
+                colors: ["White"],
+                sizes: ["One Size"],
+                availability: "Low Stock",
+                badge: "Sale",
+                trending: true,
+                loved: 167,
+                date: "2026-04-18",
+                image: "assets/products/MelieBiancoTulipTopHandleCrossbodyTote-1-White.jpg.jpg"
+            },
+            {
+                id: 9,
+                name: "Date Night Clutch",
+                category: "Bags",
+                collection: "Date Night",
+                price: 15000,
+                originalPrice: null,
+                description: "Compact evening clutch with metallic accents for date night.",
+                colors: ["Black"],
+                sizes: ["One Size"],
+                availability: "In Stock",
+                badge: null,
+                trending: false,
+                loved: 87,
+                date: "2026-05-02",
+                image: "assets/products/louisvuittonpursebag-1-Black.jpg.jpg"
+            },
+            {
+                id: 10,
+                name: "Lagos Strappy Heels",
+                category: "Heels",
+                collection: "Lagos Essentials",
+                price: 28000,
+                originalPrice: 35000,
+                description: "Strappy heels that elevate dresses and special occasion styling.",
+                colors: ["Black"],
+                sizes: ["37", "38", "39", "40", "41"],
+                availability: "In Stock",
+                badge: "Sale",
+                trending: true,
+                loved: 213,
+                date: "2026-04-22",
+                image: "assets/products/Pointed Toe Low Kitten Heels Pumps - Copy.jpg"
+            },
+            {
+                id: 11,
+                name: "Soft Girl Ballet Flats",
+                category: "Heels",
+                collection: "Soft Girl",
+                price: 18000,
+                originalPrice: null,
+                description: "Soft ballet flats with delicate finishing for polished daywear.",
+                colors: ["Black"],
+                sizes: ["37", "38", "39", "40"],
+                availability: "In Stock",
+                badge: "New",
+                trending: false,
+                loved: 145,
+                date: "2026-05-06",
+                image: "assets/products/buckelchunkyheels.1.Black.jpg.jpg"
+            },
+            {
+                id: 12,
+                name: "Party Stiletto Heels",
+                category: "Heels",
+                collection: "Luxury Black",
+                price: 35000,
+                originalPrice: 42000,
+                description: "Statement stilettos with rhinestone bow details for night-out glamour.",
+                colors: ["Black"],
+                sizes: ["37", "38", "39", "40", "41"],
+                availability: "Low Stock",
+                badge: "Sale",
+                trending: true,
+                loved: 298,
+                date: "2026-04-28",
+                image: "assets/products/LadiesSummerFootwearSuperHighHeelWith BowRhinestoneCrystalsStilitoDiamondBlackShoes-1-Black.jpg.jpg"
+            },
+            {
+                id: 13,
+                name: "Cargo Luxe Wide Leg Pants",
+                category: "Streetwear",
+                collection: "Urban Streetwear",
+                price: 22000,
+                originalPrice: null,
+                description: "Wide leg pants in premium denim for elevated streetwear.",
+                colors: ["Blue"],
+                sizes: ["S", "M", "L", "XL"],
+                availability: "In Stock",
+                badge: null,
+                trending: false,
+                loved: 112,
+                date: "2026-05-03",
+                image: "assets/products/baggyjeans-1-Blue.jpg.jpg"
+            },
+            {
+                id: 14,
+                name: "Birthday Glow Bodycon Dress",
+                category: "Dresses",
+                collection: "Weekend Casuals",
+                price: 32000,
+                originalPrice: 40000,
+                description: "Figure-flattering bodycon for celebrations and standout evenings.",
+                colors: ["Red"],
+                sizes: ["XS", "S", "M", "L"],
+                availability: "In Stock",
+                badge: "Sale",
+                trending: true,
+                loved: 356,
+                date: "2026-04-10",
+                image: "assets/products/dress-1-Red.jpg.jpg"
+            },
+            {
+                id: 15,
+                name: "Vacation Raffia Tote Bag",
+                category: "Bags",
+                collection: "Vacation Drip",
+                price: 25000,
+                originalPrice: null,
+                description: "Raffia tote bag built for holiday weekends and city escapes.",
+                colors: ["White"],
+                sizes: ["One Size"],
+                availability: "In Stock",
+                badge: "New",
+                trending: false,
+                loved: 134,
+                date: "2026-05-07",
+                image: "assets/products/MelieBiancoTulipTopHandleCrossbodyTote-1-White.jpg.jpg"
+            },
+            {
+                id: 16,
+                name: "Date Night Lace Dress",
+                category: "Dresses",
+                collection: "Date Night",
+                price: 45000,
+                originalPrice: null,
+                description: "Lace dress with delicate embroidery and premium evening appeal.",
+                colors: ["White"],
+                sizes: ["XS", "S", "M", "L", "XL"],
+                availability: "Pre-Order",
+                badge: null,
+                trending: true,
+                loved: 267,
+                date: "2026-05-09",
+                image: "assets/products/White unique and stunning dress - Copy.jpg"
+            },
+            {
+                id: 17,
+                name: "Gold Statement Necklace Set",
+                category: "Accessories",
+                collection: "Luxury Black",
+                price: 12000,
+                originalPrice: 15000,
+                description: "Gold statement necklace with layered shine for evening styling.",
+                colors: ["Gold"],
+                sizes: ["One Size"],
+                availability: "In Stock",
+                badge: "Sale",
+                trending: true,
+                loved: 198,
+                date: "2026-05-11",
+                image: "assets/products/rings-1-Gold.jpg.jpg"
+            },
+            {
+                id: 18,
+                name: "Pearl Drop Earrings",
+                category: "Accessories",
+                collection: "Soft Girl",
+                price: 8500,
+                originalPrice: null,
+                description: "Pearl drop earrings with modern couture polish.",
+                colors: ["Silver"],
+                sizes: ["One Size"],
+                availability: "In Stock",
+                badge: "New",
+                trending: false,
+                loved: 145,
+                date: "2026-05-12",
+                image: "assets/products/chromeheartsbracelet-1-Silver.jpg.jpg"
+            },
+            {
+                id: 19,
+                name: "Luxe Gold Belt",
+                category: "Accessories",
+                collection: "Luxury Black",
+                price: 9500,
+                originalPrice: null,
+                description: "Luxe belt with polished hardware for tailored styling.",
+                colors: ["Gold"],
+                sizes: ["S", "M", "L"],
+                availability: "In Stock",
+                badge: null,
+                trending: false,
+                loved: 87,
+                date: "2026-05-10",
+                image: "assets/products/Golden bangles.jpg"
+            },
+            {
+                id: 20,
+                name: "Silk Hair Scarf",
+                category: "Accessories",
+                collection: "Soft Girl",
+                price: 5500,
+                originalPrice: 7000,
+                description: "Silk scarf with soft tones that complete polished outfits.",
+                colors: ["Pink"],
+                sizes: ["One Size"],
+                availability: "In Stock",
+                badge: "Sale",
+                trending: true,
+                loved: 234,
+                date: "2026-05-08",
+                image: "assets/products/croptop-1-white.jpg.jpg"
+            },
+            {
+                id: 21,
+                name: "Urban Cargo Pants",
+                category: "Cargo Pants",
+                collection: "Urban Streetwear",
+                price: 19000,
+                originalPrice: null,
+                description: "Structured cargo pants with premium hardware for relaxed streetwear.",
+                colors: ["Brown"],
+                sizes: ["S", "M", "L", "XL"],
+                availability: "In Stock",
+                badge: "New",
+                trending: true,
+                loved: 140,
+                date: "2026-05-13",
+                image: "assets/products/cargopant-1-brown.jpg.jpg"
+            },
+            {
+                id: 22,
+                name: "Oversized Tee",
+                category: "Oversized Tees",
+                collection: "Urban Streetwear",
+                price: 12000,
+                originalPrice: null,
+                description: "Cool oversized tee for effortless everyday layering.",
+                colors: ["Black"],
+                sizes: ["M", "L", "XL"],
+                availability: "In Stock",
+                badge: "New",
+                trending: false,
+                loved: 96,
+                date: "2026-05-14",
+                image: "assets/products/Black and grey - Copy.jpg"
+            },
+            {
+                id: 23,
+                name: "Men's Run Sneakers",
+                category: "Sneakers",
+                collection: "Urban Streetwear",
+                price: 26000,
+                originalPrice: null,
+                description: "Lightweight running-inspired sneakers with a clean finish.",
+                colors: ["Grey"],
+                sizes: ["40", "41", "42", "43"],
+                availability: "In Stock",
+                badge: "Sale",
+                trending: true,
+                loved: 182,
+                date: "2026-05-10",
+                image: "assets/products/sneakers-1-grey.jpg.jpg"
+            },
+            {
+                id: 24,
+                name: "Quartz Stainless Watch",
+                category: "Watches",
+                collection: "Luxury Black",
+                price: 32000,
+                originalPrice: null,
+                description: "Sleek stainless watch with a polished black dial.",
+                colors: ["Black"],
+                sizes: ["One Size"],
+                availability: "In Stock",
+                badge: "New",
+                trending: false,
+                loved: 210,
+                date: "2026-05-12",
+                image: "assets/products/Pablo Raez Quartz Men's Wristwatch Stainless Steel Black Dial Analog Date - Copy.jpg"
+            },
+            {
+                id: 25,
+                name: "Essential Denim Jacket",
+                category: "Jackets",
+                collection: "Urban Streetwear",
+                price: 33000,
+                originalPrice: null,
+                description: "A sharp denim jacket for layering over streetwear looks.",
+                colors: ["Black"],
+                sizes: ["S", "M", "L", "XL"],
+                availability: "In Stock",
+                badge: "New",
+                trending: false,
+                loved: 134,
+                date: "2026-05-15",
+                image: "assets/products/Outfit hombre invierno - Copy - Copy.jpg"
+            },
+            {
+                id: 26,
+                name: "Weekend Comfortable Set",
+                category: "Casual Fits",
+                collection: "Weekend Casuals",
+                price: 28000,
+                originalPrice: null,
+                description: "A relaxed matching set for easy weekend dressing.",
+                colors: ["Green"],
+                sizes: ["S", "M", "L", "XL"],
+                availability: "In Stock",
+                badge: "New",
+                trending: false,
+                loved: 121,
+                date: "2026-05-16",
+                image: "assets/products/streetwear-1-green.jpg.jpg"
+            }
+        ];
+
+        const embeddedProductImageMap = {
+            "1": {
+                "image": "assets/products/gown-1-Black.jpg.jpg",
+                "variantImages": {
+                    "Black": "assets/products/gown-1-Black.jpg.jpg",
+                    "Beige": "assets/products/MeshMaxiDress-1- Beige.jpg.jpg",
+                    "Red": "assets/products/dress-1-Red.jpg.jpg"
+                }
+            },
+            "7": {
+                "image": "assets/products/BlackPULeatherEmbellishedWomenBags-1-Black.jpg.jpg",
+                "variantImages": {
+                    "Black": "assets/products/BlackPULeatherEmbellishedWomenBags-1-Black.jpg.jpg",
+                    "Brown": "assets/products/sheinbag-1-Brown.jpg.jpg",
+                    "Beige": "assets/products/MelieBiancoTulipTopHandleCrossbodyTote-1-White.jpg.jpg"
+                }
+            },
+            "8": {
+                "image": "assets/products/MelieBiancoTulipTopHandleCrossbodyTote-1-White.jpg.jpg",
+                "variantImages": {
+                    "White": "assets/products/MelieBiancoTulipTopHandleCrossbodyTote-1-White.jpg.jpg"
+                }
+            },
+            "10": {
+                "image": "assets/products/Pointed Toe Low Kitten Heels Pumps - Copy.jpg",
+                "variantImages": {
+                    "Black": "assets/products/Pointed Toe Low Kitten Heels Pumps - Copy.jpg",
+                    "Beige": "assets/products/Pointed Toe Low Kitten Heels Pumps - Copy.jpg",
+                    "Red": "assets/products/Pointed Toe Low Kitten Heels Pumps - Copy.jpg"
+                }
+            },
+            "12": {
+                "image": "assets/products/LadiesSummerFootwearSuperHighHeelWith BowRhinestoneCrystalsStilitoDiamondBlackShoes-1-Black.jpg.jpg",
+                "variantImages": {
+                    "Black": "assets/products/LadiesSummerFootwearSuperHighHeelWith BowRhinestoneCrystalsStilitoDiamondBlackShoes-1-Black.jpg.jpg",
+                    "Gold": "assets/products/LadiesSummerFootwearSuperHighHeelWith BowRhinestoneCrystalsStilitoDiamondBlackShoes-1-Black.jpg.jpg",
+                    "Red": "assets/products/LadiesSummerFootwearSuperHighHeelWith BowRhinestoneCrystalsStilitoDiamondBlackShoes-1-Black.jpg.jpg"
+                }
+            },
+            "17": {
+                "image": "assets/products/rings-1-Gold.jpg.jpg",
+                "variantImages": {
+                    "Gold": "assets/products/rings-1-Gold.jpg.jpg",
+                    "Silver": "assets/products/chromeheartsbracelet-1-Silver.jpg.jpg"
+                }
+            }
+        };
+
+        async function loadProductImageMap() {
+            let mapping = embeddedProductImageMap;
+            try {
+                const response = await fetch('assets/images.json');
+                if (response.ok) {
+                    mapping = await response.json();
+                }
+            } catch (error) {
+                console.warn('Could not load external product image map, using embedded mapping.', error);
+            }
+            products.forEach(product => {
+                const imageData = mapping[product.id] || mapping[String(product.id)];
+                if (!imageData) return;
+                if (imageData.image) product.image = imageData.image;
+                if (imageData.variantImages) {
+                    product.variantImages = {
+                        ...(product.variantImages || {}),
+                        ...imageData.variantImages
+                    };
+                }
+            });
+        }
+
+        // Ensure each product has a color->image mapping (fallback to primary image)
+        function ensureVariantImages() {
+            products.forEach(p => {
+                p.variantImages = p.variantImages || {};
+                p.colors.forEach(c => {
+                    if (!p.variantImages[c]) p.variantImages[c] = p.image;
+                });
+            });
+        }
+
+        // State
+        let cart = [];
+        let wishlist = [];
+        let currentProduct = null;
+        let selectedSize = null;
+        let selectedColor = null;
+        let selectedQty = 1;
+
+        // DOM Elements
+        const productsGrid = document.getElementById('productsGrid');
+        const featuredGrid = document.getElementById('featuredGrid');
+        const bestSellersGrid = document.getElementById('bestSellersGrid');
+        const categoryBanner = document.getElementById('categoryBanner');
+        const categoryBannerTitle = document.getElementById('categoryBannerTitle');
+        const categoryBannerText = document.getElementById('categoryBannerText');
+        const productsSectionTitle = document.getElementById('productsSectionTitle');
+        const searchInput = document.getElementById('searchInput');
+        const filterSize = document.getElementById('filterSize');
+        const filterColor = document.getElementById('filterColor');
+        const filterPrice = document.getElementById('filterPrice');
+        const filterCategory = document.getElementById('filterCategory');
+        const filterAvailability = document.getElementById('filterAvailability');
+        const sortBy = document.getElementById('sortBy');
+        const cartBtn = document.getElementById('cartBtn');
+        const cartSidebar = document.getElementById('cartSidebar');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const cartClose = document.getElementById('cartClose');
+        const cartItems = document.getElementById('cartItems');
+        const cartCount = document.getElementById('cartCount');
+        const cartItemCount = document.getElementById('cartItemCount');
+        const cartTotal = document.getElementById('cartTotal');
+        const quickViewModal = document.getElementById('quickViewModal');
+        const modalClose = document.getElementById('modalClose');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        const navbar = document.getElementById('navbar');
+
+        // Format price
+        function formatPrice(price) {
+            return '₦' + price.toLocaleString('en-NG');
+        }
+
+        function safeUrl(url) {
+            return url ? encodeURI(url) : '';
+        }
+
+        // Get color code
+        function getColorCode(color) {
+            const colors = {
+                'Black': '#1A1A1A',
+                'White': '#FFFFFF',
+                'Beige': '#E8DDD0',
+                'Brown': '#8B7355',
+                'Red': '#C0392B',
+                'Blue': '#2980B9',
+                'Pink': '#E91E63',
+                'Gold': '#C9A96E'
+            };
+            return colors[color] || '#ccc';
+        }
+
+        // Render products
+        function renderProducts(productsToRender, container = productsGrid) {
+            if (productsToRender.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h3>No products found</h3>
+                        <p>Try adjusting your filters or search terms</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = productsToRender.map((product, index) => `
+                <div class="product-card animate-in delay-${(index % 4) + 1}" data-id="${product.id}">
+                    <div class="product-image">
+                        <img src="${safeUrl(product.image)}" alt="${product.name}" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #F0E8DD, #E5DCD0)'; this.parentElement.innerHTML+='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:60px;color:#8B7355;opacity:0.3\'><i class=\'fas fa-tshirt\'></i></div>';">
+                        ${product.badge ? `<span class="product-badge ${product.badge.toLowerCase()}">${product.badge}</span>` : ''}
+                        <div class="product-actions">
+                            <button class="action-btn ${wishlist.includes(product.id) ? 'wishlisted' : ''}" onclick="toggleWishlist(${product.id})">
+                                <i class="${wishlist.includes(product.id) ? 'fas' : 'far'} fa-heart"></i>
+                            </button>
+                        </div>
+                        <button class="quick-view-btn" onclick="openQuickView(${product.id})">Quick View</button>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${product.category}</div>
+                        <h3 class="product-name">${product.name}</h3>
+                        <div class="product-meta">
+                            <div class="product-price">
+                                ${formatPrice(product.price)}
+                                ${product.originalPrice ? `<span class="original">${formatPrice(product.originalPrice)}</span>` : ''}
+                            </div>
+                            <div class="product-colors">
+                                ${product.colors.slice(0, 3).map(color => `
+                                    <div class="color-dot" style="background: ${getColorCode(color)}" title="${color}" onclick="openQuickView(${product.id}, '${color.replace("'", "\'")}')"></div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="product-sizes">
+                            ${product.sizes.slice(0, 4).map(size => `<span class="size-tag">${size}</span>`).join('')}
+                            ${product.sizes.length > 4 ? `<span class="size-tag">+${product.sizes.length - 4}</span>` : ''}
+                        </div>
+                        <button class="add-to-cart" onclick="addToCart(${product.id})">
+                            <i class="fas fa-shopping-bag"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render paged products with simple pagination controls
+        function renderPagedProducts(items, pageSize = 12, page = 1) {
+            const total = items.length;
+            const totalPages = Math.max(1, Math.ceil(total / pageSize));
+            const start = (page - 1) * pageSize;
+            const pageItems = items.slice(start, start + pageSize);
+            renderProducts(pageItems);
+
+            // Pagination controls
+            const pagContainerId = 'paginationControls';
+            let pagContainer = document.getElementById(pagContainerId);
+            if (!pagContainer) {
+                pagContainer = document.createElement('div');
+                pagContainer.id = pagContainerId;
+                pagContainer.style = 'max-width:1400px;margin:24px auto;display:flex;gap:8px;align-items:center;justify-content:center;';
+                productsGrid.parentNode.insertBefore(pagContainer, productsGrid.nextSibling);
+            }
+            pagContainer.innerHTML = '';
+            if (totalPages <= 1) return;
+            const prev = document.createElement('button');
+            prev.className = 'btn btn-outline';
+            prev.textContent = 'Prev';
+            prev.disabled = page <= 1;
+            prev.onclick = () => renderPagedProducts(items, pageSize, page - 1);
+            pagContainer.appendChild(prev);
+
+            const info = document.createElement('div');
+            info.style = 'padding:8px 12px; color:var(--text-light);';
+            info.textContent = `Page ${page} of ${totalPages}`;
+            pagContainer.appendChild(info);
+
+            const next = document.createElement('button');
+            next.className = 'btn btn-outline';
+            next.textContent = 'Next';
+            next.disabled = page >= totalPages;
+            next.onclick = () => renderPagedProducts(items, pageSize, page + 1);
+            pagContainer.appendChild(next);
+        }
+
+        // Filter and sort products
+        function filterAndSortProducts() {
+            let filtered = [...products];
+
+            // Search
+            const searchTerm = searchInput.value.toLowerCase();
+            if (searchTerm) {
+                filtered = filtered.filter(p => 
+                    p.name.toLowerCase().includes(searchTerm) ||
+                    p.category.toLowerCase().includes(searchTerm) ||
+                    p.collection.toLowerCase().includes(searchTerm) ||
+                    p.colors.some(c => c.toLowerCase().includes(searchTerm)) ||
+                    p.price.toString().includes(searchTerm)
+                );
+            }
+
+            // Size filter
+            if (filterSize.value) {
+                filtered = filtered.filter(p => p.sizes.includes(filterSize.value));
+            }
+
+            // Price filter
+            if (filterPrice.value) {
+                const [min, max] = filterPrice.value.split('-').map(v => v.replace('+', ''));
+                filtered = filtered.filter(p => {
+                    if (max) {
+                        return p.price >= parseInt(min) && p.price <= parseInt(max);
+                    }
+                    return p.price >= parseInt(min);
+                });
+            }
+
+            // Category filter
+            if (filterCategory.value) {
+                filtered = filtered.filter(p => p.category === filterCategory.value);
+            }
+
+            // Availability filter
+            if (filterAvailability.value) {
+                filtered = filtered.filter(p => p.availability === filterAvailability.value);
+            }
+
+            // Sort
+            switch (sortBy.value) {
+                case 'price-low':
+                    filtered.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    filtered.sort((a, b) => b.price - a.price);
+                    break;
+                case 'trending':
+                    filtered.sort((a, b) => (b.trending ? 1 : 0) - (a.trending ? 1 : 0));
+                    break;
+                case 'loved':
+                    filtered.sort((a, b) => b.loved - a.loved);
+                    break;
+                case 'newest':
+                default:
+                    filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    break;
+            }
+
+            // If a category filter is applied or filtered length is large, show paged results
+            if (filterCategory.value || filtered.length > 12) {
+                renderPagedProducts(filtered, 12, 1);
+            } else {
+                renderProducts(filtered);
+            }
+        }
+
+        // Event listeners for filters
+        searchInput.addEventListener('input', filterAndSortProducts);
+        filterSize.addEventListener('change', filterAndSortProducts);
+                filterPrice.addEventListener('change', filterAndSortProducts);
+        filterCategory.addEventListener('change', filterAndSortProducts);
+        filterAvailability.addEventListener('change', filterAndSortProducts);
+        sortBy.addEventListener('change', filterAndSortProducts);
+
+        // Quick View
+        window.openQuickView = function(productId, color) {
+            currentProduct = products.find(p => p.id === productId);
+            if (!currentProduct) return;
+
+            document.getElementById('modalCategory').textContent = currentProduct.category;
+            document.getElementById('modalTitle').textContent = currentProduct.name;
+            document.getElementById('modalPrice').innerHTML = `
+                ${formatPrice(currentProduct.price)}
+                ${currentProduct.originalPrice ? `<span class="original">${formatPrice(currentProduct.originalPrice)}</span>` : ''}
+            `;
+            document.getElementById('modalDescription').textContent = currentProduct.description || 'A premium ZAHRA piece with the refined detailing you expect.';
+
+            // Set modal image
+            document.getElementById('modalImage').src = safeUrl(currentProduct.image);
+            document.getElementById('modalImage').alt = currentProduct.name;
+
+            // Sizes
+            const sizesContainer = document.getElementById('modalSizes');
+            sizesContainer.innerHTML = currentProduct.sizes.map(size => `
+                <button class="size-option" onclick="selectSize('${size}')">${size}</button>
+            `).join('');
+            selectedSize = currentProduct.sizes[0];
+            sizesContainer.querySelector('.size-option').classList.add('active');
+
+            // Colors
+            const colorsContainer = document.getElementById('modalColors');
+            colorsContainer.innerHTML = currentProduct.colors.map(col => `
+                <div class="color-option ${col === currentProduct.colors[0] ? 'active' : ''}" 
+                     style="background: ${getColorCode(col)}" 
+                     onclick="selectColor('${col}')"
+                     title="${col}"></div>
+            `).join('');
+            // If a color was passed from the caller, use it (only if valid)
+            if (color && currentProduct.colors.includes(color)) selectedColor = color; else selectedColor = currentProduct.colors[0];
+
+            // Ensure modal image matches selected color
+            const initialImg = (currentProduct.variantImages && currentProduct.variantImages[selectedColor]) || currentProduct.image;
+            document.getElementById('modalImage').src = safeUrl(initialImg);
+            // mark active color visually
+            document.querySelectorAll('.color-option').forEach(dot => dot.classList.toggle('active', dot.title === selectedColor));
+
+            // Reset quantity
+            selectedQty = 1;
+            document.getElementById('qtyInput').value = 1;
+
+            // Update WhatsApp links
+            const whatsappMsg = `Hi ZAHRA Studio! I'm interested in the ${currentProduct.name} (${currentProduct.category}) - ${formatPrice(currentProduct.price)}. Is it available?`;
+            const encodedMsg = encodeURIComponent(whatsappMsg);
+            document.getElementById('modalWhatsApp').href = `https://wa.me/2348136716703?text=${encodedMsg}`;
+            document.getElementById('modalAskItem').href = `https://wa.me/2348136716703?text=${encodedMsg}`;
+
+            quickViewModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.selectSize = function(size) {
+            selectedSize = size;
+            document.querySelectorAll('.size-option').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent === size);
+            });
+        };
+
+        window.selectColor = function(color) {
+            selectedColor = color;
+            document.querySelectorAll('.color-option').forEach(dot => {
+                dot.classList.toggle('active', dot.title === color);
+            });
+            // Swap modal image to the correct variant image when available
+            try {
+                const imgSrc = (currentProduct && currentProduct.variantImages && currentProduct.variantImages[color]) || (currentProduct && currentProduct.image);
+                if (imgSrc) document.getElementById('modalImage').src = safeUrl(imgSrc);
+            } catch(e) {}
+        };
+
+        modalClose.addEventListener('click', closeModal);
+        quickViewModal.addEventListener('click', (e) => {
+            if (e.target === quickViewModal) closeModal();
+        });
+
+        function closeModal() {
+            quickViewModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Quantity selector
+        document.getElementById('qtyMinus').addEventListener('click', () => {
+            if (selectedQty > 1) {
+                selectedQty--;
+                document.getElementById('qtyInput').value = selectedQty;
+            }
+        });
+
+        document.getElementById('qtyPlus').addEventListener('click', () => {
+            if (selectedQty < 10) {
+                selectedQty++;
+                document.getElementById('qtyInput').value = selectedQty;
+            }
+        });
+
+        document.getElementById('qtyInput').addEventListener('change', (e) => {
+            selectedQty = Math.max(1, Math.min(10, parseInt(e.target.value) || 1));
+            e.target.value = selectedQty;
+        });
+
+        // Add to cart from modal
+        document.getElementById('modalAddToCart').addEventListener('click', () => {
+            if (currentProduct) {
+                addToCart(currentProduct.id, selectedSize, selectedColor, selectedQty);
+                closeModal();
+            }
+        });
+
+        // Cart functionality
+        window.addToCart = function(productId, size = null, color = null, qty = 1) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingItem = cart.find(item => 
+                item.id === productId && item.size === (size || product.sizes[0]) && item.color === (color || product.colors[0])
+            );
+
+            if (existingItem) {
+                existingItem.qty += qty;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: product.name,
+                    price: product.price,
+                    size: size || product.sizes[0],
+                    color: color || product.colors[0],
+                    qty: qty,
+                    image: product.image
+                });
+            }
+
+            updateCart();
+            showToast(`${product.name} added to cart!`);
+        };
+
+        window.toggleWishlist = function(productId) {
+            const index = wishlist.indexOf(productId);
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                showToast('Removed from wishlist');
+            } else {
+                wishlist.push(productId);
+                showToast('Added to wishlist');
+            }
+            filterAndSortProducts();
+        };
+
+        function updateCart() {
+            cartCount.textContent = cart.reduce((sum, item) => sum + item.qty, 0);
+            cartItemCount.textContent = cart.reduce((sum, item) => sum + item.qty, 0);
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            cartTotal.textContent = formatPrice(total);
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="cart-empty">
+                        <i class="fas fa-shopping-bag"></i>
+                        <p>Your cart is empty</p>
+                    </div>
+                `;
+            } else {
+                cartItems.innerHTML = cart.map((item, index) => `
+                    <div class="cart-item">
+                        <div class="cart-item-image">
+                            <img src="${item.image}" alt="${item.name}" onerror="this.style.display='none'">
+                        </div>
+                        <div class="cart-item-details">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-meta">Size: ${item.size} | Color: ${item.color} | Qty: ${item.qty}</div>
+                            <div class="cart-item-price">${formatPrice(item.price * item.qty)}</div>
+                        </div>
+                        <button class="cart-item-remove" onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        window.removeFromCart = function(index) {
+            cart.splice(index, 1);
+            updateCart();
+            showToast('Item removed from cart');
+        };
+
+        // Cart sidebar
+        cartBtn.addEventListener('click', () => {
+            cartSidebar.classList.add('open');
+            cartOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        function closeCart() {
+            cartSidebar.classList.remove('open');
+            cartOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        cartClose.addEventListener('click', closeCart);
+        cartOverlay.addEventListener('click', closeCart);
+
+        // Checkout
+        document.getElementById('checkoutBtn').addEventListener('click', () => {
+            if (cart.length === 0) {
+                showToast('Your cart is empty!');
+                return;
+            }
+            const orderNum = generateOrderNumber();
+            const items = cart.map(item => `${item.name} (${item.size}, ${item.color}) x${item.qty} - ${formatPrice(item.price * item.qty)}`).join('%0A');
+            const total = formatPrice(cart.reduce((sum, item) => sum + (item.price * item.qty), 0));
+            const msg = `Hi ZAHRA Studio! I'd like to place an order:%0A%0AOrder Number: ${orderNum}%0A%0A${items}%0A%0ATotal: ${total}%0A%0APlease confirm availability.`;
+            window.open(`https://wa.me/2348136716703?text=${msg}`, '_blank');
+
+            // Save order for tracking
+            saveOrderForTracking(orderNum, cart, total);
+
+            // Show confirmation with order number
+            showOrderConfirmation(orderNum);
+
+            // Clear cart after order
+            cart = [];
+            updateCart();
+            closeCart();
+        });
+
+        // Cart WhatsApp Order Button
+        document.getElementById('cartWhatsAppBtn').addEventListener('click', () => {
+            if (cart.length === 0) {
+                showToast('Your cart is empty!');
+                return;
+            }
+            const orderNum = generateOrderNumber();
+            const items = cart.map(item => `${item.name} (${item.size}, ${item.color}) x${item.qty} - ${formatPrice(item.price * item.qty)}`).join('%0A');
+            const total = formatPrice(cart.reduce((sum, item) => sum + (item.price * item.qty), 0));
+            const msg = `Hi ZAHRA Studio! I'd like to place an order:%0A%0AOrder Number: ${orderNum}%0A%0A${items}%0A%0ATotal: ${total}%0A%0APlease confirm availability.`;
+            window.open(`https://wa.me/2348136716703?text=${msg}`, '_blank');
+
+            // Save order for tracking
+            saveOrderForTracking(orderNum, cart, total);
+
+            // Show confirmation with order number
+            showOrderConfirmation(orderNum);
+
+            // Clear cart after order
+            cart = [];
+            updateCart();
+            closeCart();
+        });
+
+        // Toast
+        function showToast(message) {
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Mobile menu
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Back to top toggle
+        const backToTopBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) backToTopBtn.classList.add('show'); else backToTopBtn.classList.remove('show');
+        });
+        backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // Nav links filter
+        document.querySelectorAll('.nav-links a[data-filter]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const filter = link.dataset.filter;
+                if (filter === 'Sale') {
+                    searchInput.value = '';
+                    filterCategory.value = '';
+                    let filtered = products.filter(p => p.originalPrice !== null);
+                    renderProducts(filtered);
+                } else {
+                    filterCategory.value = filter;
+                    searchInput.value = '';
+                    filterAndSortProducts();
+                }
+                document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Search icon for mobile
+        document.getElementById('searchIcon').addEventListener('click', () => {
+            searchInput.focus();
+            if (window.innerWidth <= 768) {
+                searchInput.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        // Footer link functions
+        window.scrollToProducts = function() {
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+            filterCategory.value = '';
+            searchInput.value = '';
+            sortBy.value = 'newest';
+            filterAndSortProducts();
+        };
+
+        window.filterByCategory = function(category) {
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+            filterCategory.value = category;
+            searchInput.value = '';
+            filterAndSortProducts();
+        };
+
+        window.filterSale = function() {
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+            searchInput.value = '';
+            filterCategory.value = '';
+            let filtered = products.filter(p => p.originalPrice !== null);
+            renderProducts(filtered);
+        };
+
+        window.showShippingInfo = function() {
+            hideInfoPages();
+            document.getElementById('shippingInfo').style.display = 'block';
+            document.getElementById('shippingInfo').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.showReturnPolicy = function() {
+            hideInfoPages();
+            document.getElementById('returnPolicy').style.display = 'block';
+            document.getElementById('returnPolicy').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.showSizeGuide = function() {
+            hideInfoPages();
+            document.getElementById('sizeGuide').style.display = 'block';
+            document.getElementById('sizeGuide').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.showFAQs = function() {
+            hideInfoPages();
+            document.getElementById('faqs').style.display = 'block';
+            document.getElementById('faqs').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.showTrackOrder = function() {
+            hideInfoPages();
+            document.getElementById('trackOrderPage').style.display = 'block';
+            document.getElementById('trackOrderPage').scrollIntoView({ behavior: 'smooth' });
+            // Reset tracking state
+            document.getElementById('trackingResult').style.display = 'none';
+            document.getElementById('trackingNotFound').style.display = 'none';
+            document.getElementById('trackOrderInput').value = '';
+        };
+
+        window.showOurStory = function() {
+            hideInfoPages();
+            document.getElementById('ourStory').style.display = 'block';
+            document.getElementById('ourStory').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.showSustainability = function() {
+            hideInfoPages();
+            document.getElementById('sustainability').style.display = 'block';
+            document.getElementById('sustainability').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.showCareers = function() {
+            hideInfoPages();
+            document.getElementById('careers').style.display = 'block';
+            document.getElementById('careers').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.showPress = function() {
+            hideInfoPages();
+            document.getElementById('press').style.display = 'block';
+            document.getElementById('press').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.showAffiliates = function() {
+            hideInfoPages();
+            document.getElementById('affiliates').style.display = 'block';
+            document.getElementById('affiliates').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.hideInfoPages = function() {
+            document.querySelectorAll('.info-page').forEach(page => {
+                page.style.display = 'none';
+            });
+            document.getElementById('collections').style.display = 'block';
+            document.getElementById('products').style.display = 'block';
+            document.querySelector('.social-proof').style.display = 'block';
+            document.querySelector('.testimonials').style.display = 'block';
+            document.getElementById('footer').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // Clear filters
+        document.getElementById('clearFilters').addEventListener('click', () => {
+            searchInput.value = '';
+            filterSize.value = '';
+            filterPrice.value = '';
+            filterCategory.value = '';
+            filterAvailability.value = '';
+            sortBy.value = 'newest';
+            filterAndSortProducts();
+            showToast('Filters cleared');
+        });
+
+        
+        // Order Tracking System
+        // Global in-memory order store (persists within session)
+        window.globalOrders = {};
+
+        // Merge localStorage orders into global on load
+        (function initGlobalOrders() {
+            try {
+                const saved = JSON.parse(localStorage.getItem('zahraOrders') || '{}');
+                Object.assign(window.globalOrders, saved);
+            } catch(e) {}
+        })();
+
+        // Save order to both global and localStorage
+        function persistOrder(orderNum, data) {
+            window.globalOrders[orderNum] = data;
+            try {
+                const saved = JSON.parse(localStorage.getItem('zahraOrders') || '{}');
+                saved[orderNum] = data;
+                localStorage.setItem('zahraOrders', JSON.stringify(saved));
+            } catch(e) {}
+        }
+
+        // Get all orders (global + localStorage merged)
+        function getAllOrdersMerged() {
+            const merged = { ...demoOrders };
+            try {
+                const saved = JSON.parse(localStorage.getItem('zahraOrders') || '{}');
+                Object.assign(merged, saved, window.globalOrders);
+            } catch(e) {
+                Object.assign(merged, window.globalOrders);
+            }
+            return merged;
+        }
+
+        const demoOrders = {
+            'ZHR-240512-001': {
+                date: 'May 12, 2026',
+                status: 'In Transit',
+                statusColor: '#2980B9',
+                estDelivery: 'May 15, 2026',
+                carrier: 'ZAHRA Express',
+                items: '2 items',
+                timeline: [
+                    { step: 'Order Placed', time: 'May 12, 10:30 AM', done: true, active: false, desc: 'We received your order' },
+                    { step: 'Processing', time: 'May 12, 2:15 PM', done: true, active: false, desc: 'Items packed and labeled' },
+                    { step: 'Shipped', time: 'May 13, 9:00 AM', done: true, active: true, desc: 'Package left our Lagos warehouse' },
+                    { step: 'In Transit', time: 'Expected May 14', done: false, active: false, desc: 'On the way to your city' },
+                    { step: 'Out for Delivery', time: 'Expected May 15', done: false, active: false, desc: 'With our delivery partner' },
+                    { step: 'Delivered', time: 'Expected May 15', done: false, active: false, desc: 'Package delivered to you' }
+                ]
+            },
+            'ZHR-240510-003': {
+                date: 'May 10, 2026',
+                status: 'Delivered',
+                statusColor: '#27AE60',
+                estDelivery: 'May 13, 2026',
+                carrier: 'DHL Nigeria',
+                items: '1 item',
+                timeline: [
+                    { step: 'Order Placed', time: 'May 10, 4:20 PM', done: true, active: false, desc: 'We received your order' },
+                    { step: 'Processing', time: 'May 11, 9:00 AM', done: true, active: false, desc: 'Items packed and labeled' },
+                    { step: 'Shipped', time: 'May 11, 3:30 PM', done: true, active: false, desc: 'Package handed to DHL' },
+                    { step: 'In Transit', time: 'May 12, 11:00 AM', done: true, active: false, desc: 'Arrived at Abuja sorting hub' },
+                    { step: 'Out for Delivery', time: 'May 13, 8:30 AM', done: true, active: false, desc: 'With local delivery agent' },
+                    { step: 'Delivered', time: 'May 13, 2:45 PM', done: true, active: true, desc: 'Delivered to Mrs. Adeleke' }
+                ]
+            },
+            'ZHR-240513-002': {
+                date: 'May 13, 2026',
+                status: 'Processing',
+                statusColor: '#F39C12',
+                estDelivery: 'May 16, 2026',
+                carrier: 'ZAHRA Express',
+                items: '3 items',
+                timeline: [
+                    { step: 'Order Placed', time: 'May 13, 8:15 AM', done: true, active: false, desc: 'We received your order' },
+                    { step: 'Processing', time: 'In Progress', done: true, active: true, desc: 'Items being packed now' },
+                    { step: 'Shipped', time: 'Expected today', done: false, active: false, desc: 'Will leave warehouse soon' },
+                    { step: 'In Transit', time: 'Expected May 15', done: false, active: false, desc: 'On the way to your city' },
+                    { step: 'Out for Delivery', time: 'Expected May 16', done: false, active: false, desc: 'With our delivery partner' },
+                    { step: 'Delivered', time: 'Expected May 16', done: false, active: false, desc: 'Package delivered to you' }
+                ]
+            }
+        };
+
+        // Order Number Generator
+        function generateOrderNumber() {
+            const now = new Date();
+            const dateStr = now.getFullYear().toString().slice(2) + 
+                           String(now.getMonth() + 1).padStart(2, '0') + 
+                           String(now.getDate()).padStart(2, '0');
+            const random = String(Math.floor(Math.random() * 900) + 100).padStart(3, '0');
+            return `ZHR-${dateStr}-${random}`;
+        }
+
+        // Save newly placed order for tracking
+        function saveOrderForTracking(orderNum, cartItems, total) {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+            const itemCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
+            const itemText = itemCount + ' item' + (itemCount > 1 ? 's' : '');
+
+            // Calculate estimated delivery (3 days from now)
+            const estDate = new Date(now);
+            estDate.setDate(estDate.getDate() + 3);
+            const estDelivery = estDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+            demoOrders[orderNum] = {
+                date: dateStr,
+                status: 'Order Placed',
+                statusColor: '#C9A96E',
+                estDelivery: estDelivery,
+                carrier: 'ZAHRA Express',
+                items: itemText,
+                timeline: [
+                    { step: 'Order Placed', time: `${dateStr}, ${timeStr}`, done: true, active: true, desc: 'We received your order via WhatsApp' },
+                    { step: 'Processing', time: 'Pending', done: false, active: false, desc: 'Waiting for payment confirmation' },
+                    { step: 'Shipped', time: 'Pending', done: false, active: false, desc: 'Will leave warehouse after processing' },
+                    { step: 'In Transit', time: 'Pending', done: false, active: false, desc: 'On the way to your city' },
+                    { step: 'Out for Delivery', time: 'Pending', done: false, active: false, desc: 'With our delivery partner' },
+                    { step: 'Delivered', time: 'Pending', done: false, active: false, desc: 'Package delivered to you' }
+                ]
+            };
+
+            // Also save to localStorage so it persists
+            try {
+                const savedOrders = JSON.parse(localStorage.getItem('zahraOrders') || '{}');
+                savedOrders[orderNum] = demoOrders[orderNum];
+                localStorage.setItem('zahraOrders', JSON.stringify(savedOrders));
+            } catch(e) {}
+        }
+
+        // Show order confirmation modal
+        function showOrderConfirmation(orderNum) {
+            document.getElementById('generatedOrderNum').textContent = orderNum;
+            document.getElementById('orderConfirmModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close order confirmation
+        window.closeOrderConfirm = function() {
+            document.getElementById('orderConfirmModal').classList.remove('active');
+            document.body.style.overflow = '';
+        };
+
+        // Track the newly placed order
+        window.trackNewOrder = function() {
+            const orderNum = document.getElementById('generatedOrderNum').textContent;
+            closeOrderConfirm();
+            showTrackOrder();
+            document.getElementById('trackOrderInput').value = orderNum;
+            setTimeout(() => trackOrder(), 300);
+        };
+
+        // Load saved orders from localStorage on page load
+        (function loadSavedOrders() {
+            try {
+                const saved = JSON.parse(localStorage.getItem('zahraOrders') || '{}');
+                Object.assign(window.globalOrders, saved);
+                Object.assign(demoOrders, saved);
+            } catch(e) {}
+        })();
+
+        // Order confirmation modal close button
+        document.getElementById('orderConfirmClose').addEventListener('click', closeOrderConfirm);
+        document.getElementById('orderConfirmModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('orderConfirmModal')) closeOrderConfirm();
+        });
+
+
+        window.trackOrder = async function() {
+            const input = document.getElementById('trackOrderInput');
+            const orderNum = input.value.trim().toUpperCase();
+            const resultDiv = document.getElementById('trackingResult');
+            const notFoundDiv = document.getElementById('trackingNotFound');
+
+            if (!orderNum) {
+                showToast('Please enter an order number');
+                input.focus();
+                return;
+            }
+
+            // Show loading
+            resultDiv.style.display = 'none';
+            notFoundDiv.style.display = 'none';
+
+            // Try Firebase first, then fall back to merged local
+            let order = null;
+            if (firebaseEnabled) {
+                order = await getOrderFromFirebase(orderNum);
+            }
+            if (!order) {
+                const merged = await getAllOrdersMerged();
+                order = merged[orderNum];
+            }
+
+            if (!order) {
+                resultDiv.style.display = 'none';
+                notFoundDiv.style.display = 'block';
+                return;
+            }
+
+            // Populate order details
+            document.getElementById('trackOrderNum').textContent = 'Order #' + orderNum;
+            document.getElementById('trackOrderDate').textContent = 'Placed on ' + order.date;
+            document.getElementById('trackStatusBadge').textContent = order.status;
+            document.getElementById('trackStatusBadge').style.background = order.statusColor;
+            document.getElementById('trackEstDelivery').textContent = order.estDelivery;
+            document.getElementById('trackCarrier').textContent = order.carrier;
+            document.getElementById('trackItems').textContent = order.items;
+
+            // Build timeline
+            const timelineContainer = document.getElementById('trackingTimeline');
+            timelineContainer.innerHTML = order.timeline.map((step, index) => `
+                <div style="position: relative; margin-bottom: 24px; padding-bottom: 8px;">
+                    <div style="position: absolute; left: -32px; top: 0; width: 20px; height: 20px; border-radius: 50%; background: ${step.done ? (step.active ? 'var(--gold)' : '#27AE60') : 'var(--border)'}; border: 3px solid ${step.done ? (step.active ? 'var(--gold)' : '#27AE60') : 'var(--border)'}; display: flex; align-items: center; justify-content: center; z-index: 2;">
+                        ${step.done ? '<i class="fas fa-check" style="font-size: 10px; color: white;"></i>' : ''}
+                    </div>
+                    ${index < order.timeline.length - 1 ? `<div style="position: absolute; left: -23px; top: 20px; width: 2px; height: calc(100% + 24px); background: ${step.done ? '#27AE60' : 'var(--border)'};"></div>` : ''}
+                    <div style="margin-left: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px;">
+                            <h4 style="font-size: 15px; font-weight: 600; color: ${step.done ? 'var(--black)' : 'var(--text-light)'}; margin-bottom: 2px;">${step.step}</h4>
+                            <span style="font-size: 12px; color: var(--text-light); font-weight: 500;">${step.time}</span>
+                        </div>
+                        <p style="font-size: 13px; color: ${step.done ? 'var(--text-dark)' : 'var(--text-light)'};">${step.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            notFoundDiv.style.display = 'none';
+            resultDiv.style.display = 'block';
+
+            // Scroll to result
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+
+        // Allow Enter key to trigger tracking
+        document.addEventListener('DOMContentLoaded', function() {
+            const trackInput = document.getElementById('trackOrderInput');
+            if (trackInput) {
+                trackInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') trackOrder();
+                });
+            }
+        });
+
+        // Updated showTrackOrder function
+        window.showTrackOrder = function() {
+            hideInfoPages();
+            document.getElementById('trackOrderPage').style.display = 'block';
+            document.getElementById('trackOrderPage').scrollIntoView({ behavior: 'smooth' });
+            // Reset tracking state
+            document.getElementById('trackingResult').style.display = 'none';
+            document.getElementById('trackingNotFound').style.display = 'none';
+            document.getElementById('trackOrderInput').value = '';
+        };
+
+
+        function setHomepageVisibility(showHome) {
+            const homepageSections = [
+                document.querySelector('.hero'),
+                document.getElementById('mainCategories'),
+                document.getElementById('collections'),
+                document.getElementById('featuredSection'),
+                document.getElementById('bestSellersSection')
+            ];
+            homepageSections.forEach(section => {
+                if (section) section.style.display = showHome ? '' : 'none';
+            });
+            if (categoryBanner) categoryBanner.style.display = showHome ? 'none' : 'block';
+        }
+
+        // Initialize
+        function initializeSite() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryParam = urlParams.get('category');
+            const collectionParam = urlParams.get('collection');
+
+            const categoryMap = {
+                'Women': ['Dresses', 'Two Piece', 'Crop Tops', 'Heels', 'Bags', 'Vacation Wear', 'Streetwear'],
+                'Men': ['Oversized Tees', 'Jackets', 'Cargo Pants', 'Sneakers', 'Watches', 'Casual Fits', 'Streetwear'],
+                'Shoes': ['Heels', 'Sneakers'],
+                'Bags': ['Bags'],
+                'Accessories': ['Accessories'],
+                'Collections': null
+            };
+
+            if (!categoryParam && !collectionParam) {
+                setHomepageVisibility(true);
+                if (productsSectionTitle) productsSectionTitle.textContent = 'Trending Picks';
+                document.title = 'ZAHRA Studio | Nigerian Fashion';
+
+                const featured = products.filter(p => p.trending).slice(0, 8);
+                const bestSellers = [...products].sort((a, b) => b.loved - a.loved).slice(0, 4);
+                renderProducts(featured, productsGrid);
+                renderProducts(bestSellers, bestSellersGrid);
+                return;
+            }
+
+            setHomepageVisibility(false);
+            if (categoryBannerTitle && categoryBannerText) {
+                if (collectionParam) {
+                    categoryBannerTitle.textContent = collectionParam;
+                    categoryBannerText.textContent = `A polished edit from the ${collectionParam} collection.`;
+                } else {
+                    categoryBannerTitle.textContent = categoryParam === 'Collections' ? 'Collections' : `${categoryParam} Collection`;
+                    categoryBannerText.textContent = categoryParam === 'Collections' ? 'Browse all curated collections.' : `A focused selection from ${categoryParam}.`;
+                }
+            }
+
+            if (categoryParam === 'Sale') {
+                if (productsSectionTitle) productsSectionTitle.textContent = 'Sale Picks';
+                document.title = 'Sale | ZAHRA Studio';
+                const filtered = products.filter(p => p.originalPrice !== null);
+                renderPagedProducts(filtered, 12, 1);
+                return;
+            }
+
+            if (collectionParam) {
+                if (productsSectionTitle) productsSectionTitle.textContent = collectionParam;
+                document.title = `${collectionParam} | ZAHRA Studio`;
+                const filtered = products.filter(p => p.collection === collectionParam);
+                renderPagedProducts(filtered, 12, 1);
+                return;
+            }
+
+            if (categoryParam) {
+                if (productsSectionTitle) productsSectionTitle.textContent = categoryParam;
+                document.title = `${categoryParam} | ZAHRA Studio`;
+                const mapped = categoryMap[categoryParam];
+                if (mapped && Array.isArray(mapped)) {
+                    const filtered = products.filter(p => mapped.includes(p.category) || mapped.includes(p.collection));
+                    renderPagedProducts(filtered, 12, 1);
+                } else if (categoryParam === 'Collections') {
+                    const filtered = products.filter(p => p.collection);
+                    renderPagedProducts(filtered, 12, 1);
+                } else {
+                    filterCategory.value = categoryParam;
+                    filterAndSortProducts();
+                }
+            }
+        }
+
+        loadProductImageMap().finally(() => {
+            ensureVariantImages();
+            initializeSite();
+        });
+    
+        </script>
+
+    <!-- ==================== ADMIN DASHBOARD ==================== -->
+
+    <!-- Admin Login Page -->
+    
+
+    <!-- Admin Dashboard -->
+    
+
+    <!-- Admin Order Detail Modal -->
+    </body>
+</html>

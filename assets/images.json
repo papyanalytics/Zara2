@@ -1,0 +1,47 @@
+{
+  "1": {
+    "image": "assets/products/gown-1-Black.jpg.jpg",
+    "variantImages": {
+      "Black": "assets/products/gown-1-Black.jpg.jpg",
+      "Beige": "assets/products/MeshMaxiDress-1- Beige.jpg.jpg",
+      "Red": "assets/products/dress-1-Red.jpg.jpg"
+    }
+  },
+  "7": {
+    "image": "assets/products/BlackPULeatherEmbellishedWomenBags-1-Black.jpg.jpg",
+    "variantImages": {
+      "Black": "assets/products/BlackPULeatherEmbellishedWomenBags-1-Black.jpg.jpg",
+      "Brown": "assets/products/sheinbag-1-Brown.jpg.jpg",
+      "Beige": "assets/products/MelieBiancoTulipTopHandleCrossbodyTote-1-White.jpg.jpg"
+    }
+  },
+  "8": {
+    "image": "assets/products/MelieBiancoTulipTopHandleCrossbodyTote-1-White.jpg.jpg",
+    "variantImages": {
+      "White": "assets/products/MelieBiancoTulipTopHandleCrossbodyTote-1-White.jpg.jpg"
+    }
+  },
+  "10": {
+    "image": "assets/products/Pointed Toe Low Kitten Heels Pumps - Copy.jpg",
+    "variantImages": {
+      "Black": "assets/products/Pointed Toe Low Kitten Heels Pumps - Copy.jpg",
+      "Beige": "assets/products/Pointed Toe Low Kitten Heels Pumps - Copy.jpg",
+      "Red": "assets/products/Pointed Toe Low Kitten Heels Pumps - Copy.jpg"
+    }
+  },
+  "12": {
+    "image": "assets/products/LadiesSummerFootwearSuperHighHeelWith BowRhinestoneCrystalsStilitoDiamondBlackShoes-1-Black.jpg.jpg",
+    "variantImages": {
+      "Black": "assets/products/LadiesSummerFootwearSuperHighHeelWith BowRhinestoneCrystalsStilitoDiamondBlackShoes-1-Black.jpg.jpg",
+      "Gold": "assets/products/LadiesSummerFootwearSuperHighHeelWith BowRhinestoneCrystalsStilitoDiamondBlackShoes-1-Black.jpg.jpg",
+      "Red": "assets/products/LadiesSummerFootwearSuperHighHeelWith BowRhinestoneCrystalsStilitoDiamondBlackShoes-1-Black.jpg.jpg"
+    }
+  },
+  "17": {
+    "image": "assets/products/rings-1-Gold.jpg.jpg",
+    "variantImages": {
+      "Gold": "assets/products/rings-1-Gold.jpg.jpg",
+      "Silver": "assets/products/chromeheartsbracelet-1-Silver.jpg.jpg"
+    }
+  }
+}
