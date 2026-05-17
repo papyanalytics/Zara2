@@ -2661,8 +2661,8 @@
             const collectionParam = urlParams.get('collection');
 
             const categoryMap = {
-                'Women': ['Dresses', 'Two Piece', 'Crop Tops', 'Heels', 'Bags', 'Vacation Wear', 'Streetwear'],
-                'Men': ['Oversized Tees', 'Jackets', 'Cargo Pants', 'Sneakers', 'Watches', 'Casual Fits', 'Streetwear'],
+                'Women': ['Dresses', 'Two Piece', 'Vacation Wear', 'Heels', 'Bags', 'Accessories', 'Streetwear'],
+                'Men': ['Oversized Tees', 'Jackets', 'Cargo Pants', 'Sneakers', 'Watches', 'Casual Fits'],
                 'Shoes': ['Heels', 'Sneakers'],
                 'Bags': ['Bags'],
                 'Accessories': ['Accessories'],
@@ -2713,10 +2713,22 @@
                 document.title = `${categoryParam} | ZAHRA Studio`;
                 const mapped = categoryMap[categoryParam];
                 if (mapped && Array.isArray(mapped)) {
-                    const filtered = products.filter(p => mapped.includes(p.category) || mapped.includes(p.collection));
+                    const filtered = products.filter(p => mapped.includes(p.category));
                     renderPagedProducts(filtered, 12, 1);
                 } else if (categoryParam === 'Collections') {
-                    const filtered = products.filter(p => p.collection);
+                    const curatedCollections = [
+                        'Vacation Drip',
+                        'Date Night',
+                        'Soft Girl',
+                        'Lagos Essentials',
+                        'Urban Streetwear',
+                        'Summer Vibes',
+                        'Luxury Black',
+                        'Weekend Casuals'
+                    ];
+                    const filtered = products
+                        .filter(p => curatedCollections.includes(p.collection))
+                        .sort((a, b) => (b.trending ? 1 : 0) - (a.trending ? 1 : 0) || new Date(b.date) - new Date(a.date));
                     renderPagedProducts(filtered, 12, 1);
                 } else {
                     filterCategory.value = categoryParam;
