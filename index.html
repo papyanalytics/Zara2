@@ -1274,17 +1274,20 @@
                 </div>
             `).join('');
         }
-                'Black': '#1A1A1A',
-                'White': '#FFFFFF',
-                'Beige': '#E8DDD0',
-                'Brown': '#8B7355',
-                'Red': '#C0392B',
-                'Blue': '#2980B9',
-                'Pink': '#E91E63',
-                'Gold': '#C9A96E'
-            };
-            return colors[color] || '#ccc';
-        }
+               function getColorHex(color) {
+    const colors = {
+        'Black': '#1A1A1A',
+        'White': '#FFFFFF',
+        'Beige': '#E8DDD0',
+        'Brown': '#8B7355',
+        'Red': '#C0392B',
+        'Blue': '#2980B9',
+        'Pink': '#E91E63',
+        'Gold': '#C9A96E'
+    };
+
+    return colors[color] || '#ccc';
+}
 
         // Render products
         function renderProducts(productsToRender, container = productsGrid) {
