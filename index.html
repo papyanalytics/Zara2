@@ -1305,7 +1305,7 @@
             container.innerHTML = productsToRender.map((product, index) => `
                 <div class="product-card animate-in delay-${(index % 4) + 1}" data-id="${product.id}">
                     <div class="product-image">
-                        <img src="${safeUrl(product.image)}" alt="${product.name}" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #F0E8DD, #E5DCD0)'; this.parentElement.innerHTML+='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:60px;color:#8B7355;opacity:0.3\'><i class=\'fas fa-tshirt\'></i></div>';">
+                        <img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #F0E8DD, #E5DCD0)'; this.parentElement.innerHTML+='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:60px;color:#8B7355;opacity:0.3\'><i class=\'fas fa-tshirt\'></i></div>';">
                         ${product.badge ? `<span class="product-badge ${product.badge.toLowerCase()}">${product.badge}</span>` : ''}
                         <div class="product-actions">
                             <button class="action-btn ${wishlist.includes(product.id) ? 'wishlisted' : ''}" onclick="toggleWishlist(${product.id})">
