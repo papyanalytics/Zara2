@@ -1255,7 +1255,7 @@
                             </div>
                             <div class="product-colors">
                                 ${product.colors.slice(0, 3).map(color => `
-                                    <div class="color-dot" style="background: ${getColorCode(color)}" title="${color}" onclick="openQuickView(${product.id}, '${color.replace("'", "\'")}')"></div>
+                                    <div class="color-dot" style="background: #ccc" title="${color}" onclick="openQuickView(${product.id}, '${color.replace("'", "\\'")}')"></div>
                                 `).join('')}
                             </div>
                         </div>
@@ -1316,7 +1316,7 @@
                             </div>
                             <div class="product-colors">
                                 ${product.colors.slice(0, 3).map(color => `
-                                    <div class="color-dot" style="background: ${getColorCode(color)}" title="${color}" onclick="openQuickView(${product.id}, '${color.replace("'", "\'")}')"></div>
+                                    <div class="color-dot" style="background: #ccc" title="${color}" onclick="openQuickView(${product.id}, '${color.replace("'", "\\'")}')"></div>
                                 `).join('')}
                             </div>
                         </div>
@@ -1481,7 +1481,7 @@
             const colorsContainer = document.getElementById('modalColors');
             colorsContainer.innerHTML = currentProduct.colors.map(col => `
                 <div class="color-option ${col === currentProduct.colors[0] ? 'active' : ''}" 
-                     style="background: ${getColorCode(col)}" 
+                     style="background: #ccc" 
                      onclick="selectColor('${col}')"
                      title="${col}"></div>
             `).join('');
