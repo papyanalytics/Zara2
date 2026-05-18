@@ -1250,8 +1250,8 @@
                         <h3 class="product-name">${product.name}</h3>
                         <div class="product-meta">
                             <div class="product-price">
-                                ${formatPrice(product.price)}
-                                ${product.originalPrice ? `<span class="original">${formatPrice(product.originalPrice)}</span>` : ''}
+                                ₦${product.price}
+                                ${product.originalPrice ? `<span class="original">₦${product.originalPrice}</span>` : ''}
                             </div>
                             <div class="product-colors">
                                 ${product.colors.slice(0, 3).map(color => `
@@ -1311,8 +1311,8 @@
                         <h3 class="product-name">${product.name}</h3>
                         <div class="product-meta">
                             <div class="product-price">
-                                ${formatPrice(product.price)}
-                                ${product.originalPrice ? `<span class="original">${formatPrice(product.originalPrice)}</span>` : ''}
+                                ₦${product.price}
+                                ${product.originalPrice ? `<span class="original">₦${product.originalPrice}</span>` : ''}
                             </div>
                             <div class="product-colors">
                                 ${product.colors.slice(0, 3).map(color => `
@@ -1460,8 +1460,8 @@
             document.getElementById('modalCategory').textContent = currentProduct.category;
             document.getElementById('modalTitle').textContent = currentProduct.name;
             document.getElementById('modalPrice').innerHTML = `
-                ${formatPrice(currentProduct.price)}
-                ${currentProduct.originalPrice ? `<span class="original">${formatPrice(currentProduct.originalPrice)}</span>` : ''}
+                ₦${currentProduct.price}
+                ${currentProduct.originalPrice ? `<span class="original">₦${currentProduct.originalPrice}</span>` : ''}
             `;
             document.getElementById('modalDescription').textContent = currentProduct.description || 'A premium ZAHRA piece with the refined detailing you expect.';
 
@@ -1499,7 +1499,7 @@
             document.getElementById('qtyInput').value = 1;
 
             // Update WhatsApp links
-            const whatsappMsg = `Hi ZAHRA Studio! I'm interested in the ${currentProduct.name} (${currentProduct.category}) - ${formatPrice(currentProduct.price)}. Is it available?`;
+            const whatsappMsg = `Hi ZAHRA Studio! I'm interested in the ${currentProduct.name} (${currentProduct.category}) - ₦${currentProduct.price}. Is it available?`;
             const encodedMsg = encodeURIComponent(whatsappMsg);
             document.getElementById('modalWhatsApp').href = `https://wa.me/2348136716703?text=${encodedMsg}`;
             document.getElementById('modalAskItem').href = `https://wa.me/2348136716703?text=${encodedMsg}`;
@@ -1609,7 +1609,7 @@
             cartItemCount.textContent = cart.reduce((sum, item) => sum + item.qty, 0);
 
             const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            cartTotal.textContent = formatPrice(total);
+            cartTotal.textContent = `₦${total}`;
 
             if (cart.length === 0) {
                 cartItems.innerHTML = `
@@ -1627,7 +1627,7 @@
                         <div class="cart-item-details">
                             <div class="cart-item-name">${item.name}</div>
                             <div class="cart-item-meta">Size: ${item.size} | Color: ${item.color} | Qty: ${item.qty}</div>
-                            <div class="cart-item-price">${formatPrice(item.price * item.qty)}</div>
+                            <div class="cart-item-price">₦${item.price * item.qty}</div>
                         </div>
                         <button class="cart-item-remove" onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button>
                     </div>
@@ -1664,8 +1664,8 @@
                 return;
             }
             const orderNum = generateOrderNumber();
-            const items = cart.map(item => `${item.name} (${item.size}, ${item.color}) x${item.qty} - ${formatPrice(item.price * item.qty)}`).join('%0A');
-            const total = formatPrice(cart.reduce((sum, item) => sum + (item.price * item.qty), 0));
+            const items = cart.map(item => `${item.name} (${item.size}, ${item.color}) x${item.qty} - ₦${item.price * item.qty}`).join('%0A');
+            const total = `₦${cart.reduce((sum, item) => sum + (item.price * item.qty), 0)}`;
             const msg = `Hi ZAHRA Studio! I'd like to place an order:%0A%0AOrder Number: ${orderNum}%0A%0A${items}%0A%0ATotal: ${total}%0A%0APlease confirm availability.`;
             window.open(`https://wa.me/2348136716703?text=${msg}`, '_blank');
 
@@ -1688,8 +1688,8 @@
                 return;
             }
             const orderNum = generateOrderNumber();
-            const items = cart.map(item => `${item.name} (${item.size}, ${item.color}) x${item.qty} - ${formatPrice(item.price * item.qty)}`).join('%0A');
-            const total = formatPrice(cart.reduce((sum, item) => sum + (item.price * item.qty), 0));
+            const items = cart.map(item => `${item.name} (${item.size}, ${item.color}) x${item.qty} - ₦${item.price * item.qty}`).join('%0A');
+            const total = `₦${cart.reduce((sum, item) => sum + (item.price * item.qty), 0)}`;
             const msg = `Hi ZAHRA Studio! I'd like to place an order:%0A%0AOrder Number: ${orderNum}%0A%0A${items}%0A%0ATotal: ${total}%0A%0APlease confirm availability.`;
             window.open(`https://wa.me/2348136716703?text=${msg}`, '_blank');
 
