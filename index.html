@@ -1240,7 +1240,7 @@
             container.innerHTML = validated.map((product, index) => `
                 <div class="product-card animate-in delay-${(index % 4) + 1}" data-id="${product.id}">
                     <div class="product-image">
-                        <img src="${safeUrl(product.image)}" alt="${product.name}" loading="lazy">
+                        <img src="${product.image}" alt="${product.name}" loading="lazy">
                         ${product.badge ? `<span class="product-badge ${product.badge.toLowerCase()}">${product.badge}</span>` : ''}
                         <div class="product-actions"></div>
                         <button class="quick-view-btn" onclick="openQuickView(${product.id})">Quick View</button>
@@ -1466,7 +1466,7 @@
             document.getElementById('modalDescription').textContent = currentProduct.description || 'A premium ZAHRA piece with the refined detailing you expect.';
 
             // Set modal image
-            document.getElementById('modalImage').src = safeUrl(currentProduct.image);
+            document.getElementById('modalImage').src = currentProduct.image;
             document.getElementById('modalImage').alt = currentProduct.name;
 
             // Sizes
@@ -1490,7 +1490,7 @@
 
             // Ensure modal image matches selected color
             const initialImg = (currentProduct.variantImages && currentProduct.variantImages[selectedColor]) || currentProduct.image;
-            document.getElementById('modalImage').src = safeUrl(initialImg);
+            document.getElementById('modalImage').src = initialImg;
             // mark active color visually
             document.querySelectorAll('.color-option').forEach(dot => dot.classList.toggle('active', dot.title === selectedColor));
 
@@ -1523,7 +1523,7 @@
             // Swap modal image to the correct variant image when available
             try {
                 const imgSrc = (currentProduct && currentProduct.variantImages && currentProduct.variantImages[color]) || (currentProduct && currentProduct.image);
-                if (imgSrc) document.getElementById('modalImage').src = safeUrl(imgSrc);
+                if (imgSrc) document.getElementById('modalImage').src = imgSrc;
             } catch(e) {}
         };
 
