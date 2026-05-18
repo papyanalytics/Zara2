@@ -154,9 +154,9 @@ const products = [
         trending: true,
         loved: 167,
         date: "2026-04-18",
-        image: "assets/products/meliebiancotuliptophandlecrossbodytote-1-white.jpg",
+        image: "assets/products/MelieBiancoTulipTopHandleCrossbodyTote-1-White.jpg",
         variantImages: {
-            White: "assets/products/meliebiancotuliptophandlecrossbodytote-1-white.jpg"
+            White: "assets/products/MelieBiancoTulipTopHandleCrossbodyTote-1-White.jpg"
         }
     },
     {
