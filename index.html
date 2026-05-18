@@ -1242,11 +1242,7 @@
                     <div class="product-image">
                         <img src="${safeUrl(product.image)}" alt="${product.name}" loading="lazy">
                         ${product.badge ? `<span class="product-badge ${product.badge.toLowerCase()}">${product.badge}</span>` : ''}
-                        <div class="product-actions">
-                            <button class="action-btn ${wishlist.includes(product.id) ? 'wishlisted' : ''}" onclick="toggleWishlist(${product.id})">
-                                <i class="${wishlist.includes(product.id) ? 'fas' : 'far'} fa-heart"></i>
-                            </button>
-                        </div>
+                        <div class="product-actions"></div>
                         <button class="quick-view-btn" onclick="openQuickView(${product.id})">Quick View</button>
                     </div>
                     <div class="product-info">
@@ -1307,11 +1303,7 @@
                     <div class="product-image">
                         <img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #F0E8DD, #E5DCD0)'; this.parentElement.innerHTML+='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:60px;color:#8B7355;opacity:0.3\'><i class=\'fas fa-tshirt\'></i></div>';">
                         ${product.badge ? `<span class="product-badge ${product.badge.toLowerCase()}">${product.badge}</span>` : ''}
-                        <div class="product-actions">
-                            <button class="action-btn ${wishlist.includes(product.id) ? 'wishlisted' : ''}" onclick="toggleWishlist(${product.id})">
-                                <i class="${wishlist.includes(product.id) ? 'fas' : 'far'} fa-heart"></i>
-                            </button>
-                        </div>
+                        <div class="product-actions"></div>
                         <button class="quick-view-btn" onclick="openQuickView(${product.id})">Quick View</button>
                     </div>
                     <div class="product-info">
