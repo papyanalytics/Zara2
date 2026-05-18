@@ -141,26 +141,6 @@ const products = [
         }
     },
     {
-        id: 9,
-        name: "Evening Clutch",
-        category: "Bags",
-        collection: "Date Night",
-        price: 15000,
-        originalPrice: null,
-        description: "Compact evening clutch with metallic accents for date night.",
-        colors: ["Black"],
-        sizes: ["One Size"],
-        availability: "In Stock",
-        badge: null,
-        trending: false,
-        loved: 87,
-        date: "2026-05-02",
-        image: "assets/products/louisvuittonpursebag-1-black.jpg",
-        variantImages: {
-            Black: "assets/products/louisvuittonpursebag-1-black.jpg"
-        }
-    },
-    {
         id: 10,
         name: "Kitten Heel Pumps",
         category: "Heels",
@@ -375,9 +355,9 @@ const products = [
         trending: false,
         loved: 96,
         date: "2026-05-14",
-        image: "assets/products/Summeroutfit-1-Brown.jpg",
+        image: "assets/products/download-16.jpg",
         variantImages: {
-            Black: "assets/products/Summeroutfit-1-Brown.jpg"
+            Black: "assets/products/download-16.jpg"
         }
     },
     {
