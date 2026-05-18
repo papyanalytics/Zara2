@@ -1,24 +1,5 @@
 const products = [
-    {
-        id: 1,
-        name: "Lagos Babe Maxi Dress",
-        category: "Dresses",
-        collection: "Lagos Essentials",
-        price: 28500,
-        originalPrice: 35000,
-        description: "Structured evening maxi with sculpted waist and luxe finish.",
-        colors: ["Black"],
-        sizes: ["XS", "S", "M", "L", "XL"],
-        availability: "In Stock",
-        badge: "Sale",
-        trending: true,
-        loved: 245,
-        date: "2026-05-01",
-        image: "assets/products/gown-1-black.jpg",
-        variantImages: {
-            Black: "assets/products/gown-1-black.jpg"
-        }
-    },
+    
     {
         id: 2,
         name: "Pleated Soft Girl Set",
@@ -254,9 +235,9 @@ const products = [
         trending: false,
         loved: 145,
         date: "2026-05-12",
-        image: "assets/products/chromeheartsbracelet-1-silver.jpg",
+        image: "assets/products/chromeheartsbracelet-1-Silver.jpg",
         variantImages: {
-            Silver: "assets/products/chromeheartsbracelet-1-silver.jpg"
+            Silver: "assets/products/chromeheartsbracelet-1-Silver.jpg"
         }
     },
     {
@@ -334,9 +315,9 @@ const products = [
         trending: false,
         loved: 96,
         date: "2026-05-14",
-        image: "assets/products/casualprintdrawstringVneck-1-Red.jpg",
+        image: "assets/products/streetwear-1-green.jpg",
         variantImages: {
-            Red: "assets/products/casualprintdrawstringVneck-1-Red.jpg"
+            Red: "assets/products/streetwear-1-green.jpg"
         }
     },
     {
@@ -354,9 +335,9 @@ const products = [
         trending: false,
         loved: 134,
         date: "2026-05-07",
-        image: "assets/products/sheinbag-1-brown.jpg",
+        image: "assets/products/sheinbag-1-Brown.jpg",
         variantImages: {
-            Brown: "assets/products/sheinbag-1-brown.jpg"
+            Brown: "assets/products/sheinbag-1-Brown.jpg"
         }
     },
     {
@@ -394,9 +375,9 @@ const products = [
         trending: false,
         loved: 96,
         date: "2026-05-14",
-        image: "assets/products/download-8.jpg",
+        image: "assets/products/Summeroutfit-1-Brown.jpg",
         variantImages: {
-            Black: "assets/products/download-8.jpg"
+            Black: "assets/products/Summeroutfit-1-Brown.jpg"
         }
     },
     {

@@ -1213,14 +1213,33 @@
             });
         }
 
-        // State
-        // Render products (validate images, dedupe, and do not render items with undefined images)
+        function safeUrl(url) {
+            return (typeof url === 'string' && url.trim()) ? url : '';
+        }
+
+        function getColorHex(color) {
+    const colors = {
+        'Black': '#1A1A1A',
+        'White': '#FFFFFF',
+        'Beige': '#E8DDD0',
+        'Brown': '#8B7355',
+        'Red': '#C0392B',
+        'Blue': '#2980B9',
+        'Pink': '#E91E63',
+        'Gold': '#C9A96E'
+    };
+
+    return colors[color] || '#ccc';
+}
+
+        // Render products
         function renderProducts(productsToRender, container = productsGrid) {
-            // validate and dedupe
+            const items = Array.isArray(productsToRender) ? productsToRender.slice() : [];
+            const selectedCategory = filterCategory && filterCategory.value ? filterCategory.value.trim() : '';
+            const filteredByCategory = selectedCategory ? items.filter(product => product && product.category && product.category.toLowerCase() === selectedCategory.toLowerCase()) : items;
+
             const seen = new Set();
-            const validated = (productsToRender || []).filter(p => {
-                return p && typeof p.id !== 'undefined' && typeof p.image === 'string' && p.image.trim() !== '';
-            }).filter(p => {
+            const validated = filteredByCategory.filter(p => p && typeof p.id !== 'undefined' && typeof p.image === 'string' && p.image.trim() !== '').filter(p => {
                 if (seen.has(p.id)) return false;
                 seen.add(p.id);
                 return true;
@@ -1240,7 +1259,7 @@
             container.innerHTML = validated.map((product, index) => `
                 <div class="product-card animate-in delay-${(index % 4) + 1}" data-id="${product.id}">
                     <div class="product-image">
-                        <img src="${product.image}" alt="${product.name}" loading="lazy">
+                        <img src="${safeUrl(product.image)}" alt="${product.name}" loading="lazy" onerror="this.style.display='none';">
                         ${product.badge ? `<span class="product-badge ${product.badge.toLowerCase()}">${product.badge}</span>` : ''}
                         <div class="product-actions"></div>
                         <button class="quick-view-btn" onclick="openQuickView(${product.id})">Quick View</button>
@@ -1255,68 +1274,7 @@
                             </div>
                             <div class="product-colors">
                                 ${product.colors.slice(0, 3).map(color => `
-                                    <div class="color-dot" style="background: #ccc" title="${color}" onclick="openQuickView(${product.id}, '${color.replace("'", "\\'")}')"></div>
-                                `).join('')}
-                            </div>
-                        </div>
-                        <div class="product-sizes">
-                            ${product.sizes.slice(0, 4).map(size => `<span class="size-tag">${size}</span>`).join('')}
-                            ${product.sizes.length > 4 ? `<span class="size-tag">+${product.sizes.length - 4}</span>` : ''}
-                        </div>
-                        <button class="add-to-cart" onclick="addToCart(${product.id})">
-                            <i class="fas fa-shopping-bag"></i> Add to Cart
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-               function getColorHex(color) {
-    const colors = {
-        'Black': '#1A1A1A',
-        'White': '#FFFFFF',
-        'Beige': '#E8DDD0',
-        'Brown': '#8B7355',
-        'Red': '#C0392B',
-        'Blue': '#2980B9',
-        'Pink': '#E91E63',
-        'Gold': '#C9A96E'
-    };
-
-    return colors[color] || '#ccc';
-}
-
-        // Render products
-        function renderProducts(productsToRender, container = productsGrid) {
-            if (productsToRender.length === 0) {
-                container.innerHTML = `
-                    <div class="no-results">
-                        <i class="fas fa-search"></i>
-                        <h3>No products found</h3>
-                        <p>Try adjusting your filters or search terms</p>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = productsToRender.map((product, index) => `
-                <div class="product-card animate-in delay-${(index % 4) + 1}" data-id="${product.id}">
-                    <div class="product-image">
-                        <img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #F0E8DD, #E5DCD0)'; this.parentElement.innerHTML+='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:60px;color:#8B7355;opacity:0.3\'><i class=\'fas fa-tshirt\'></i></div>';">
-                        ${product.badge ? `<span class="product-badge ${product.badge.toLowerCase()}">${product.badge}</span>` : ''}
-                        <div class="product-actions"></div>
-                        <button class="quick-view-btn" onclick="openQuickView(${product.id})">Quick View</button>
-                    </div>
-                    <div class="product-info">
-                        <div class="product-category">${product.category}</div>
-                        <h3 class="product-name">${product.name}</h3>
-                        <div class="product-meta">
-                            <div class="product-price">
-                                ₦${product.price}
-                                ${product.originalPrice ? `<span class="original">₦${product.originalPrice}</span>` : ''}
-                            </div>
-                            <div class="product-colors">
-                                ${product.colors.slice(0, 3).map(color => `
-                                    <div class="color-dot" style="background: #ccc" title="${color}" onclick="openQuickView(${product.id}, '${color.replace("'", "\\'")}')"></div>
+                                    <div class="color-dot" style="background: ${getColorHex(color)}" title="${color}" onclick="openQuickView(${product.id}, '${color.replace("'", "\\'")}')"></div>
                                 `).join('')}
                             </div>
                         </div>
@@ -2170,7 +2128,7 @@
 
             const categoryMap = {
                 'Women': ['Dresses', 'Two Piece', 'Vacation Wear', 'Heels', 'Soft Girl', 'Bags'],
-                'Men': ['Oversized Tees', 'Cargo Pants', 'Jackets', 'Sneakers', 'Watches', 'Casual Fits'],
+                'Men': ['Oversized Tees', 'Cargo Pants', 'Jackets', 'Sneakers', 'Casual Fits'],
                 'Shoes': ['Heels', 'Sneakers', 'Flats'],
                 'Bags': ['Bags'],
                 'Accessories': ['Accessories', 'Jewelry', 'Earrings', 'Bracelets', 'Scarves', 'Watches'],
