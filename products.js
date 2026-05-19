@@ -515,9 +515,9 @@ const products = [
         trending: true,
         loved: 142,
         date: "2026-05-16",
-        image: "assets/products/download-18.jpg",
+        image: "assets/products/new-balance-327-sneakers-_-anthropologie-3.jpg",
         variantImages: {
-            Black: "assets/products/download-18.jpg"
+            Black: "assets/products/new-balance-327-sneakers-_-anthropologie-3.jpg"
         }
     },
     {
@@ -575,9 +575,9 @@ const products = [
         trending: true,
         loved: 124,
         date: "2026-05-14",
-        image: "assets/products/download-21.jpg",
+        image: "assets/products/newbalance-1-white.jpg",
         variantImages: {
-            White: "assets/products/download-21.jpg"
+            White: "assets/products/newbalance-1-white.jpg"
         }
     },
     {
@@ -735,9 +735,9 @@ const products = [
         trending: true,
         loved: 130,
         date: "2026-05-17",
-        image: "assets/products/download-11.jpg",
+        image: "assets/products/new-balance-327-sneakers-_-anthropologie-3.jpg",
         variantImages: {
-            White: "assets/products/download-11.jpg"
+            White: "assets/products/new-balance-327-sneakers-_-anthropologie-3.jpg"
         }
     },
     {
