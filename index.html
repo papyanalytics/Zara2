@@ -1217,6 +1217,15 @@
             return (typeof url === 'string' && url.trim()) ? url : '';
         }
 
+        const categoryAliasMap = {
+            'Handbags': ['Crossbody', 'Tote', 'Luxury Bags', 'Bags']
+        };
+
+        function resolveCategoryFilterValues(category) {
+            if (!category) return [];
+            return categoryAliasMap[category] ? categoryAliasMap[category] : [category];
+        }
+
         function getColorHex(color) {
     const colors = {
         'Black': '#1A1A1A',
@@ -1236,7 +1245,8 @@
         function renderProducts(productsToRender, container = productsGrid) {
             const items = Array.isArray(productsToRender) ? productsToRender.slice() : [];
             const selectedCategory = filterCategory && filterCategory.value ? filterCategory.value.trim() : '';
-            const filteredByCategory = selectedCategory ? items.filter(product => product && product.category && product.category.toLowerCase() === selectedCategory.toLowerCase()) : items;
+            const selectedCategories = selectedCategory ? resolveCategoryFilterValues(selectedCategory) : [];
+            const filteredByCategory = selectedCategory ? items.filter(product => product && product.category && selectedCategories.includes(product.category)) : items;
 
             const seen = new Set();
             const validated = filteredByCategory.filter(p => p && typeof p.id !== 'undefined' && typeof p.image === 'string' && p.image.trim() !== '').filter(p => {
@@ -1366,7 +1376,8 @@
 
             // Category filter
             if (filterCategory.value) {
-                filtered = filtered.filter(p => p.category === filterCategory.value);
+                const categories = resolveCategoryFilterValues(filterCategory.value);
+                filtered = filtered.filter(p => categories.includes(p.category));
             }
 
             // Availability filter
@@ -2127,13 +2138,59 @@
             const collectionParam = urlParams.get('collection');
 
             const categoryMap = {
-                'Women': ['Dresses', 'Two Piece', 'Vacation Wear', 'Heels', 'Soft Girl', 'Bags'],
-                'Men': ['Oversized Tees', 'Cargo Pants', 'Jackets', 'Sneakers', 'Casual Fits'],
+                'Women': ['Dresses', 'Two Piece', 'Vacation Wear', 'Heels', 'Soft Girl', 'Crossbody', 'Tote', 'Luxury Bags'],
+                'Men': ['Oversized Tees', 'Cargo Pants', 'Jackets', 'Sneakers', 'Watches', 'Casual Fits'],
                 'Shoes': ['Heels', 'Sneakers', 'Flats'],
-                'Bags': ['Bags'],
-                'Accessories': ['Accessories', 'Jewelry', 'Earrings', 'Bracelets', 'Scarves', 'Watches'],
+                'Bags': ['Crossbody', 'Tote', 'Clutch', 'Luxury Bags'],
+                'Accessories': ['Jewelry', 'Scarves', 'Earrings', 'Bracelets', 'Watches'],
                 'Collections': null
             };
+
+            const pageCategoryDropdownMap = {
+                'Women': [
+                    { label: 'Dresses', value: 'Dresses' },
+                    { label: 'Two Piece', value: 'Two Piece' },
+                    { label: 'Heels', value: 'Heels' },
+                    { label: 'Vacation Wear', value: 'Vacation Wear' },
+                    { label: 'Soft Girl', value: 'Soft Girl' },
+                    { label: 'Handbags', value: 'Handbags' }
+                ],
+                'Men': [
+                    { label: 'Oversized Tees', value: 'Oversized Tees' },
+                    { label: 'Cargo Pants', value: 'Cargo Pants' },
+                    { label: 'Jackets', value: 'Jackets' },
+                    { label: 'Sneakers', value: 'Sneakers' },
+                    { label: 'Watches', value: 'Watches' },
+                    { label: 'Casual Fits', value: 'Casual Fits' }
+                ],
+                'Shoes': [
+                    { label: 'Heels', value: 'Heels' },
+                    { label: 'Sneakers', value: 'Sneakers' },
+                    { label: 'Flats', value: 'Flats' }
+                ],
+                'Bags': [
+                    { label: 'Crossbody', value: 'Crossbody' },
+                    { label: 'Tote', value: 'Tote' },
+                    { label: 'Clutch', value: 'Clutch' },
+                    { label: 'Luxury Bags', value: 'Luxury Bags' }
+                ],
+                'Accessories': [
+                    { label: 'Jewelry', value: 'Jewelry' },
+                    { label: 'Scarves', value: 'Scarves' },
+                    { label: 'Earrings', value: 'Earrings' },
+                    { label: 'Bracelets', value: 'Bracelets' },
+                    { label: 'Watches', value: 'Watches' }
+                ]
+            };
+
+            function populateCategoryDropdown(page) {
+                if (!filterCategory || !pageCategoryDropdownMap[page]) return;
+                filterCategory.innerHTML = '<option value="">All Categories</option>' + pageCategoryDropdownMap[page].map(opt => `<option value="${opt.value}">${opt.label}</option>`).join('');
+            }
+
+            if (categoryParam && pageCategoryDropdownMap[categoryParam]) {
+                populateCategoryDropdown(categoryParam);
+            }
 
             if (!categoryParam && !collectionParam) {
                 setHomepageVisibility(true);

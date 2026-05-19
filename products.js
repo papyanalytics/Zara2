@@ -103,7 +103,7 @@ const products = [
     {
         id: 7,
         name: "Luxe Leather Crossbody Bag",
-        category: "Bags",
+        category: "Crossbody",
         collection: "Lagos Essentials",
         price: 18500,
         originalPrice: null,
@@ -123,7 +123,7 @@ const products = [
     {
         id: 8,
         name: "Soft Girl Bucket Bag",
-        category: "Bags",
+        category: "Luxury Bags",
         collection: "Soft Girl",
         price: 22000,
         originalPrice: 28000,
@@ -203,7 +203,7 @@ const products = [
     {
         id: 13,
         name: "Soft Girl Pearl Earrings",
-        category: "Accessories",
+        category: "Earrings",
         collection: "Soft Girl",
         price: 8500,
         originalPrice: null,
@@ -223,7 +223,7 @@ const products = [
     {
         id: 14,
         name: "Gold Layered Bangle",
-        category: "Accessories",
+        category: "Bracelets",
         collection: "Luxury Black",
         price: 9500,
         originalPrice: null,
@@ -243,7 +243,7 @@ const products = [
     {
         id: 15,
         name: "Modern Frame Glasses",
-        category: "Accessories",
+        category: "Jewelry",
         collection: "Summer Vibes",
         price: 7500,
         originalPrice: 9000,
@@ -263,7 +263,7 @@ const products = [
     {
         id: 16,
         name: "Elegant Gold Ring",
-        category: "Accessories",
+        category: "Jewelry",
         collection: "Luxury Black",
         price: 12000,
         originalPrice: 15000,
@@ -303,7 +303,7 @@ const products = [
     {
         id: 18,
         name: "Summer Crochet Tote",
-        category: "Bags",
+        category: "Tote",
         collection: "Vacation Drip",
         price: 25000,
         originalPrice: null,
