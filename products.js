@@ -595,9 +595,9 @@ const products = [
         trending: true,
         loved: 133,
         date: "2026-05-12",
-        image: "assets/products/download-22.jpg",
+        image: "assets/products/sneakers-1-Grey.jpg",
         variantImages: {
-            Grey: "assets/products/download-22.jpg"
+            Grey: "assets/products/sneakers-1-Grey.jpg"
         }
     },
     {
@@ -615,9 +615,9 @@ const products = [
         trending: false,
         loved: 98,
         date: "2026-05-13",
-        image: "assets/products/download-23.jpg",
+        image: "assets/products/my-watch-collections-xo.jpg",
         variantImages: {
-            Black: "assets/products/download-23.jpg"
+            Black: "assets/products/my-watch-collections-xo.jpg"
         }
     },
     {
