@@ -241,26 +241,6 @@ const products = [
         }
     },
     {
-        id: 15,
-        name: "Modern Frame Glasses",
-        category: "Jewelry",
-        collection: "Summer Vibes",
-        price: 7500,
-        originalPrice: 9000,
-        description: "Bold frame glasses that complete stylish summer outfits.",
-        colors: ["Black"],
-        sizes: ["One Size"],
-        availability: "In Stock",
-        badge: "Sale",
-        trending: true,
-        loved: 168,
-        date: "2026-05-14",
-        image: "assets/products/glasses-1-black.jpg",
-        variantImages: {
-            Black: "assets/products/glasses-1-black.jpg"
-        }
-    },
-    {
         id: 16,
         name: "Elegant Gold Ring",
         category: "Jewelry",
@@ -463,7 +443,7 @@ const products = [
     {
         id: 26,
         name: "Baggy Urban Jeans",
-        category: "Streetwear",
+        category: "Cargo Pants",
         collection: "Summer Vibes",
         price: 22000,
         originalPrice: null,
@@ -478,6 +458,466 @@ const products = [
         image: "assets/products/baggyjeans-1-Blue.jpg",
         variantImages: {
             Blue: "assets/products/baggyjeans-1-Blue.jpg"
+        }
+    },
+    {
+        id: 27,
+        name: "Cozy Oversized Tee",
+        category: "Oversized Tees",
+        collection: "Urban Streetwear",
+        price: 14000,
+        originalPrice: null,
+        description: "A relaxed oversized tee built for effortless layering.",
+        colors: ["Black"],
+        sizes: ["M", "L", "XL"],
+        availability: "In Stock",
+        badge: "New",
+        trending: true,
+        loved: 84,
+        date: "2026-05-18",
+        image: "assets/products/download-15.jpg",
+        variantImages: {
+            Black: "assets/products/download-15.jpg"
+        }
+    },
+    {
+        id: 28,
+        name: "Bronze Tactical Cargo Pants",
+        category: "Cargo Pants",
+        collection: "Urban Streetwear",
+        price: 22000,
+        originalPrice: null,
+        description: "Utility cargo pants with plenty of pockets and premium hardware.",
+        colors: ["Brown"],
+        sizes: ["S", "M", "L", "XL"],
+        availability: "In Stock",
+        badge: "New",
+        trending: true,
+        loved: 107,
+        date: "2026-05-17",
+        image: "assets/products/download-17.jpg",
+        variantImages: {
+            Brown: "assets/products/download-17.jpg"
+        }
+    },
+    {
+        id: 29,
+        name: "Night Runner Sneakers",
+        category: "Sneakers",
+        collection: "Lagos Essentials",
+        price: 27000,
+        originalPrice: null,
+        description: "Lightweight sneaker built for all-day city movement.",
+        colors: ["Black"],
+        sizes: ["40", "41", "42", "43"],
+        availability: "In Stock",
+        badge: "Sale",
+        trending: true,
+        loved: 142,
+        date: "2026-05-16",
+        image: "assets/products/download-18.jpg",
+        variantImages: {
+            Black: "assets/products/download-18.jpg"
+        }
+    },
+    {
+        id: 30,
+        name: "Sharp Utility Jacket",
+        category: "Jackets",
+        collection: "Urban Streetwear",
+        price: 33000,
+        originalPrice: null,
+        description: "A structured utility jacket for elevated street outfits.",
+        colors: ["Black"],
+        sizes: ["S", "M", "L", "XL"],
+        availability: "In Stock",
+        badge: "New",
+        trending: false,
+        loved: 121,
+        date: "2026-05-15",
+        image: "assets/products/download-19.jpg",
+        variantImages: {
+            Black: "assets/products/download-19.jpg"
+        }
+    },
+    {
+        id: 31,
+        name: "Island Casual Tee",
+        category: "Casual Fits",
+        collection: "Vacation Drip",
+        price: 15000,
+        originalPrice: null,
+        description: "A breezy tee made for weekend getaways and off-duty ease.",
+        colors: ["White"],
+        sizes: ["M", "L", "XL"],
+        availability: "In Stock",
+        badge: "New",
+        trending: false,
+        loved: 79,
+        date: "2026-05-16",
+        image: "assets/products/download-20.jpg",
+        variantImages: {
+            White: "assets/products/download-20.jpg"
+        }
+    },
+    {
+        id: 32,
+        name: "Edge Court Sneakers",
+        category: "Sneakers",
+        collection: "Urban Streetwear",
+        price: 28000,
+        originalPrice: null,
+        description: "Sport-inspired sneakers with a crisp city-ready silhouette.",
+        colors: ["White"],
+        sizes: ["40", "41", "42", "43"],
+        availability: "In Stock",
+        badge: "New",
+        trending: true,
+        loved: 124,
+        date: "2026-05-14",
+        image: "assets/products/download-21.jpg",
+        variantImages: {
+            White: "assets/products/download-21.jpg"
+        }
+    },
+    {
+        id: 33,
+        name: "Winter Trail Sneakers",
+        category: "Sneakers",
+        collection: "Lagos Essentials",
+        price: 29000,
+        originalPrice: null,
+        description: "High-performance sneakers for early morning runs and weekends.",
+        colors: ["Grey"],
+        sizes: ["40", "41", "42", "43"],
+        availability: "In Stock",
+        badge: "Sale",
+        trending: true,
+        loved: 133,
+        date: "2026-05-12",
+        image: "assets/products/download-22.jpg",
+        variantImages: {
+            Grey: "assets/products/download-22.jpg"
+        }
+    },
+    {
+        id: 34,
+        name: "Minimalist Leather Watch",
+        category: "Watches",
+        collection: "Luxury Black",
+        price: 34000,
+        originalPrice: null,
+        description: "A streamlined leather watch with modern, understated polish.",
+        colors: ["Black"],
+        sizes: ["One Size"],
+        availability: "In Stock",
+        badge: "New",
+        trending: false,
+        loved: 98,
+        date: "2026-05-13",
+        image: "assets/products/download-23.jpg",
+        variantImages: {
+            Black: "assets/products/download-23.jpg"
+        }
+    },
+    {
+        id: 35,
+        name: "Relaxed Cargo Chino",
+        category: "Cargo Pants",
+        collection: "Weekend Casuals",
+        price: 20000,
+        originalPrice: null,
+        description: "Soft cargo chinos designed for comfort and city styling.",
+        colors: ["Olive"],
+        sizes: ["S", "M", "L", "XL"],
+        availability: "In Stock",
+        badge: "New",
+        trending: false,
+        loved: 110,
+        date: "2026-05-17",
+        image: "assets/products/download-25.jpg",
+        variantImages: {
+            Olive: "assets/products/download-25.jpg"
+        }
+    },
+    {
+        id: 36,
+        name: "Satin Twilight Mini Dress",
+        category: "Dresses",
+        collection: "Date Night",
+        price: 32000,
+        originalPrice: null,
+        description: "A satin mini dress with an elegant, evening-ready finish.",
+        colors: ["Black"],
+        sizes: ["XS", "S", "M", "L"],
+        availability: "In Stock",
+        badge: "New",
+        trending: true,
+        loved: 171,
+        date: "2026-05-18",
+        image: "assets/products/download-8.jpg",
+        variantImages: {
+            Black: "assets/products/download-8.jpg"
+        }
+    },
+    {
+        id: 37,
+        name: "Blush Soft Girl Set",
+        category: "Soft Girl",
+        collection: "Soft Girl",
+        price: 31000,
+        originalPrice: null,
+        description: "A dreamy soft girl ensemble with pastel tones and delicate styling.",
+        colors: ["Pink"],
+        sizes: ["S", "M", "L"],
+        availability: "In Stock",
+        badge: "New",
+        trending: true,
+        loved: 158,
+        date: "2026-05-16",
+        image: "assets/products/download-9.jpg",
+        variantImages: {
+            Pink: "assets/products/download-9.jpg"
+        }
+    },
+    {
+        id: 38,
+        name: "Brown Summer Outfit Set",
+        category: "Vacation Wear",
+        collection: "Vacation Drip",
+        price: 36000,
+        originalPrice: null,
+        description: "A warm-toned summer outfit perfect for holiday styling.",
+        colors: ["Brown"],
+        sizes: ["S", "M", "L"],
+        availability: "In Stock",
+        badge: "New",
+        trending: false,
+        loved: 123,
+        date: "2026-05-15",
+        image: "assets/products/Summeroutfit-1-Brown.jpg",
+        variantImages: {
+            Brown: "assets/products/Summeroutfit-1-Brown.jpg"
+        }
+    },
+    {
+        id: 39,
+        name: "City Slip Flats",
+        category: "Flats",
+        collection: "Lagos Essentials",
+        price: 18000,
+        originalPrice: null,
+        description: "Low-profile flats made for everyday street comfort.",
+        colors: ["Beige"],
+        sizes: ["37", "38", "39", "40"],
+        availability: "In Stock",
+        badge: "New",
+        trending: false,
+        loved: 102,
+        date: "2026-05-16",
+        image: "assets/products/download-10.jpg",
+        variantImages: {
+            Beige: "assets/products/download-10.jpg"
+        }
+    },
+    {
+        id: 40,
+        name: "Street Pulse Sneakers",
+        category: "Sneakers",
+        collection: "Urban Streetwear",
+        price: 26000,
+        originalPrice: null,
+        description: "A modern sneaker with clean lines and city-ready performance.",
+        colors: ["White"],
+        sizes: ["40", "41", "42", "43"],
+        availability: "In Stock",
+        badge: "New",
+        trending: true,
+        loved: 130,
+        date: "2026-05-17",
+        image: "assets/products/download-11.jpg",
+        variantImages: {
+            White: "assets/products/download-11.jpg"
+        }
+    },
+    {
+        id: 41,
+        name: "Morning Walk Flats",
+        category: "Flats",
+        collection: "Weekend Casuals",
+        price: 17000,
+        originalPrice: null,
+        description: "Comfort flats built for relaxed morning outings.",
+        colors: ["Grey"],
+        sizes: ["37", "38", "39", "40"],
+        availability: "In Stock",
+        badge: "Sale",
+        trending: false,
+        loved: 108,
+        date: "2026-05-14",
+        image: "assets/products/download-12.jpg",
+        variantImages: {
+            Grey: "assets/products/download-12.jpg"
+        }
+    },
+    {
+        id: 42,
+        name: "Rhinestone Opulence Heels",
+        category: "Heels",
+        collection: "Luxury Black",
+        price: 36000,
+        originalPrice: 42000,
+        description: "Dramatic heels finished with rhinestone bow accents.",
+        colors: ["Black"],
+        sizes: ["37", "38", "39", "40", "41"],
+        availability: "Low Stock",
+        badge: "Sale",
+        trending: true,
+        loved: 190,
+        date: "2026-05-18",
+        image: "assets/products/step-into-opulence-with-rhinestone-bows-and-sleek….jpg",
+        variantImages: {
+            Black: "assets/products/step-into-opulence-with-rhinestone-bows-and-sleek….jpg"
+        }
+    },
+    {
+        id: 43,
+        name: "Double Bow Rhinestone Heels",
+        category: "Heels",
+        collection: "Date Night",
+        price: 38000,
+        originalPrice: 45000,
+        description: "High heels with dramatic double rhinestone bows.",
+        colors: ["Black"],
+        sizes: ["37", "38", "39", "40", "41"],
+        availability: "In Stock",
+        badge: "New",
+        trending: true,
+        loved: 158,
+        date: "2026-05-17",
+        image: "assets/products/these-high-heels-with-double-rhinestone-bow-knots….jpg",
+        variantImages: {
+            Black: "assets/products/these-high-heels-with-double-rhinestone-bow-knots….jpg"
+        }
+    },
+    {
+        id: 44,
+        name: "Everyday Crossbody Satchel",
+        category: "Crossbody",
+        collection: "Lagos Essentials",
+        price: 24500,
+        originalPrice: null,
+        description: "A polished crossbody satchel made for easy everyday wear.",
+        colors: ["Black"],
+        sizes: ["One Size"],
+        availability: "In Stock",
+        badge: "New",
+        trending: false,
+        loved: 115,
+        date: "2026-05-14",
+        image: "assets/products/download-13.jpg",
+        variantImages: {
+            Black: "assets/products/download-13.jpg"
+        }
+    },
+    {
+        id: 45,
+        name: "Brown Woven Tote",
+        category: "Tote",
+        collection: "Vacation Drip",
+        price: 26000,
+        originalPrice: null,
+        description: "A woven tote built for holiday essentials and weekends away.",
+        colors: ["Brown"],
+        sizes: ["One Size"],
+        availability: "In Stock",
+        badge: "New",
+        trending: true,
+        loved: 138,
+        date: "2026-05-16",
+        image: "assets/products/sheinbag-1-Brown.jpg",
+        variantImages: {
+            Brown: "assets/products/sheinbag-1-Brown.jpg"
+        }
+    },
+    {
+        id: 46,
+        name: "Cream Luxury Shoulder Bag",
+        category: "Luxury Bags",
+        collection: "Luxury Black",
+        price: 32000,
+        originalPrice: null,
+        description: "A luxury cream bag that upgrades evening and day looks.",
+        colors: ["Cream"],
+        sizes: ["One Size"],
+        availability: "In Stock",
+        badge: "New",
+        trending: false,
+        loved: 121,
+        date: "2026-05-15",
+        image: "assets/products/upgrade-your-style-with-this-luxury-cream-top….jpg",
+        variantImages: {
+            Cream: "assets/products/upgrade-your-style-with-this-luxury-cream-top….jpg"
+        }
+    },
+    {
+        id: 47,
+        name: "Summer Breeze Scarf",
+        category: "Scarves",
+        collection: "Soft Girl",
+        price: 9500,
+        originalPrice: null,
+        description: "A lightweight scarf to finish soft and feminine looks.",
+        colors: ["Pink"],
+        sizes: ["One Size"],
+        availability: "In Stock",
+        badge: "New",
+        trending: false,
+        loved: 88,
+        date: "2026-05-17",
+        image: "assets/products/download-14.jpg",
+        variantImages: {
+            Pink: "assets/products/download-14.jpg"
+        }
+    },
+    {
+        id: 48,
+        name: "Golden Charm Bracelet",
+        category: "Bracelets",
+        collection: "Luxury Black",
+        price: 10500,
+        originalPrice: null,
+        description: "A delicate charm bracelet for refined everyday layers.",
+        colors: ["Gold"],
+        sizes: ["One Size"],
+        availability: "In Stock",
+        badge: "Sale",
+        trending: false,
+        loved: 95,
+        date: "2026-05-16",
+        image: "assets/products/elegant-braclete-or-girls.jpg",
+        variantImages: {
+            Gold: "assets/products/elegant-braclete-or-girls.jpg"
+        }
+    },
+    {
+        id: 49,
+        name: "Silver Cross Ring",
+        category: "Jewelry",
+        collection: "Chrome Hearts",
+        price: 13000,
+        originalPrice: null,
+        description: "A bold silver ring with cross detail for edgy styling.",
+        colors: ["Silver"],
+        sizes: ["S", "M", "L"],
+        availability: "In Stock",
+        badge: "New",
+        trending: true,
+        loved: 143,
+        date: "2026-05-18",
+        image: "assets/products/ChromeHeartsNarrowRecessedCrossRingInclude-1-silver.jpg",
+        variantImages: {
+            Silver: "assets/products/ChromeHeartsNarrowRecessedCrossRingInclude-1-silver.jpg"
         }
     }
 ];
