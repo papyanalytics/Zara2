@@ -462,9 +462,8 @@
         }
     </style>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+    <script src="./supabase.js"></script>
 </head>
 <body>
     <!-- Login Page -->
@@ -650,53 +649,54 @@
     <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg">Updated!</span></div>
 
     <script>
-        // ==================== FIREBASE CONFIGURATION ====================
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "zahra-studio-orders.firebaseapp.com",
-            databaseURL: "https://zahra-studio-orders-default-rtdb.firebaseio.com",
-            projectId: "zahra-studio-orders",
-            storageBucket: "zahra-studio-orders.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcdef123456"
-        };
+        // ==================== SUPABASE CONFIGURATION ====================
+        // Supabase connection is initialized in supabase.js.
+        // Replace SUPABASE_URL and SUPABASE_ANON_KEY in supabase.js with your Supabase project credentials.
+        // The admin dashboard will load orders from Supabase when configured.
 
-        let db = null;
-        let firebaseEnabled = false;
-
-        try {
-            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
-                firebase.initializeApp(firebaseConfig);
-                db = firebase.database();
-                firebaseEnabled = true;
-                console.log("Firebase admin connected");
+        async function listenToAllOrders() {
+            if (window.SupabaseService && window.SupabaseService.isConfigured) {
+                try {
+                    const { data, error } = await window.SupabaseService.getOrders();
+                    if (!error && Array.isArray(data)) {
+                        window.backendOrders = data.reduce((acc, order) => {
+                            if (order.order_number) acc[order.order_number] = order;
+                            return acc;
+                        }, {});
+                        renderOrders();
+                        updateStats();
+                    }
+                } catch (e) {
+                    console.warn('Supabase getOrders failed', e);
+                }
             }
-        } catch(e) {
-            console.log("Firebase not available:", e);
         }
 
-        // Real-time order listener
-        function listenToAllOrders() {
-            if (!db) return;
-            db.ref('orders').on('value', snapshot => {
-                const orders = snapshot.val() || {};
-                // Merge with defaults
-                window.currentOrders = { ...defaultOrders, ...orders };
-                renderOrders();
-                updateStats();
-            });
+        async function saveToBackend(orderNum, data) {
+            if (window.SupabaseService && window.SupabaseService.isConfigured) {
+                const totalAmount = Number(String(data.total || data.total_amount || 0).replace(/[^0-9.-]+/g, '')) || 0;
+                const subtotalAmount = Number(String(data.subtotal || 0).replace(/[^0-9.-]+/g, '')) || totalAmount;
+                const payload = {
+                    order_number: orderNum,
+                    status: data.status,
+                    subtotal: subtotalAmount,
+                    total_amount: totalAmount,
+                    item_count: data.cartItems ? data.cartItems.reduce((sum, item) => sum + item.qty, 0) : 0,
+                    items: data.cartItems || data.items || [],
+                    notes: data.notes || null,
+                    placed_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
+                };
+                return window.SupabaseService.upsertOrder(payload);
+            }
+            return { data: null, error: new Error('Supabase not configured') };
         }
 
-        // Save to Firebase
-        function saveToFirebase(orderNum, data) {
-            if (!db) return Promise.resolve();
-            return db.ref('orders/' + orderNum).set(data);
-        }
-
-        // Delete from Firebase
-        function deleteFromFirebase(orderNum) {
-            if (!db) return Promise.resolve();
-            return db.ref('orders/' + orderNum).remove();
+        async function deleteFromBackend(orderNum) {
+            if (!window.SupabaseService || !window.SupabaseService.isConfigured) {
+                return { data: null, error: new Error('Supabase not configured') };
+            }
+            return { data: null, error: new Error('Backend delete not implemented') };
         }
 
 
@@ -777,9 +777,9 @@
             }
         };
 
-        // Get all orders (global + localStorage + defaults)
+        // Get all orders (backend + parent window + localStorage + defaults)
         function getAllOrders() {
-            const merged = { ...defaultOrders };
+            const merged = { ...defaultOrders, ...(window.backendOrders || {}) };
             // Try to get from parent window globalOrders (if admin opened from customer site)
             try {
                 if (window.opener && window.opener.globalOrders) {
@@ -794,9 +794,9 @@
             return merged;
         }
 
-        // Save order to both global and localStorage
-        function saveOrder(orderNum, data) {
-            // Try to save to parent window globalOrders
+        // Save order to backend when available, and local fallback
+        async function saveOrder(orderNum, data) {
+            // Save to parent window globalOrders if available
             try {
                 if (window.opener && window.opener.globalOrders) {
                     window.opener.globalOrders[orderNum] = data;
@@ -808,18 +808,22 @@
                 saved[orderNum] = data;
                 localStorage.setItem('zahraOrders', JSON.stringify(saved));
             } catch(e) {}
+            // Save to Supabase when configured
+            if (window.SupabaseService && window.SupabaseService.isConfigured) {
+                const { error } = await saveToBackend(orderNum, data);
+                if (error) console.warn('Supabase saveOrder error:', error);
+            }
         }
 
         // Login
-        function adminLogin() {
+        async function adminLogin() {
             const pw = document.getElementById('adminPassword').value;
             if (pw === ADMIN_PASSWORD) {
                 document.getElementById('loginError').style.display = 'none';
                 document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
-                // Start real-time Firebase listener
-                if (firebaseEnabled) {
-                    listenToAllOrders();
+                if (window.SupabaseService && window.SupabaseService.isConfigured) {
+                    await listenToAllOrders();
                 }
                 renderOrders();
                 updateStats();
@@ -1065,10 +1069,11 @@
         }
 
         // Delete order
-        function deleteOrder(orderNum) {
+        async function deleteOrder(orderNum) {
             if (!confirm(`Delete order ${orderNum}?`)) return;
-            // Delete from Firebase
-            deleteFromFirebase(orderNum);
+            if (window.SupabaseService && window.SupabaseService.isConfigured) {
+                await deleteFromBackend(orderNum);
+            }
             // Delete locally
             try {
                 const saved = JSON.parse(localStorage.getItem('zahraOrders') || '{}');

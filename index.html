@@ -310,9 +310,6 @@
         .delay-4 { animation-delay: 0.4s; }
     </style>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 </head>
 <body>
     <nav class="navbar" id="navbar">
@@ -1094,68 +1091,14 @@
 
     <button id="backToTop" aria-label="Back to top"><i class="fas fa-chevron-up"></i></button>
 
-    <script src="./products.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+    <script src="./supabase.js"></script>
     <script>
-        // ==================== FIREBASE CONFIGURATION ====================
-        // Replace with your own Firebase project config from console.firebase.google.com
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "zahra-studio-orders.firebaseapp.com",
-            databaseURL: "https://zahra-studio-orders-default-rtdb.firebaseio.com",
-            projectId: "zahra-studio-orders",
-            storageBucket: "zahra-studio-orders.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcdef123456"
-        };
+        // ==================== SUPABASE CONFIGURATION ====================
+        // Supabase connection and service helper are initialized in supabase.js.
+        // Replace SUPABASE_URL and SUPABASE_ANON_KEY in supabase.js with your own Supabase project credentials.
+        // This site continues to use localStorage as a fallback when Supabase is not configured.
 
-        // Initialize Firebase (only if config is valid)
-        let db = null;
-        let firebaseEnabled = false;
-
-        try {
-            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
-                firebase.initializeApp(firebaseConfig);
-                db = firebase.database();
-                firebaseEnabled = true;
-                console.log("Firebase connected successfully");
-            } else {
-                console.log("Firebase not configured - using localStorage fallback");
-            }
-        } catch(e) {
-            console.log("Firebase error:", e);
-        }
-
-        // Firebase order functions
-        function saveOrderToFirebase(orderNum, data) {
-            if (!db) return Promise.resolve();
-            return db.ref('orders/' + orderNum).set(data)
-                .then(() => console.log("Order saved to Firebase:", orderNum))
-                .catch(err => console.error("Firebase save error:", err));
-        }
-
-        function getOrderFromFirebase(orderNum) {
-            if (!db) return Promise.resolve(null);
-            return db.ref('orders/' + orderNum).once('value')
-                .then(snapshot => snapshot.val())
-                .catch(err => { console.error("Firebase read error:", err); return null; });
-        }
-
-        function listenToOrder(orderNum, callback) {
-            if (!db) return;
-            db.ref('orders/' + orderNum).on('value', snapshot => {
-                const data = snapshot.val();
-                if (data) callback(data);
-            });
-        }
-
-        function getAllOrdersFromFirebase() {
-            if (!db) return Promise.resolve({});
-            return db.ref('orders').once('value')
-                .then(snapshot => snapshot.val() || {})
-                .catch(err => { console.error("Firebase read error:", err); return {}; });
-        }
-
-        // Enhanced persist function (Firebase + localStorage + global)
         async function persistOrder(orderNum, data) {
             // Always save to global and localStorage
             window.globalOrders[orderNum] = data;
@@ -1165,38 +1108,47 @@
                 localStorage.setItem('zahraOrders', JSON.stringify(saved));
             } catch(e) {}
 
-            // Also save to Firebase if available
-            if (firebaseEnabled) {
-                await saveOrderToFirebase(orderNum, data);
+            if (window.SupabaseService && window.SupabaseService.isConfigured) {
+                const orderPayload = {
+                    order_number: orderNum,
+                    status: data.status || 'Order Placed',
+                    subtotal: data.subtotal || data.totalAmount || 0,
+                    total_amount: data.totalAmount || data.total_amount || 0,
+                    item_count: data.item_count || 0,
+                    items: data.cart_items || data.items || [],
+                    notes: data.notes || null,
+                    placed_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
+                };
+                const { error } = await window.SupabaseService.createOrder(orderPayload);
+                if (error) console.warn('Supabase createOrder error:', error);
             }
         }
 
-        // Enhanced get all orders (Firebase + localStorage + global + demo)
         async function getAllOrdersMerged() {
-            let merged = { ...demoOrders };
+            const merged = {};
 
-            // Get from Firebase first (most current)
-            if (firebaseEnabled) {
+            if (window.SupabaseService && window.SupabaseService.isConfigured) {
                 try {
-                    const fbOrders = await getAllOrdersFromFirebase();
-                    Object.assign(merged, fbOrders);
-                } catch(e) {}
+                    const { data, error } = await window.SupabaseService.getOrders();
+                    if (!error && Array.isArray(data)) {
+                        data.forEach(order => {
+                            if (order.order_number) merged[order.order_number] = order;
+                        });
+                    }
+                } catch(e) {
+                    console.warn('Supabase getOrders failed', e);
+                }
             }
 
-            // Merge localStorage
             try {
                 const saved = JSON.parse(localStorage.getItem('zahraOrders') || '{}');
                 Object.assign(merged, saved);
             } catch(e) {}
 
-            // Merge global (most recent in this session)
             Object.assign(merged, window.globalOrders);
-
             return merged;
         }
-
-
-        
 
 
         // Product data now loads from products.js and includes all image mappings directly.
@@ -1905,25 +1857,55 @@
             } catch(e) {}
         })();
 
-        // Save order to both global and localStorage
-        function persistOrder(orderNum, data) {
+        // Save order to both global and localStorage, and save to Supabase when enabled
+        async function persistOrder(orderNum, data) {
             window.globalOrders[orderNum] = data;
             try {
                 const saved = JSON.parse(localStorage.getItem('zahraOrders') || '{}');
                 saved[orderNum] = data;
                 localStorage.setItem('zahraOrders', JSON.stringify(saved));
             } catch(e) {}
+
+            if (window.SupabaseService && window.SupabaseService.isConfigured) {
+                const orderPayload = {
+                    order_number: orderNum,
+                    status: data.status || 'Order Placed',
+                    subtotal: data.subtotal || data.totalAmount || 0,
+                    total_amount: data.totalAmount || data.total_amount || 0,
+                    item_count: data.item_count || 0,
+                    items: data.cart_items || data.items || [],
+                    notes: data.notes || null,
+                    placed_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
+                };
+                const { error } = await window.SupabaseService.createOrder(orderPayload);
+                if (error) console.warn('Supabase createOrder error:', error);
+            }
         }
 
-        // Get all orders (global + localStorage merged)
-        function getAllOrdersMerged() {
-            const merged = { ...demoOrders };
+        // Get all orders (backend + localStorage + global)
+        async function getAllOrdersMerged() {
+            const merged = {};
+
+            if (window.SupabaseService && window.SupabaseService.isConfigured) {
+                try {
+                    const { data, error } = await window.SupabaseService.getOrders();
+                    if (!error && Array.isArray(data)) {
+                        data.forEach(order => {
+                            if (order.order_number) merged[order.order_number] = order;
+                        });
+                    }
+                } catch(e) {
+                    console.warn('Supabase getOrders failed', e);
+                }
+            }
+
             try {
                 const saved = JSON.parse(localStorage.getItem('zahraOrders') || '{}');
-                Object.assign(merged, saved, window.globalOrders);
-            } catch(e) {
-                Object.assign(merged, window.globalOrders);
-            }
+                Object.assign(merged, saved);
+            } catch(e) {}
+
+            Object.assign(merged, window.globalOrders);
             return merged;
         }
 
@@ -1989,26 +1971,37 @@
         }
 
         // Save newly placed order for tracking
-        function saveOrderForTracking(orderNum, cartItems, total) {
+        async function saveOrderForTracking(orderNum, cartItems, total) {
             const now = new Date();
             const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
             const itemCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
             const itemText = itemCount + ' item' + (itemCount > 1 ? 's' : '');
+            const rawTotal = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-            // Calculate estimated delivery (3 days from now)
             const estDate = new Date(now);
             estDate.setDate(estDate.getDate() + 3);
             const estDelivery = estDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-            demoOrders[orderNum] = {
+            const orderRecord = {
                 date: dateStr,
                 status: 'Order Placed',
                 statusColor: '#C9A96E',
                 estDelivery: estDelivery,
                 carrier: 'ZAHRA Express',
                 items: itemText,
+                totalAmount: rawTotal,
+                item_count: itemCount,
+                cart_items: cartItems.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    size: item.size,
+                    color: item.color,
+                    qty: item.qty,
+                    price: item.price,
+                    subtotal: item.price * item.qty
+                })),
                 timeline: [
                     { step: 'Order Placed', time: `${dateStr}, ${timeStr}`, done: true, active: true, desc: 'We received your order via WhatsApp' },
                     { step: 'Processing', time: 'Pending', done: false, active: false, desc: 'Waiting for payment confirmation' },
@@ -2019,12 +2012,7 @@
                 ]
             };
 
-            // Also save to localStorage so it persists
-            try {
-                const savedOrders = JSON.parse(localStorage.getItem('zahraOrders') || '{}');
-                savedOrders[orderNum] = demoOrders[orderNum];
-                localStorage.setItem('zahraOrders', JSON.stringify(savedOrders));
-            } catch(e) {}
+            await persistOrder(orderNum, orderRecord);
         }
 
         // Show order confirmation modal
@@ -2054,7 +2042,6 @@
             try {
                 const saved = JSON.parse(localStorage.getItem('zahraOrders') || '{}');
                 Object.assign(window.globalOrders, saved);
-                Object.assign(demoOrders, saved);
             } catch(e) {}
         })();
 
@@ -2081,10 +2068,16 @@
             resultDiv.style.display = 'none';
             notFoundDiv.style.display = 'none';
 
-            // Try Firebase first, then fall back to merged local
             let order = null;
-            if (firebaseEnabled) {
-                order = await getOrderFromFirebase(orderNum);
+            if (window.SupabaseService && window.SupabaseService.isConfigured) {
+                try {
+                    const { data, error } = await window.SupabaseService.getOrders();
+                    if (!error && Array.isArray(data)) {
+                        order = data.find(o => o.order_number === orderNum);
+                    }
+                } catch(e) {
+                    console.warn('Supabase getOrders failed', e);
+                }
             }
             if (!order) {
                 const merged = await getAllOrdersMerged();
