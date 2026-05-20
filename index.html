@@ -1241,6 +1241,34 @@
     return colors[color] || '#ccc';
 }
 
+        // Currency formatter
+        function formatCurrency(n) {
+            try {
+                return '₦' + Number(n).toLocaleString('en-NG');
+            } catch(e) { return '₦' + n; }
+        }
+
+        // Cart initialization (persistent via localStorage)
+        const CART_KEY = 'zahraCart';
+        let cart = [];
+        try {
+            cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+        } catch(e) { cart = []; }
+
+        // Cart DOM elements
+        const cartBtn = document.getElementById('cartBtn');
+        const cartCount = document.getElementById('cartCount');
+        const cartItemCount = document.getElementById('cartItemCount');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        const cartSidebar = document.getElementById('cartSidebar');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const cartClose = document.getElementById('cartClose');
+
+        function saveCart() {
+            try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch(e) {}
+        }
+
         // Render products
         function renderProducts(productsToRender, container = productsGrid) {
             const items = Array.isArray(productsToRender) ? productsToRender.slice() : [];
@@ -1279,8 +1307,8 @@
                         <h3 class="product-name">${product.name}</h3>
                         <div class="product-meta">
                             <div class="product-price">
-                                ₦${product.price}
-                                ${product.originalPrice ? `<span class="original">₦${product.originalPrice}</span>` : ''}
+                                ${formatCurrency(product.price)}
+                                ${product.originalPrice ? `<span class="original">${formatCurrency(product.originalPrice)}</span>` : ''}
                             </div>
                             <div class="product-colors">
                                 ${product.colors.slice(0, 3).map(color => `
@@ -1429,8 +1457,8 @@
             document.getElementById('modalCategory').textContent = currentProduct.category;
             document.getElementById('modalTitle').textContent = currentProduct.name;
             document.getElementById('modalPrice').innerHTML = `
-                ₦${currentProduct.price}
-                ${currentProduct.originalPrice ? `<span class="original">₦${currentProduct.originalPrice}</span>` : ''}
+                ${formatCurrency(currentProduct.price)}
+                ${currentProduct.originalPrice ? `<span class="original">${formatCurrency(currentProduct.originalPrice)}</span>` : ''}
             `;
             document.getElementById('modalDescription').textContent = currentProduct.description || 'A premium ZAHRA piece with the refined detailing you expect.';
 
@@ -1468,7 +1496,7 @@
             document.getElementById('qtyInput').value = 1;
 
             // Update WhatsApp links
-            const whatsappMsg = `Hi ZAHRA Studio! I'm interested in the ${currentProduct.name} (${currentProduct.category}) - ₦${currentProduct.price}. Is it available?`;
+            const whatsappMsg = `Hi ZAHRA Studio! I'm interested in the ${currentProduct.name} (${currentProduct.category}) - ${formatCurrency(currentProduct.price)}. Is it available?`;
             const encodedMsg = encodeURIComponent(whatsappMsg);
             document.getElementById('modalWhatsApp').href = `https://wa.me/2348136716703?text=${encodedMsg}`;
             document.getElementById('modalAskItem').href = `https://wa.me/2348136716703?text=${encodedMsg}`;
@@ -1578,7 +1606,11 @@
             cartItemCount.textContent = cart.reduce((sum, item) => sum + item.qty, 0);
 
             const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            cartTotal.textContent = `₦${total}`;
+            cartTotal.textContent = formatCurrency(total);
+            // persist
+            saveCart();
+            // notify external listeners (admin panel, analytics, etc.)
+            try { if (typeof window._cartChangeCallback === 'function') window._cartChangeCallback(cart); } catch(e) {}
 
             if (cart.length === 0) {
                 cartItems.innerHTML = `
@@ -1596,13 +1628,26 @@
                         <div class="cart-item-details">
                             <div class="cart-item-name">${item.name}</div>
                             <div class="cart-item-meta">Size: ${item.size} | Color: ${item.color} | Qty: ${item.qty}</div>
-                            <div class="cart-item-price">₦${item.price * item.qty}</div>
+                            <div class="cart-item-price">${formatCurrency(item.price * item.qty)}</div>
                         </div>
                         <button class="cart-item-remove" onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button>
                     </div>
                 `).join('');
             }
         }
+
+        // Initialize cart UI from storage
+        updateCart();
+
+        // Frontend Cart API for future backend/admin integration
+        window.CartAPI = {
+            addItem(productId, size = null, color = null, qty = 1) { addToCart(productId, size, color, qty); },
+            removeItem(index) { removeFromCart(index); },
+            updateQuantity(index, qty) { if (cart[index]) { cart[index].qty = Math.max(0, qty); if (cart[index].qty === 0) cart.splice(index,1); updateCart(); } },
+            getCart() { return JSON.parse(JSON.stringify(cart)); },
+            clearCart() { cart = []; updateCart(); },
+            onChange(cb) { window._cartChangeCallback = cb; }
+        };
 
         window.removeFromCart = function(index) {
             cart.splice(index, 1);
@@ -1633,10 +1678,10 @@
                 return;
             }
             const orderNum = generateOrderNumber();
-            const items = cart.map(item => `${item.name} (${item.size}, ${item.color}) x${item.qty} - ₦${item.price * item.qty}`).join('%0A');
-            const total = `₦${cart.reduce((sum, item) => sum + (item.price * item.qty), 0)}`;
+            const items = cart.map(item => `${item.name} (${item.size}, ${item.color}) x${item.qty} - ${formatCurrency(item.price * item.qty)}`).join('%0A');
+            const total = formatCurrency(cart.reduce((sum, item) => sum + (item.price * item.qty), 0));
             const msg = `Hi ZAHRA Studio! I'd like to place an order:%0A%0AOrder Number: ${orderNum}%0A%0A${items}%0A%0ATotal: ${total}%0A%0APlease confirm availability.`;
-            window.open(`https://wa.me/2348136716703?text=${msg}`, '_blank');
+            window.open(`https://wa.me/2348136716703?text=${encodeURIComponent(msg)}`, '_blank');
 
             // Save order for tracking
             saveOrderForTracking(orderNum, cart, total);
@@ -1657,10 +1702,10 @@
                 return;
             }
             const orderNum = generateOrderNumber();
-            const items = cart.map(item => `${item.name} (${item.size}, ${item.color}) x${item.qty} - ₦${item.price * item.qty}`).join('%0A');
-            const total = `₦${cart.reduce((sum, item) => sum + (item.price * item.qty), 0)}`;
+            const items = cart.map(item => `${item.name} (${item.size}, ${item.color}) x${item.qty} - ${formatCurrency(item.price * item.qty)}`).join('%0A');
+            const total = formatCurrency(cart.reduce((sum, item) => sum + (item.price * item.qty), 0));
             const msg = `Hi ZAHRA Studio! I'd like to place an order:%0A%0AOrder Number: ${orderNum}%0A%0A${items}%0A%0ATotal: ${total}%0A%0APlease confirm availability.`;
-            window.open(`https://wa.me/2348136716703?text=${msg}`, '_blank');
+            window.open(`https://wa.me/2348136716703?text=${encodeURIComponent(msg)}`, '_blank');
 
             // Save order for tracking
             saveOrderForTracking(orderNum, cart, total);
