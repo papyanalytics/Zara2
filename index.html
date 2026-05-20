@@ -1091,6 +1091,7 @@
 
     <button id="backToTop" aria-label="Back to top"><i class="fas fa-chevron-up"></i></button>
 
+    <script src="./products.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
     <script src="./supabase.js"></script>
     <script>
@@ -1153,9 +1154,17 @@
 
         // Product data now loads from products.js and includes all image mappings directly.
 
+        if (typeof products === 'undefined' || !Array.isArray(products)) {
+            console.error('Products data invalid:', typeof products === 'undefined' ? undefined : products);
+            window.products = [];
+        } else {
+            window.products = products;
+        }
+
         // Ensure each product has a color->image mapping (fallback to primary image)
         function ensureVariantImages() {
-            products.forEach(p => {
+            const productList = Array.isArray(window.products) ? window.products : [];
+            productList.forEach(p => {
                 p.variantImages = p.variantImages || {};
                 p.colors = Array.isArray(p.colors) ? p.colors : (p.colors ? [p.colors] : []);
                 p.sizes = Array.isArray(p.sizes) ? p.sizes : (p.sizes ? [p.sizes] : []);
