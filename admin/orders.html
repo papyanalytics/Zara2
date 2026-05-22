@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders | ZAHRA Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="admin-sidebar">
+            <div class="admin-header">
+                <i class="fas fa-crown"></i>
+                ZAHRA ADMIN
+            </div>
+
+            <nav class="sidebar-nav">
+                <li class="sidebar-nav-item">
+                    <a href="dashboard.html" class="sidebar-nav-link" id="navDashboard">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="orders.html" class="sidebar-nav-link active" id="navOrders">
+                        <i class="fas fa-shopping-bag"></i>
+                        Orders
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="inventory.html" class="sidebar-nav-link" id="navInventory">
+                        <i class="fas fa-box"></i>
+                        Inventory
+                    </a>
+                </li>
+                <li class="sidebar-nav-item" style="margin-top: 32px; border-top: 1px solid var(--border); padding-top: 16px;">
+                    <a href="#" class="sidebar-nav-link" onclick="handleLogout(); return false;">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="admin-main">
+            <!-- TOP BAR -->
+            <div class="admin-topbar">
+                <h1 class="topbar-title">Orders</h1>
+                <div class="topbar-actions">
+                    <div class="user-menu" onclick="toggleUserMenu()">
+                        <div class="user-avatar" id="userInitials">A</div>
+                        <span id="userEmail">Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE CONTENT -->
+            <div class="admin-content">
+<div class="alert alert-info" style="margin-bottom: 24px; border-color: rgba(59, 130, 246, 0.3); background-color: rgba(59, 130, 246, 0.1); color: #1D4ED8;">
+                <i class="fas fa-tools"></i>&nbsp;Development Mode Active
+            </div>
+            <div class="page-title">Order Management</div>
+                <p class="page-subtitle">View, track, and update order status</p>
+
+                <!-- ALERT MESSAGES -->
+                <div id="pageAlert"></div>
+
+                <!-- ORDERS TABLE -->
+                <div class="table-section">
+                    <div class="section-header">
+                        <h2 class="section-title">All Orders</h2>
+                        <div class="section-actions">
+                            <input 
+                                type="text" 
+                                id="searchOrders" 
+                                class="form-input" 
+                                placeholder="Search by Order ID or Customer..."
+                                style="max-width: 300px;"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table id="ordersTable">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTableBody">
+                                <tr>
+                                    <td colspan="7" style="text-align: center; padding: 48px 16px; color: var(--text-light);">
+                                        <i class="fas fa-loader fa-spin"></i> Loading orders...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- EMPTY STATE -->
+                    <div id="emptyState" class="empty-state" style="display: none;">
+                        <i class="fas fa-inbox"></i>
+                        <h3>No Orders Found</h3>
+                        <p>No orders match your search criteria</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- STATUS UPDATE MODAL -->
+    <div id="statusModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Update Order Status</span>
+                <button class="modal-close" onclick="closeStatusModal()">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p style="margin-bottom: 16px;">Order: <strong id="modalOrderId"></strong></p>
+                
+                <div class="form-group">
+                    <label class="form-label">New Status</label>
+                    <select id="statusSelect" class="select-input">
+                        <option value="">-- Select Status --</option>
+                        <option value="processing">Processing</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="in-transit">In Transit</option>
+                        <option value="delivered">Delivered</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Add Note (Optional)</label>
+                    <textarea 
+                        id="statusNote" 
+                        placeholder="e.g., Item shipped via DHL"
+                        style="height: 80px;"
+                    ></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeStatusModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="confirmStatusUpdate()">Update Status</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDER DETAILS MODAL -->
+    <div id="orderDetailsModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <span>Order Details</span>
+                <button class="modal-close" onclick="closeOrderDetailsModal()">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Order info will be dynamically inserted here -->
+                <div id="orderDetailsContent"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeOrderDetailsModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase.js"></script>
+    <script src="admin.js"></script>
+    <script>
+        // ===== ORDERS PAGE INITIALIZATION =====
+        // This page manages order viewing and status updates
+
+        let allOrders = [];
+        let currentOrderForStatus = null;
+
+        function isMockAdmin() {
+            return localStorage.getItem('mockAdmin') === 'true';
+        }
+
+        function isAdminSessionActive() {
+            return localStorage.getItem('adminSession') === 'active';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            checkAdminAuthAndInit();
+
+            // Attach search listener
+            document.getElementById('searchOrders').addEventListener('keyup', filterOrders);
+        });
+
+        // ===== AUTHENTICATION CHECK =====
+        async function checkAdminAuthAndInit() {
+            if (isMockAdmin()) {
+                console.log('Mock admin session detected');
+            } else if (!isAdminSessionActive()) {
+                console.log('Redirect blocked in development mode');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                // Update user info
+                const adminEmail = localStorage.getItem('adminEmail') || 'Admin User';
+                document.getElementById('userEmail').textContent = adminEmail;
+                document.getElementById('userInitials').textContent = adminEmail.charAt(0).toUpperCase();
+
+                // Load orders
+                await loadOrders();
+            } catch (error) {
+                console.error('Auth check error:', error);
+                if (!isMockAdmin()) {
+                    window.location.href = 'login.html';
+                }
+            }
+        }
+
+        // ===== LOAD ORDERS FROM SUPABASE =====
+        // INTEGRATION POINT: Fetch all orders from Supabase
+        async function loadOrders() {
+            try {
+                // SUPABASE INTEGRATION: Replace with actual database call
+                // const { data, error } = await SupabaseService.getOrders();
+                // if (error) throw error;
+                // allOrders = data;
+
+                // TEMPORARY DEMO DATA
+                allOrders = [
+                    {
+                        id: 'ORD-2024-001',
+                        customer: 'Amina Hassan',
+                        email: 'amina@example.com',
+                        items: [
+                            { name: 'Ankara Wrapper', quantity: 2, price: 15000 },
+                            { name: 'Beads', quantity: 1, price: 5000 }
+                        ],
+                        total: 45000,
+                        status: 'delivered',
+                        date: '2024-01-15',
+                        shippingAddress: '123 Lagos St, Lagos',
+                        phone: '08012345678'
+                    },
+                    {
+                        id: 'ORD-2024-002',
+                        customer: 'Chidi Okafor',
+                        email: 'chidi@example.com',
+                        items: [
+                            { name: 'Gold Headwrap', quantity: 1, price: 28500 }
+                        ],
+                        total: 28500,
+                        status: 'shipped',
+                        date: '2024-01-14',
+                        shippingAddress: '456 Abuja Ave, Abuja',
+                        phone: '08087654321'
+                    },
+                    {
+                        id: 'ORD-2024-003',
+                        customer: 'Blessing Adebayo',
+                        email: 'blessing@example.com',
+                        items: [
+                            { name: 'Traditional Iro', quantity: 1, price: 35000 }
+                        ],
+                        total: 35000,
+                        status: 'processing',
+                        date: '2024-01-13',
+                        shippingAddress: '789 Port Harcourt Rd',
+                        phone: '08056789012'
+                    }
+                ];
+
+                displayOrders(allOrders);
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                showAlert('pageAlert', 'error', 'Failed to load orders');
+            }
+        }
+
+        // ===== DISPLAY ORDERS TABLE =====
+        function displayOrders(orders) {
+            const tbody = document.getElementById('ordersTableBody');
+            const emptyState = document.getElementById('emptyState');
+
+            if (orders.length === 0) {
+                tbody.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            tbody.style.display = '';
+            emptyState.style.display = 'none';
+            tbody.innerHTML = '';
+
+            orders.forEach(order => {
+                const row = `
+                    <tr>
+                        <td><strong>${order.id}</strong></td>
+                        <td>${order.customer}</td>
+                        <td>${order.items.length}</td>
+                        <td>₦${order.total.toLocaleString()}</td>
+                        <td><span class="status-badge ${order.status}">${formatStatus(order.status)}</span></td>
+                        <td>${formatDate(order.date)}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon edit" title="View Details" onclick="openOrderDetailsModal('${order.id}')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon" title="Update Status" onclick="openStatusModal('${order.id}')" style="color: var(--gold);">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // ===== FILTER ORDERS =====
+        function filterOrders() {
+            const searchTerm = document.getElementById('searchOrders').value.toLowerCase();
+            const filtered = allOrders.filter(order =>
+                order.id.toLowerCase().includes(searchTerm) ||
+                order.customer.toLowerCase().includes(searchTerm)
+            );
+            displayOrders(filtered);
+        }
+
+        // ===== STATUS UPDATE MODAL =====
+        function openStatusModal(orderId) {
+            currentOrderForStatus = allOrders.find(o => o.id === orderId);
+            document.getElementById('modalOrderId').textContent = orderId;
+            document.getElementById('statusSelect').value = '';
+            document.getElementById('statusNote').value = '';
+            document.getElementById('statusModal').classList.add('active');
+        }
+
+        function closeStatusModal() {
+            document.getElementById('statusModal').classList.remove('active');
+            currentOrderForStatus = null;
+        }
+
+        // ===== CONFIRM STATUS UPDATE =====
+        // INTEGRATION POINT: Update order status in Supabase
+        async function confirmStatusUpdate() {
+            const newStatus = document.getElementById('statusSelect').value;
+            const note = document.getElementById('statusNote').value;
+
+            if (!newStatus) {
+                showAlert('pageAlert', 'warning', 'Please select a status');
+                return;
+            }
+
+            try {
+                // SUPABASE INTEGRATION: Update order status
+                // const { error } = await SupabaseService.updateOrderStatus(
+                //     currentOrderForStatus.id,
+                //     newStatus
+                // );
+                // if (error) throw error;
+
+                // Update local order
+                const order = allOrders.find(o => o.id === currentOrderForStatus.id);
+                if (order) {
+                    order.status = newStatus;
+                }
+
+                displayOrders(allOrders);
+                closeStatusModal();
+                showAlert('pageAlert', 'success', `Order ${currentOrderForStatus.id} status updated to ${formatStatus(newStatus)}`);
+            } catch (error) {
+                console.error('Error updating status:', error);
+                showAlert('pageAlert', 'error', 'Failed to update order status');
+            }
+        }
+
+        // ===== ORDER DETAILS MODAL =====
+        function openOrderDetailsModal(orderId) {
+            const order = allOrders.find(o => o.id === orderId);
+            if (!order) return;
+
+            let itemsHtml = order.items.map(item =>
+                `<tr>
+                    <td>${item.name}</td>
+                    <td>${item.quantity}</td>
+                    <td>₦${item.price.toLocaleString()}</td>
+                    <td>₦${(item.quantity * item.price).toLocaleString()}</td>
+                </tr>`
+            ).join('');
+
+            const detailsHtml = `
+                <div style="margin-bottom: 20px;">
+                    <h3 style="font-size: 16px; margin-bottom: 12px;">Order Information</h3>
+                    <p><strong>Order ID:</strong> ${order.id}</p>
+                    <p><strong>Date:</strong> ${formatDate(order.date)}</p>
+                    <p><strong>Status:</strong> <span class="status-badge ${order.status}">${formatStatus(order.status)}</span></p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3 style="font-size: 16px; margin-bottom: 12px;">Customer Information</h3>
+                    <p><strong>Name:</strong> ${order.customer}</p>
+                    <p><strong>Email:</strong> ${order.email}</p>
+                    <p><strong>Phone:</strong> ${order.phone}</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3 style="font-size: 16px; margin-bottom: 12px;">Shipping Address</h3>
+                    <p>${order.shippingAddress}</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3 style="font-size: 16px; margin-bottom: 12px;">Items</h3>
+                    <table style="width: 100%; font-size: 13px;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <th style="text-align: left; padding: 8px 0;">Product</th>
+                                <th style="text-align: center;">Qty</th>
+                                <th style="text-align: right;">Price</th>
+                                <th style="text-align: right;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${itemsHtml}
+                            <tr style="border-top: 2px solid var(--border); font-weight: 600;">
+                                <td colspan="3" style="text-align: right; padding: 12px 0;">Total:</td>
+                                <td style="text-align: right;">₦${order.total.toLocaleString()}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            document.getElementById('orderDetailsContent').innerHTML = detailsHtml;
+            document.getElementById('orderDetailsModal').classList.add('active');
+        }
+
+        function closeOrderDetailsModal() {
+            document.getElementById('orderDetailsModal').classList.remove('active');
+        }
+
+        // ===== UTILITY FUNCTIONS =====
+        function formatStatus(status) {
+            const map = {
+                'processing': 'Processing',
+                'shipped': 'Shipped',
+                'in-transit': 'In Transit',
+                'delivered': 'Delivered'
+            };
+            return map[status] || status;
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function showAlert(containerId, type, message) {
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+
+            const container = document.getElementById(containerId);
+            container.innerHTML = `
+                <div class="alert alert-${type}">
+                    <i class="fas ${icons[type]}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+
+            // Auto-hide after 4 seconds
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+
+        // ===== LOGOUT HANDLER =====
+        async function handleLogout() {
+            localStorage.removeItem('mockAdmin');
+            localStorage.removeItem('adminSession');
+            localStorage.removeItem('adminEmail');
+            window.location.href = 'login.html';
+        }
+
+        function toggleUserMenu() {
+            // TODO: Implement user menu dropdown
+        }
+
+        // Close modals when clicking overlay
+        document.getElementById('statusModal').addEventListener('click', function(e) {
+            if (e.target === this) closeStatusModal();
+        });
+
+        document.getElementById('orderDetailsModal').addEventListener('click', function(e) {
+            if (e.target === this) closeOrderDetailsModal();
+        });
+    </script>
+</body>
+</html>

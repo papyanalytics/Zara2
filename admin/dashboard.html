@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | ZAHRA Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="admin-sidebar">
+            <div class="admin-header">
+                <i class="fas fa-crown"></i>
+                ZAHRA ADMIN
+            </div>
+
+            <nav class="sidebar-nav">
+                <li class="sidebar-nav-item">
+                    <a href="dashboard.html" class="sidebar-nav-link active" id="navDashboard">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="orders.html" class="sidebar-nav-link" id="navOrders">
+                        <i class="fas fa-shopping-bag"></i>
+                        Orders
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="inventory.html" class="sidebar-nav-link" id="navInventory">
+                        <i class="fas fa-box"></i>
+                        Inventory
+                    </a>
+                </li>
+                <li class="sidebar-nav-item" style="margin-top: 32px; border-top: 1px solid var(--border); padding-top: 16px;">
+                    <a href="#" class="sidebar-nav-link" onclick="handleLogout(); return false;">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="admin-main">
+            <!-- TOP BAR -->
+            <div class="admin-topbar">
+                <h1 class="topbar-title">Dashboard</h1>
+                <div class="topbar-actions">
+                    <div class="user-menu" onclick="toggleUserMenu()">
+                        <div class="user-avatar" id="userInitials">A</div>
+                        <span id="userEmail">Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-content">
+                <div class="alert alert-info" style="margin-bottom: 24px; border-color: rgba(59, 130, 246, 0.3); background-color: rgba(59, 130, 246, 0.1); color: #1D4ED8;">
+                    <i class="fas fa-tools"></i>&nbsp;Development Mode Active
+                </div>
+                <div class="page-title">Welcome to ZAHRA Admin</div>
+                <p class="page-subtitle">Real-time business insights and order management</p>
+
+                <!-- STATISTICS CARDS -->
+                <div class="stats-grid">
+                    <!-- Total Orders Card -->
+                    <div class="stat-card">
+                        <div class="stat-icon orders">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <div class="stat-label">Total Orders</div>
+                        <div class="stat-value" id="statTotalOrders">0</div>
+                        <div class="stat-change positive" id="statOrdersChange">
+                            <i class="fas fa-arrow-up"></i> 0% from last week
+                        </div>
+                    </div>
+
+                    <!-- Processing Card -->
+                    <div class="stat-card">
+                        <div class="stat-icon processing">
+                            <i class="fas fa-hourglass-start"></i>
+                        </div>
+                        <div class="stat-label">Processing</div>
+                        <div class="stat-value" id="statProcessing">0</div>
+                        <div class="stat-change" id="processingStatus">
+                            <span style="color: var(--processing);">Awaiting shipment</span>
+                        </div>
+                    </div>
+
+                    <!-- Shipped Card -->
+                    <div class="stat-card">
+                        <div class="stat-icon shipped">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="stat-label">Shipped</div>
+                        <div class="stat-value" id="statShipped">0</div>
+                        <div class="stat-change" id="shippedStatus">
+                            <span style="color: var(--warning);">In transit</span>
+                        </div>
+                    </div>
+
+                    <!-- Delivered Card -->
+                    <div class="stat-card">
+                        <div class="stat-icon delivered">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-label">Delivered</div>
+                        <div class="stat-value" id="statDelivered">0</div>
+                        <div class="stat-change positive" id="deliveredChange">
+                            <i class="fas fa-arrow-up"></i> 0% completed
+                        </div>
+                    </div>
+
+                    <!-- Revenue Card -->
+                    <div class="stat-card">
+                        <div class="stat-icon revenue">
+                            <i class="fas fa-naira-sign"></i>
+                        </div>
+                        <div class="stat-label">Total Revenue</div>
+                        <div class="stat-value" id="statRevenue">₦0</div>
+                        <div class="stat-change positive" id="revenueChange">
+                            <i class="fas fa-arrow-up"></i> 0% this month
+                        </div>
+                    </div>
+
+                    <!-- Inventory Count Card -->
+                    <div class="stat-card">
+                        <div class="stat-icon inventory">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="stat-label">Inventory Items</div>
+                        <div class="stat-value" id="statInventory">0</div>
+                        <div class="stat-change" id="inventoryStatus">
+                            <span id="lowStockCount">0 items low stock</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RECENT ORDERS PREVIEW -->
+                <div class="table-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Orders</h2>
+                        <div class="section-actions">
+                            <a href="orders.html" class="btn btn-secondary btn-small">View All Orders</a>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table id="recentOrdersTable">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentOrdersBody">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 32px 16px; color: var(--text-light);">
+                                        <i class="fas fa-loader fa-spin"></i> Loading orders...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- LOW STOCK ITEMS -->
+                <div class="table-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Low Stock Items</h2>
+                        <div class="section-actions">
+                            <a href="inventory.html" class="btn btn-secondary btn-small">Manage Inventory</a>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table id="lowStockTable">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>SKU</th>
+                                    <th>Current Stock</th>
+                                    <th>Reorder Level</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lowStockBody">
+                                <tr>
+                                    <td colspan="4" style="text-align: center; padding: 32px 16px; color: var(--text-light);">
+                                        <i class="fas fa-loader fa-spin"></i> Loading inventory...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase.js"></script>
+    <script src="admin.js"></script>
+    <script>
+        // ===== DASHBOARD INITIALIZATION =====
+        // This page loads all dashboard statistics and previews
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check admin authentication first
+            checkAdminAuthAndInit();
+        });
+
+        function isMockAdmin() {
+            return localStorage.getItem('mockAdmin') === 'true';
+        }
+
+        function isAdminSessionActive() {
+            return localStorage.getItem('adminSession') === 'active';
+        }
+
+        // ===== AUTHENTICATION CHECK =====
+        async function checkAdminAuthAndInit() {
+            if (isMockAdmin()) {
+                console.log('Mock admin session detected');
+                initializeDashboard();
+                return;
+            }
+
+            try {
+                // TODO: Verify admin session with Supabase
+                // const { data: { user } } = await supabase.auth.getUser();
+                // if (!user) {
+                //     window.location.href = 'login.html';
+                //     return;
+                // }
+
+                if (!isAdminSessionActive()) {
+                    console.log('Redirect blocked in development mode');
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                initializeDashboard();
+            } catch (error) {
+                console.error('Auth check error:', error);
+                if (!isMockAdmin()) {
+                    window.location.href = 'login.html';
+                }
+            }
+        }
+
+        // ===== DASHBOARD INITIALIZATION =====
+        async function initializeDashboard() {
+            // Update user info in top bar
+            const adminEmail = localStorage.getItem('adminEmail') || 'Admin User';
+            document.getElementById('userEmail').textContent = adminEmail;
+            document.getElementById('userInitials').textContent = adminEmail.charAt(0).toUpperCase();
+
+            // Load all dashboard data in parallel
+            await Promise.all([
+                loadDashboardStats(),
+                loadRecentOrders(),
+                loadLowStockItems()
+            ]);
+        }
+
+        // ===== DASHBOARD STATS LOADER =====
+        // INTEGRATION POINT: Supabase queries for dashboard statistics
+        async function loadDashboardStats() {
+            try {
+                // SUPABASE INTEGRATION: Replace with actual database queries
+                // const { data: orders } = await SupabaseService.getOrders();
+                // Calculate stats from orders data
+                
+                // TEMPORARY DEMO DATA (remove in production)
+                const stats = {
+                    totalOrders: 24,
+                    processing: 5,
+                    shipped: 8,
+                    delivered: 11,
+                    totalRevenue: 850000,
+                    inventoryItems: 156,
+                    lowStockCount: 3
+                };
+
+                // Update stat cards
+                document.getElementById('statTotalOrders').textContent = stats.totalOrders;
+                document.getElementById('statProcessing').textContent = stats.processing;
+                document.getElementById('statShipped').textContent = stats.shipped;
+                document.getElementById('statDelivered').textContent = stats.delivered;
+                document.getElementById('statRevenue').textContent = `₦${stats.totalRevenue.toLocaleString()}`;
+                document.getElementById('statInventory').textContent = stats.inventoryItems;
+                document.getElementById('lowStockCount').textContent = `${stats.lowStockCount} items low stock`;
+
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+            }
+        }
+
+        // ===== RECENT ORDERS LOADER =====
+        // INTEGRATION POINT: Fetch recent orders from Supabase
+        async function loadRecentOrders() {
+            try {
+                // SUPABASE INTEGRATION: Call getOrders and limit to 5 most recent
+                // const { data: orders, error } = await SupabaseService.getOrders();
+                
+                // TEMPORARY DEMO DATA
+                const orders = [
+                    {
+                        id: 'ORD-2024-001',
+                        customer: 'Amina Hassan',
+                        items: 2,
+                        total: 45000,
+                        status: 'delivered',
+                        date: '2024-01-15'
+                    },
+                    {
+                        id: 'ORD-2024-002',
+                        customer: 'Chidi Okafor',
+                        items: 1,
+                        total: 28500,
+                        status: 'shipped',
+                        date: '2024-01-14'
+                    }
+                ];
+
+                const tbody = document.getElementById('recentOrdersBody');
+                tbody.innerHTML = '';
+
+                if (orders.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 32px;">No orders yet</td></tr>';
+                    return;
+                }
+
+                orders.forEach(order => {
+                    const row = `
+                        <tr>
+                            <td><strong>${order.id}</strong></td>
+                            <td>${order.customer}</td>
+                            <td>${order.items}</td>
+                            <td>₦${order.total.toLocaleString()}</td>
+                            <td><span class="status-badge ${order.status}">${order.status}</span></td>
+                            <td>${order.date}</td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+
+            } catch (error) {
+                console.error('Error loading recent orders:', error);
+            }
+        }
+
+        // ===== LOW STOCK ITEMS LOADER =====
+        // INTEGRATION POINT: Fetch inventory items with low stock from Supabase
+        async function loadLowStockItems() {
+            try {
+                // SUPABASE INTEGRATION: Query inventory where stock < reorder_level
+                // const { data: items } = await SupabaseService.getInventory();
+                // Filter items with low stock
+                
+                // TEMPORARY DEMO DATA
+                const lowStockItems = [
+                    {
+                        name: 'Ankara Print Wrapper',
+                        sku: 'APW-001',
+                        currentStock: 3,
+                        reorderLevel: 10
+                    },
+                    {
+                        name: 'Gold Headwrap',
+                        sku: 'GHW-002',
+                        currentStock: 5,
+                        reorderLevel: 15
+                    }
+                ];
+
+                const tbody = document.getElementById('lowStockBody');
+                tbody.innerHTML = '';
+
+                if (lowStockItems.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 32px;">All items in stock</td></tr>';
+                    return;
+                }
+
+                lowStockItems.forEach(item => {
+                    const row = `
+                        <tr>
+                            <td>${item.name}</td>
+                            <td>${item.sku}</td>
+                            <td><strong style="color: var(--danger);">${item.currentStock}</strong></td>
+                            <td>${item.reorderLevel}</td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+
+            } catch (error) {
+                console.error('Error loading low stock items:', error);
+            }
+        }
+
+        // ===== LOGOUT HANDLER =====
+        // INTEGRATION POINT: Supabase logout
+        async function handleLogout() {
+            try {
+                // SUPABASE INTEGRATION: Call logout
+                // await SupabaseService.logoutVendor();
+                
+                // Clear development session flags and production session data
+                localStorage.removeItem('mockAdmin');
+                localStorage.removeItem('adminSession');
+                localStorage.removeItem('adminEmail');
+                
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        }
+
+        function toggleUserMenu() {
+            // TODO: Implement user menu dropdown with profile, settings, logout options
+        }
+    </script>
+</body>
+</html>

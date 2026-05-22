@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory | ZAHRA Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="admin-sidebar">
+            <div class="admin-header">
+                <i class="fas fa-crown"></i>
+                ZAHRA ADMIN
+            </div>
+
+            <nav class="sidebar-nav">
+                <li class="sidebar-nav-item">
+                    <a href="dashboard.html" class="sidebar-nav-link" id="navDashboard">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="orders.html" class="sidebar-nav-link" id="navOrders">
+                        <i class="fas fa-shopping-bag"></i>
+                        Orders
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="inventory.html" class="sidebar-nav-link active" id="navInventory">
+                        <i class="fas fa-box"></i>
+                        Inventory
+                    </a>
+                </li>
+                <li class="sidebar-nav-item" style="margin-top: 32px; border-top: 1px solid var(--border); padding-top: 16px;">
+                    <a href="#" class="sidebar-nav-link" onclick="handleLogout(); return false;">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="admin-main">
+            <!-- TOP BAR -->
+            <div class="admin-topbar">
+                <h1 class="topbar-title">Inventory</h1>
+                <div class="topbar-actions">
+                    <div class="user-menu" onclick="toggleUserMenu()">
+                        <div class="user-avatar" id="userInitials">A</div>
+                        <span id="userEmail">Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE CONTENT -->
+            <div class="admin-content">
+                <div class="alert alert-info" style="margin-bottom: 24px; border-color: rgba(59, 130, 246, 0.3); background-color: rgba(59, 130, 246, 0.1); color: #1D4ED8;">
+                    <i class="fas fa-tools"></i>&nbsp;Development Mode Active
+                </div>
+                <div class="page-title">Inventory Management</div>
+                <p class="page-subtitle">Manage products and stock levels</p>
+
+                <!-- ALERT MESSAGES -->
+                <div id="pageAlert"></div>
+
+                <!-- INVENTORY TABLE -->
+                <div class="table-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Products</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary btn-small" onclick="openAddProductModal()">
+                                <i class="fas fa-plus"></i> Add Product
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table id="inventoryTable">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>SKU</th>
+                                    <th>Stock</th>
+                                    <th>Price</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventoryTableBody">
+                                <tr>
+                                    <td colspan="7" style="text-align: center; padding: 48px 16px; color: var(--text-light);">
+                                        <i class="fas fa-loader fa-spin"></i> Loading inventory...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- EMPTY STATE -->
+                    <div id="emptyState" class="empty-state" style="display: none;">
+                        <i class="fas fa-box"></i>
+                        <h3>No Products Found</h3>
+                        <p>Start by adding your first product</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ADD PRODUCT MODAL -->
+    <div id="addProductModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Add New Product</span>
+                <button class="modal-close" onclick="closeAddProductModal()">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <form id="addProductForm">
+                    <div class="form-group">
+                        <label class="form-label">Product Name *</label>
+                        <input type="text" class="form-input" id="productName" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Category *</label>
+                            <select class="select-input" id="productCategory" required>
+                                <option value="">-- Select Category --</option>
+                                <option value="women">Women</option>
+                                <option value="men">Men</option>
+                                <option value="accessories">Accessories</option>
+                                <option value="bags">Bags</option>
+                                <option value="shoes">Shoes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">SKU *</label>
+                            <input type="text" class="form-input" id="productSKU" required placeholder="e.g., APW-001">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Price (₦) *</label>
+                            <input type="number" class="form-input" id="productPrice" required min="0" step="100">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Stock Quantity *</label>
+                            <input type="number" class="form-input" id="productStock" required min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea id="productDescription" placeholder="Product details..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Product Image *</label>
+                        <div id="imageUploadZone" class="upload-dropzone" tabindex="0">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <div class="upload-label">Drag & drop an image here, or click to browse</div>
+                            <div class="upload-hint">JPEG, PNG, WEBP up to 5MB</div>
+                            <input type="file" id="productImageFile" accept="image/*" style="display:none;">
+                        </div>
+                        <div id="imagePreview" class="image-preview" style="display:none;">
+                            <img src="" alt="Product preview">
+                            <div class="preview-actions">
+                                <button type="button" class="btn btn-secondary btn-small" onclick="clearAddProductImage()">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="cancelAddProduct()" id="addProductCancelBtn">Cancel</button>
+                <button class="btn btn-primary" onclick="submitAddProduct()" id="addProductSubmitBtn">
+                    <span id="addProductBtnText">Add Product</span>
+                    <i class="fas fa-spinner fa-spin" id="addProductBtnSpinner" style="display:none; margin-left:8px; font-size:0.9em;"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT PRODUCT MODAL -->
+    <div id="editProductModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Edit Product</span>
+                <button class="modal-close" onclick="closeEditProductModal()">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <form id="editProductForm">
+                    <div class="form-group">
+                        <label class="form-label">Product Name *</label>
+                        <input type="text" class="form-input" id="editProductName" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Category *</label>
+                            <select class="select-input" id="editProductCategory" required>
+                                <option value="women">Women</option>
+                                <option value="men">Men</option>
+                                <option value="accessories">Accessories</option>
+                                <option value="bags">Bags</option>
+                                <option value="shoes">Shoes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">SKU *</label>
+                            <input type="text" class="form-input" id="editProductSKU" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Price (₦) *</label>
+                            <input type="number" class="form-input" id="editProductPrice" required min="0" step="100">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Stock Quantity *</label>
+                            <input type="number" class="form-input" id="editProductStock" required min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea id="editProductDescription"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Image URL</label>
+                        <input type="url" class="form-input" id="editProductImage">
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeEditProductModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="submitEditProduct()">Update Product</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DELETE CONFIRMATION MODAL -->
+    <div id="deleteConfirmModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <span>Delete Product</span>
+                <button class="modal-close" onclick="closeDeleteModal()">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p style="margin-bottom: 16px;">Are you sure you want to delete <strong id="deleteProductName"></strong>?</p>
+                <p style="font-size: 13px; color: var(--text-light);">This action cannot be undone. The product will be permanently removed from inventory.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">Delete Product</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase.js"></script>
+    <script src="admin.js"></script>
+    <script>
+        // ===== INVENTORY PAGE INITIALIZATION =====
+        // This page manages product inventory with full CRUD operations
+
+        let allProducts = [];
+        let currentEditingProduct = null;
+        let currentDeletingProduct = null;
+        let addProductImageFile = null;
+        let addProductImagePreview = '';
+
+        function normalizeCategoryValue(value) {
+            if (!value || typeof value !== 'string') return '';
+            return value
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                .join(' ');
+        }
+
+        function parseLocalStorageArray(key) {
+            try {
+                const raw = localStorage.getItem(key);
+                const parsed = raw ? JSON.parse(raw) : [];
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (e) {
+                console.warn(`Failed to parse ${key}`, e);
+                return [];
+            }
+        }
+
+        function isMockAdmin() {
+            return localStorage.getItem('mockAdmin') === 'true';
+        }
+
+        function isAdminSessionActive() {
+            return localStorage.getItem('adminSession') === 'active';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            checkAdminAuthAndInit();
+
+            // Setup upload interactions for add product modal
+            initializeAddProductUpload();
+        });
+
+        // ===== AUTHENTICATION CHECK =====
+        async function checkAdminAuthAndInit() {
+            if (isMockAdmin()) {
+                console.log('Mock admin session detected');
+            } else if (!isAdminSessionActive()) {
+                console.log('Redirect blocked in development mode');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                // Update user info
+                const adminEmail = localStorage.getItem('adminEmail') || 'Admin User';
+                document.getElementById('userEmail').textContent = adminEmail;
+                document.getElementById('userInitials').textContent = adminEmail.charAt(0).toUpperCase();
+
+                // Load inventory
+                await loadInventory();
+            } catch (error) {
+                console.error('Auth check error:', error);
+                if (!isMockAdmin()) {
+                    window.location.href = 'login.html';
+                }
+            }
+        }
+
+        // ===== LOAD INVENTORY =====
+        // INTEGRATION POINT: Fetch products from Supabase
+        async function loadInventory() {
+            try {
+                // SUPABASE INTEGRATION: Replace with actual database call
+                // const { data, error } = await SupabaseService.getInventory();
+                // if (error) throw error;
+                // allProducts = data;
+
+                // TEMPORARY DEMO DATA
+                allProducts = [
+                    {
+                        id: 1,
+                        name: 'Ankara Print Wrapper',
+                        category: 'women',
+                        sku: 'APW-001',
+                        price: 15000,
+                        stock: 23,
+                        description: 'Beautiful ankara print wrapper with traditional patterns',
+                        image: 'https://via.placeholder.com/200?text=Ankara+Wrapper'
+                    },
+                    {
+                        id: 2,
+                        name: 'Gold Headwrap',
+                        category: 'accessories',
+                        sku: 'GHW-002',
+                        price: 8500,
+                        stock: 45,
+                        description: 'Elegant gold-tinted traditional headwrap',
+                        image: 'https://via.placeholder.com/200?text=Gold+Headwrap'
+                    },
+                    {
+                        id: 3,
+                        name: 'Traditional Iro',
+                        category: 'women',
+                        sku: 'TIR-003',
+                        price: 35000,
+                        stock: 12,
+                        description: 'Premium traditional iro with embroidery',
+                        image: 'https://via.placeholder.com/200?text=Traditional+Iro'
+                    }
+                ];
+
+                // Merge any locally stored inventory (persisted during development)
+                const storedLegacy = localStorage.getItem('localInventory');
+                const storedDynamic = localStorage.getItem('zahra_products');
+                const persistedProducts = [];
+
+                [storedLegacy, storedDynamic].forEach(source => {
+                    if (!source) return;
+                    try {
+                        const parsed = JSON.parse(source);
+                        if (Array.isArray(parsed)) {
+                            parsed.forEach(lp => {
+                                if (lp && typeof lp.id !== 'undefined' && !persistedProducts.find(item => item.id === lp.id)) {
+                                    persistedProducts.push(lp);
+                                }
+                            });
+                        }
+                    } catch (e) {
+                        console.warn('Could not parse persisted inventory source', e);
+                    }
+                });
+
+                persistedProducts.forEach(lp => {
+                    if (!allProducts.find(p => p.id === lp.id)) {
+                        allProducts.push(lp);
+                    }
+                });
+
+                displayInventory(allProducts);
+            } catch (error) {
+                console.error('Error loading inventory:', error);
+                showAlert('pageAlert', 'error', 'Failed to load inventory');
+            }
+        }
+
+        // ===== DISPLAY INVENTORY TABLE =====
+        function displayInventory(products) {
+            const tbody = document.getElementById('inventoryTableBody');
+            const emptyState = document.getElementById('emptyState');
+
+            if (products.length === 0) {
+                tbody.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            tbody.style.display = '';
+            emptyState.style.display = 'none';
+            tbody.innerHTML = '';
+
+            products.forEach(product => {
+                const stockStatus = product.stock < 10 ? 'style="color: var(--danger);"' : '';
+                const row = `
+                    <tr>
+                        <td><img src="${product.image}" alt="${product.name}" class="product-image"></td>
+                        <td>
+                            <div class="product-info">
+                                <div class="product-name">${product.name}</div>
+                                <div class="product-sku">${product.sku}</div>
+                            </div>
+                        </td>
+                        <td>${capitalizeCategory(product.category)}</td>
+                        <td>${product.sku}</td>
+                        <td ${stockStatus}><strong>${product.stock}</strong></td>
+                        <td>₦${product.price.toLocaleString()}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon edit" title="Edit" onclick="openEditProductModal(${product.id})">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon delete" title="Delete" onclick="openDeleteModal(${product.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // ===== ADD PRODUCT MODAL =====
+
+        function openAddProductModal() {
+            document.getElementById('addProductForm').reset();
+            clearAddProductImage();
+            document.body.classList.add('modal-open');
+            document.getElementById('addProductModal').classList.add('active');
+            document.getElementById('productName').focus();
+        }
+
+        function closeAddProductModal() {
+            document.getElementById('addProductModal').classList.remove('active');
+            document.body.classList.remove('modal-open');
+            const form = document.getElementById('addProductForm');
+            if (form) form.reset();
+            clearAddProductImage();
+        }
+
+        function cancelAddProduct() {
+            closeAddProductModal();
+        }
+
+        function initializeAddProductUpload() {
+            const uploadZone = document.getElementById('imageUploadZone');
+            const fileInput = document.getElementById('productImageFile');
+
+            if (!uploadZone || !fileInput) return;
+
+            uploadZone.addEventListener('click', () => fileInput.click());
+            uploadZone.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    fileInput.click();
+                }
+            });
+
+            uploadZone.addEventListener('dragover', event => {
+                event.preventDefault();
+                uploadZone.classList.add('drop-active');
+            });
+
+            uploadZone.addEventListener('dragleave', () => {
+                uploadZone.classList.remove('drop-active');
+            });
+
+            uploadZone.addEventListener('drop', event => {
+                event.preventDefault();
+                uploadZone.classList.remove('drop-active');
+                handleAddProductFile(event.dataTransfer.files[0]);
+            });
+
+            fileInput.addEventListener('change', event => {
+                handleAddProductFile(event.target.files[0]);
+            });
+        }
+
+        function handleAddProductFile(file) {
+            if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                showAlert('pageAlert', 'warning', 'Only image files are allowed.');
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                showAlert('pageAlert', 'warning', 'Image must be smaller than 5MB.');
+                return;
+            }
+
+            addProductImageFile = file;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                addProductImagePreview = e.target.result;
+                setAddProductPreview(addProductImagePreview);
+            };
+            // Future storage integration point:
+            // Replace FileReader/local blob preview with Supabase Storage upload and URL retrieval.
+            reader.readAsDataURL(file);
+        }
+
+        function setAddProductPreview(dataUrl) {
+            const preview = document.getElementById('imagePreview');
+            const img = preview ? preview.querySelector('img') : null;
+            if (!preview || !img) return;
+
+            img.src = dataUrl;
+            preview.style.display = 'flex';
+        }
+
+        function clearAddProductImage() {
+            addProductImageFile = null;
+            addProductImagePreview = '';
+            const fileInput = document.getElementById('productImageFile');
+            const preview = document.getElementById('imagePreview');
+            const previewImg = preview ? preview.querySelector('img') : null;
+            if (fileInput) fileInput.value = '';
+            if (preview) preview.style.display = 'none';
+            if (previewImg) previewImg.src = '';
+        }
+
+        // ===== ADD PRODUCT SUBMISSION =====
+        // INTEGRATION POINT: Insert product into Supabase
+        async function submitAddProduct() {
+            const submitBtn = document.getElementById('addProductSubmitBtn');
+            const btnText = document.getElementById('addProductBtnText');
+            const spinner = document.getElementById('addProductBtnSpinner');
+
+            try {
+                // show loading state
+                if (submitBtn) submitBtn.disabled = true;
+                if (btnText) btnText.textContent = 'Adding...';
+                if (spinner) spinner.style.display = 'inline-block';
+
+                const newProduct = {
+                    name: document.getElementById('productName').value.trim(),
+                    category: normalizeCategoryValue(document.getElementById('productCategory').value),
+                    sku: document.getElementById('productSKU').value.trim(),
+                    price: parseFloat(document.getElementById('productPrice').value) || 0,
+                    stock: parseInt(document.getElementById('productStock').value) || 0,
+                    description: document.getElementById('productDescription').value.trim(),
+                    image: addProductImagePreview || 'https://via.placeholder.com/200?text=No+Image',
+                    collection: 'Admin Picks',
+                    originalPrice: null,
+                    availability: 'In Stock',
+                    badge: null,
+                    trending: false,
+                    loved: 0,
+                    date: new Date().toISOString(),
+                    colors: [],
+                    sizes: [],
+                    variantImages: {}
+                };
+
+                // Validate required fields
+                if (!newProduct.name || !newProduct.category || !newProduct.sku) {
+                    showAlert('pageAlert', 'warning', 'Please fill in all required fields');
+                    return;
+                }
+
+                if (!addProductImagePreview) {
+                    showAlert('pageAlert', 'warning', 'Please upload a product image.');
+                    return;
+                }
+
+                // SUPABASE INTEGRATION: Insert product into database
+                // const { data, error } = await SupabaseService.addProduct(newProduct);
+                // if (error) throw error;
+
+                const { data, error } = await AdminInventory.addProduct(newProduct);
+                if (error || !data) {
+                    throw error || new Error('Failed to save product');
+                }
+
+                allProducts.push(data);
+                displayInventory(allProducts);
+
+                // close modal and reset
+                closeAddProductModal();
+
+                // show success toast
+                showToast('Product added successfully');
+            } catch (error) {
+                console.error('Error adding product:', error);
+                showAlert('pageAlert', 'error', 'Failed to add product');
+            } finally {
+                // restore button state
+                if (submitBtn) submitBtn.disabled = false;
+                if (btnText) btnText.textContent = 'Add Product';
+                if (spinner) spinner.style.display = 'none';
+            }
+        }
+
+        // ===== EDIT PRODUCT MODAL =====
+        function openEditProductModal(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            if (!product) return;
+
+            currentEditingProduct = product;
+            document.getElementById('editProductName').value = product.name;
+            document.getElementById('editProductCategory').value = product.category;
+            document.getElementById('editProductSKU').value = product.sku;
+            document.getElementById('editProductPrice').value = product.price;
+            document.getElementById('editProductStock').value = product.stock;
+            document.getElementById('editProductDescription').value = product.description || '';
+            document.getElementById('editProductImage').value = product.image || '';
+            
+            document.getElementById('editProductModal').classList.add('active');
+        }
+
+        function closeEditProductModal() {
+            document.getElementById('editProductModal').classList.remove('active');
+            currentEditingProduct = null;
+        }
+
+        // ===== EDIT PRODUCT SUBMISSION =====
+        // INTEGRATION POINT: Update product in Supabase
+        async function submitEditProduct() {
+            try {
+                const updatedProduct = {
+                    id: currentEditingProduct.id,
+                    name: document.getElementById('editProductName').value,
+                    category: document.getElementById('editProductCategory').value,
+                    sku: document.getElementById('editProductSKU').value,
+                    price: parseFloat(document.getElementById('editProductPrice').value),
+                    stock: parseInt(document.getElementById('editProductStock').value),
+                    description: document.getElementById('editProductDescription').value,
+                    image: document.getElementById('editProductImage').value || 'https://via.placeholder.com/200'
+                };
+
+                // Validate
+                if (!updatedProduct.name || !updatedProduct.category || !updatedProduct.sku) {
+                    showAlert('pageAlert', 'warning', 'Please fill in all required fields');
+                    return;
+                }
+
+                // SUPABASE INTEGRATION: Update product in database
+                // const { error } = await SupabaseService.editProduct(updatedProduct.id, updatedProduct);
+                // if (error) throw error;
+
+                // Update locally for demo
+                const index = allProducts.findIndex(p => p.id === updatedProduct.id);
+                if (index !== -1) {
+                    allProducts[index] = updatedProduct;
+                }
+
+                displayInventory(allProducts);
+                closeEditProductModal();
+                showAlert('pageAlert', 'success', `Product "${updatedProduct.name}" updated successfully`);
+            } catch (error) {
+                console.error('Error updating product:', error);
+                showAlert('pageAlert', 'error', 'Failed to update product');
+            }
+        }
+
+        // ===== DELETE PRODUCT CONFIRMATION =====
+        function openDeleteModal(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            if (!product) return;
+
+            currentDeletingProduct = product;
+            document.getElementById('deleteProductName').textContent = product.name;
+            document.getElementById('deleteConfirmModal').classList.add('active');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteConfirmModal').classList.remove('active');
+            currentDeletingProduct = null;
+        }
+
+        // ===== DELETE PRODUCT SUBMISSION =====
+        // INTEGRATION POINT: Delete product from Supabase
+        async function confirmDelete() {
+            try {
+                // SUPABASE INTEGRATION: Delete product from database
+                // const { error } = await SupabaseService.deleteProduct(currentDeletingProduct.id);
+                // if (error) throw error;
+
+                // Remove locally for demo
+                allProducts = allProducts.filter(p => p.id !== currentDeletingProduct.id);
+                const productName = currentDeletingProduct.name;
+
+                displayInventory(allProducts);
+                closeDeleteModal();
+                showAlert('pageAlert', 'success', `Product "${productName}" deleted successfully`);
+            } catch (error) {
+                console.error('Error deleting product:', error);
+                showAlert('pageAlert', 'error', 'Failed to delete product');
+            }
+        }
+
+        // ===== UTILITY FUNCTIONS =====
+        function capitalizeCategory(category) {
+            const map = {
+                'women': 'Women',
+                'men': 'Men',
+                'accessories': 'Accessories',
+                'bags': 'Bags',
+                'shoes': 'Shoes'
+            };
+            return map[category] || category;
+        }
+
+        function showAlert(containerId, type, message) {
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+
+            const container = document.getElementById(containerId);
+            container.innerHTML = `
+                <div class="alert alert-${type}">
+                    <i class="fas ${icons[type]}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+
+            // Auto-hide after 4 seconds
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+
+        // ===== TOAST =====
+        function showToast(message, duration = 3000) {
+            const toast = document.createElement('div');
+            toast.className = 'toast toast-success';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            // position and animate
+            setTimeout(() => {
+                toast.classList.add('visible');
+            }, 50);
+
+            setTimeout(() => {
+                toast.classList.remove('visible');
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, duration);
+        }
+
+        // ===== LOGOUT HANDLER =====
+        async function handleLogout() {
+            localStorage.removeItem('mockAdmin');
+            localStorage.removeItem('adminSession');
+            localStorage.removeItem('adminEmail');
+            window.location.href = 'login.html';
+        }
+
+        function toggleUserMenu() {
+            // TODO: Implement user menu dropdown
+        }
+
+        // Close modals when clicking overlay
+        document.getElementById('addProductModal').addEventListener('click', function(e) {
+            if (e.target === this) closeAddProductModal();
+        });
+
+        document.getElementById('editProductModal').addEventListener('click', function(e) {
+            if (e.target === this) closeEditProductModal();
+        });
+
+        document.getElementById('deleteConfirmModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDeleteModal();
+        });
+    </script>
+</body>
+</html>

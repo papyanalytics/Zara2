@@ -1154,12 +1154,16 @@
 
         // Product data now loads from products.js and includes all image mappings directly.
 
-        if (typeof products === 'undefined' || !Array.isArray(products)) {
-            console.error('Products data invalid:', typeof products === 'undefined' ? undefined : products);
-            window.products = [];
-        } else {
-            window.products = products;
+        const storefrontProducts = (typeof products === 'undefined' || !Array.isArray(products))
+            ? []
+            : mergeProducts(products);
+
+        if (storefrontProducts.length === 0) {
+            console.error('Products data invalid or empty:', typeof products === 'undefined' ? undefined : products);
         }
+
+        window.products = storefrontProducts;
+        window.storefrontProducts = storefrontProducts;
 
         // Ensure each product has a color->image mapping (fallback to primary image)
         function ensureVariantImages() {
@@ -1178,8 +1182,75 @@
             return (typeof url === 'string' && url.trim()) ? url : '';
         }
 
+        function getDynamicProducts() {
+            try {
+                const saved = JSON.parse(localStorage.getItem('zahra_products') || '[]');
+                return Array.isArray(saved) ? saved : [];
+            } catch (e) {
+                console.warn('Failed to parse zahra_products from localStorage', e);
+                return [];
+            }
+        }
+
+        function normalizeDynamicProduct(product) {
+            if (!product || typeof product !== 'object') return null;
+            const normalized = {
+                ...product,
+                category: typeof product.category === 'string' ? product.category.trim() : '',
+                collection: typeof product.collection === 'string' ? product.collection.trim() : '',
+                colors: Array.isArray(product.colors) ? product.colors : (product.colors ? [product.colors] : []),
+                sizes: Array.isArray(product.sizes) ? product.sizes : (product.sizes ? [product.sizes] : []),
+                description: typeof product.description === 'string' ? product.description : '',
+                image: typeof product.image === 'string' ? product.image : '',
+                originalPrice: typeof product.originalPrice !== 'undefined' ? product.originalPrice : null,
+                availability: product.availability || 'In Stock',
+                badge: product.badge || null,
+                trending: Boolean(product.trending),
+                loved: Number(product.loved || 0),
+                date: product.date || new Date().toISOString(),
+                variantImages: typeof product.variantImages === 'object' && product.variantImages ? product.variantImages : {}
+            };
+
+            if (normalized.colors.length && Object.keys(normalized.variantImages).length === 0) {
+                normalized.colors.forEach(color => {
+                    if (!normalized.variantImages[color]) {
+                        normalized.variantImages[color] = normalized.image;
+                    }
+                });
+            }
+
+            return normalized;
+        }
+
+        function mergeProducts(baseProducts) {
+            const dynamicProducts = getDynamicProducts()
+                .map(normalizeDynamicProduct)
+                .filter(Boolean);
+
+            const combined = Array.isArray(baseProducts) ? [...baseProducts] : [];
+            const seen = new Set(combined.map(p => p.id));
+
+            dynamicProducts.forEach(product => {
+                if (typeof product.id === 'undefined' || product.id === null) {
+                    const existingIds = Array.from(seen).map(id => Number(id)).filter(Number.isFinite);
+                    product.id = existingIds.length ? Math.max(...existingIds) + 1 : 1;
+                }
+                if (!seen.has(product.id)) {
+                    combined.push(product);
+                    seen.add(product.id);
+                }
+            });
+
+            return combined;
+        }
+
         const categoryAliasMap = {
-            'Handbags': ['Crossbody', 'Tote', 'Luxury Bags', 'Bags']
+            'Handbags': ['Crossbody', 'Tote', 'Luxury Bags', 'Bags'],
+            'Women': ['Dresses', 'Two Piece', 'Vacation Wear', 'Heels', 'Soft Girl', 'Crossbody', 'Tote', 'Luxury Bags', 'Women', 'women'],
+            'Men': ['Oversized Tees', 'Cargo Pants', 'Jackets', 'Sneakers', 'Watches', 'Casual Fits', 'Men', 'men'],
+            'Shoes': ['Heels', 'Sneakers', 'Flats', 'Shoes', 'shoes'],
+            'Bags': ['Crossbody', 'Tote', 'Clutch', 'Luxury Bags', 'Bags', 'bags'],
+            'Accessories': ['Jewelry', 'Scarves', 'Earrings', 'Bracelets', 'Watches', 'Accessories', 'accessories']
         };
 
         function resolveCategoryFilterValues(category) {
@@ -1412,7 +1483,7 @@
 
         // Quick View
         window.openQuickView = function(productId, color) {
-            currentProduct = products.find(p => p.id === productId);
+            currentProduct = storefrontProducts.find(p => p.id === productId);
             if (!currentProduct) return;
 
             document.getElementById('modalCategory').textContent = currentProduct.category;
@@ -1525,7 +1596,7 @@
 
         // Cart functionality
         window.addToCart = function(productId, size = null, color = null, qty = 1) {
-            const product = products.find(p => p.id === productId);
+            const product = storefrontProducts.find(p => p.id === productId);
             if (!product) return;
 
             const existingItem = cart.find(item => 
@@ -1718,7 +1789,7 @@
                 if (filter === 'Sale') {
                     searchInput.value = '';
                     filterCategory.value = '';
-                    const filtered = products.filter(p => p.originalPrice !== null);
+                    const filtered = storefrontProducts.filter(p => p.originalPrice !== null);
                     initialDataset = filtered;
                     renderProducts(filtered);
                 } else {
@@ -1760,7 +1831,7 @@
             document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
             searchInput.value = '';
             filterCategory.value = '';
-            let filtered = products.filter(p => p.originalPrice !== null);
+            let filtered = storefrontProducts.filter(p => p.originalPrice !== null);
             initialDataset = filtered;
             renderProducts(filtered);
         };
@@ -2244,10 +2315,10 @@
                 if (productsSectionTitle) productsSectionTitle.textContent = 'Trending Picks';
                 document.title = 'ZAHRA Studio | Nigerian Fashion';
 
-                const featured = products.filter(p => p.trending).slice(0, 8);
-                const bestSellers = [...products].sort((a, b) => b.loved - a.loved).slice(0, 4);
+                const featured = storefrontProducts.filter(p => p.trending).slice(0, 8);
+                const bestSellers = [...storefrontProducts].sort((a, b) => b.loved - a.loved).slice(0, 4);
                 // homepage may show mixed data, keep initialDataset as full site for searches here
-                initialDataset = [...products];
+                initialDataset = [...storefrontProducts];
                 renderProducts(featured, productsGrid);
                 renderProducts(bestSellers, bestSellersGrid);
                 return;
@@ -2267,7 +2338,7 @@
             if (categoryParam === 'Sale') {
                 if (productsSectionTitle) productsSectionTitle.textContent = 'Sale Picks';
                 document.title = 'Sale | ZAHRA Studio';
-                const filtered = products.filter(p => p.originalPrice !== null);
+                const filtered = storefrontProducts.filter(p => p.originalPrice !== null);
                 initialDataset = filtered;
                 renderPagedProducts(filtered, 12, 1);
                 return;
@@ -2276,7 +2347,7 @@
             if (collectionParam) {
                 if (productsSectionTitle) productsSectionTitle.textContent = collectionParam;
                 document.title = `${collectionParam} | ZAHRA Studio`;
-                const filtered = products.filter(p => p.collection === collectionParam);
+                const filtered = storefrontProducts.filter(p => p.collection === collectionParam);
                 initialDataset = filtered;
                 renderPagedProducts(filtered, 12, 1);
                 return;
@@ -2287,7 +2358,7 @@
                 document.title = `${categoryParam} | ZAHRA Studio`;
                 const mapped = categoryMap[categoryParam];
                 if (mapped && Array.isArray(mapped)) {
-                    const filtered = products.filter(p => mapped.includes(p.category));
+                    const filtered = storefrontProducts.filter(p => mapped.includes(p.category) || p.category.toLowerCase() === categoryParam.toLowerCase());
                     initialDataset = filtered;
                     renderPagedProducts(filtered, 12, 1);
                 } else if (categoryParam === 'Collections') {
@@ -2301,15 +2372,15 @@
                         'Luxury Black',
                         'Weekend Casuals'
                     ];
-                    const filtered = products
-                        .filter(p => curatedCollections.includes(p.collection))
+                    const filtered = storefrontProducts
+                        .filter(p => curatedCollections.includes(p.collection) || p.collection === 'Admin Picks')
                         .sort((a, b) => (b.trending ? 1 : 0) - (a.trending ? 1 : 0) || new Date(b.date) - new Date(a.date));
                     initialDataset = filtered;
                     renderPagedProducts(filtered, 12, 1);
                 } else {
                     // fallback to applying a single category filter within the current page dataset
                     filterCategory.value = categoryParam;
-                    initialDataset = products.filter(p => p.category === categoryParam);
+                    initialDataset = storefrontProducts.filter(p => p.category === categoryParam);
                     filterAndSortProducts();
                 }
             }
